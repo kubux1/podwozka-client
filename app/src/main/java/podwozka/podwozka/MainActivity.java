@@ -3,7 +3,6 @@ package podwozka.podwozka;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,17 +13,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btnNextScreen = (Button) findViewById(R.id.btnNewTravel);
-        btnNextScreen.setText("Zaplanuj podróż");
+        Button loginButton = (Button) findViewById(R.id.loginButton);
+        loginButton.setText("Logowanie");
 
-        btnNextScreen.setOnClickListener(new View.OnClickListener() {
+        Button registerButton = (Button) findViewById(R.id.registerButton);
+        registerButton.setText("Rejestracja");
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), NewTravelActivity.class);
-
+                Intent nextScreen = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(nextScreen);
+            }
+        });
 
+        registerButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                //Starting a new Intent
+                Intent nextScreen = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(nextScreen);
             }
         });
     }

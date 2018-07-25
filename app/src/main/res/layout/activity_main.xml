@@ -17,10 +17,18 @@
         tools:layout_editor_absoluteX="0dp">
 
         <Button
-            android:id="@+id/btnNewTravel"
+            android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:text="@newTravelButton"
+            android:text="@loginButton"
+            tools:layout_editor_absoluteX="58dp"
+            tools:layout_editor_absoluteY="24dp" />
+
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:text="@registerButton"
             tools:layout_editor_absoluteX="58dp"
             tools:layout_editor_absoluteY="24dp" />
     </LinearLayout>
