@@ -1,6 +1,6 @@
 package podwozka.podwozka;
 
-import android.support.v7.widget.RecyclerView;
+//import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import podwozka.podwozka.entity.Travel;
-
+/*
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private List<Travel> mDataset;
 
@@ -60,4 +60,4 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public int getItemCount() {
         return mDataset.size();
     }
-}
+}*/

@@ -1,4 +1,4 @@
-package podwozka.podwozka;
+package podwozka.podwozka.Driver;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,15 +12,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+import podwozka.podwozka.R;
 import settings.ConnectionSettings;
 
 
-public class NewTravelActivity extends AppCompatActivity {
+public class DriverNewTravelActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_travel);
+        setContentView(R.layout.activity_driver_new_travel);
 
         Button btnNextScreen = (Button) findViewById(R.id.submitNewTravelButton);
         Button reversePlacesButton = (Button) findViewById(R.id.reverseTravelPlaces);
@@ -30,7 +31,7 @@ public class NewTravelActivity extends AppCompatActivity {
         btnNextScreen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), NewTravelActivity.class);
+                Intent nextScreen = new Intent(getApplicationContext(), DriverNewTravelActivity.class);
 
                 EditText startTravelPlace = (EditText) findViewById(R.id.startTravelPlace);
                 String startTravelPlaceMessage = startTravelPlace.getText().toString();
