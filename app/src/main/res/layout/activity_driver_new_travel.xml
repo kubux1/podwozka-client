@@ -1,66 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".Passenger.NewTravelActivity">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Passenger.NewTravelActivity">
+    android:orientation="vertical"
+    tools:layout_editor_absoluteX="98dp"
+    tools:layout_editor_absoluteY="0dp">
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/startTravelPlace"
+        android:layout_width="334dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Skąd chcesz jechać?"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="251dp" />
+
+    <EditText
+        android:id="@+id/endTravelPlace"
+        android:layout_width="335dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Dokąd chcesz pojechać?"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/pickUpTime"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="98dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="O której chcesz być odebrany?"
+        android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/startTravelPlace"
-            android:layout_width="334dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Skąd chcesz jechać?"
-            android:inputType="textPersonName"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="251dp" />
+    <EditText
+        android:id="@+id/howManyPeopleToPickUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Ile osób z tobą jedzie?"
+        android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/endTravelPlace"
-            android:layout_width="335dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Dokąd chcesz pojechać?"
-            android:inputType="textPersonName" />
+    <Button
+        android:id="@+id/submitNewTravelButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="277dp" />
 
-        <EditText
-            android:id="@+id/pickUpTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="O której chcesz być odebrany?"
-            android:inputType="textPersonName" />
+    <Button
+        android:id="@+id/reverseTravelPlaces"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" ↑ ↓" />
 
-        <EditText
-            android:id="@+id/howManyPeopleToPickUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Ile osób z tobą jedzie?"
-            android:inputType="textPersonName" />
-
-        <Button
-            android:id="@+id/submitNewTravelButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="161dp"
-            tools:layout_editor_absoluteY="277dp" />
-
-        <Button
-            android:id="@+id/reverseTravelPlaces"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" ↑ ↓" />
-
-    </LinearLayout>
+</LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>

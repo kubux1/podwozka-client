@@ -24,6 +24,14 @@
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="277dp" />
 
+        <Button
+            android:id="@+id/myAccountButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Informacje o aucie"
+            tools:layout_editor_absoluteX="161dp"
+            tools:layout_editor_absoluteY="277dp" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

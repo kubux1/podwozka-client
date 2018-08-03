@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Passenger.NewTravelActivity">
+    tools:context=".Driver.CarInfoActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,51 +14,62 @@
         tools:layout_editor_absoluteY="0dp">
 
         <EditText
-            android:id="@+id/startTravelPlace"
+            android:id="@+id/brand"
             android:layout_width="334dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Skąd chcesz jechać?"
+            android:hint="Marka"
             android:inputType="textPersonName"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="251dp" />
 
         <EditText
-            android:id="@+id/endTravelPlace"
+            android:id="@+id/model"
             android:layout_width="335dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Dokąd chcesz pojechać?"
+            android:hint="Model"
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/pickUpTime"
+            android:id="@+id/yearOfProduction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="O której chcesz być odebrany?"
+            android:hint="Rok produkcji"
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/howManyPeopleToPickUp"
+            android:id="@+id/registrationNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Ile osób z tobą jedzie?"
+            android:hint="Numer rejestracyjny"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Kolor auta"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/passangersCapacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Ile pasażerów zmieścisz?"
             android:inputType="textPersonName" />
 
         <Button
-            android:id="@+id/submitNewTravelButton"
+            android:id="@+id/submitCarInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Zaktualizuj dane"
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="277dp" />
-
-        <Button
-            android:id="@+id/reverseTravelPlaces"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" ↑ ↓" />
 
     </LinearLayout>
 
