@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="98dp"
+        tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
         <EditText
@@ -47,9 +47,11 @@
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Zarejestruj się"
             tools:layout_editor_absoluteX="161dp"
-            tools:layout_editor_absoluteY="277dp"
-            android:text="Zarejestruj się" />
+            tools:layout_editor_absoluteY="277dp" />
 
     </LinearLayout>
+
+
 </android.support.constraint.ConstraintLayout>

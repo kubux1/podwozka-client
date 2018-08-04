@@ -37,8 +37,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    protected void testMessage(View view) {
-        System.out.print("abc");
-    }
 }

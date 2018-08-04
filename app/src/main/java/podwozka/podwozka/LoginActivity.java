@@ -1,11 +1,15 @@
 package podwozka.podwozka;
 
+import podwozka.podwozka.Driver.DriverMainActivity;
+import podwozka.podwozka.Passenger.PassangerMainActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -25,8 +29,9 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), NewTravelActivity.class);
+                String loginOptionMessage = "";
+                Intent nextScreen = null;
+                int errorsCount = 0;
 
                 EditText login = (EditText) findViewById(R.id.loginField);
                 String loginMessage = login.getText().toString();
@@ -34,13 +39,31 @@ public class LoginActivity extends AppCompatActivity {
                 EditText password = (EditText) findViewById(R.id.passwordField);
                 String passwordMessage = password.getText().toString();
 
-                sendLoginData(loginMessage, passwordMessage);
-                startActivity(nextScreen);
+                RadioButton driverRadioButton = (RadioButton) findViewById(R.id.driverRadioButton);
+                RadioButton passangerRadioButton = (RadioButton) findViewById(R.id.passangerRadioButton);
+                if (driverRadioButton.isChecked()){
+                    loginOptionMessage = "Driver";
+                    nextScreen = new Intent(getApplicationContext(), DriverMainActivity.class);
+                }
+                else if (passangerRadioButton.isChecked()){
+                    loginOptionMessage = "Passanger";
+                    nextScreen = new Intent(getApplicationContext(), PassangerMainActivity.class);
+                }
+                else {
+                    PopUpWindows alertWindow = new PopUpWindows();
+                    alertWindow.showAlert(LoginActivity.this, null, "Proszę wybrać profil logowania");
+                    errorsCount +=1 ;
+                }
+
+                if (errorsCount == 0){
+                    sendLoginData(loginMessage, passwordMessage, loginOptionMessage);
+                    startActivity(nextScreen);
+                }
             }
         });
     }
 
-    private void sendLoginData(final String login, final String password) {
+    private void sendLoginData(final String login, final String password, final String loginOption) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -49,7 +72,8 @@ public class LoginActivity extends AppCompatActivity {
                     URL url = new URL(connectionSettings.getHostIP() + ":"
                             + connectionSettings.getHostPort()
                             + "/travel_data/?login=" + login
-                            +"&password=" + password);
+                            + "&password=" + password
+                            + "&option=" + loginOption);
 
                     HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 

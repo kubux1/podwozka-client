@@ -3,8 +3,8 @@ package podwozka.podwozka;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+//import android.support.v7.widget.LinearLayoutManager;
+//import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +18,7 @@ import podwozka.podwozka.entity.Travel;
 import static podwozka.podwozka.R.layout.activity_browse_travels_list;
 
 public class BrowseTravelsActivity extends AppCompatActivity {
-
+ /*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +43,7 @@ public class BrowseTravelsActivity extends AppCompatActivity {
 
         RecyclerView.Adapter mAdapter = new MyAdapter(travels);
         mRecyclerView.setAdapter(mAdapter);
-    }
+    }*/
 
 }
 

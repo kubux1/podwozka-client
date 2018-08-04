@@ -17,20 +17,13 @@
         tools:layout_editor_absoluteX="0dp">
 
         <Button
-            android:id="@+id/loginButton"
+            android:id="@+id/newTravelButton"
             android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:text="@loginButton"
-            tools:layout_editor_absoluteX="58dp"
-            tools:layout_editor_absoluteY="24dp" />
+            android:layout_height="wrap_content"
+            android:text="Zaplanuj podróż"
+            tools:layout_editor_absoluteX="161dp"
+            tools:layout_editor_absoluteY="277dp" />
 
-        <Button
-            android:id="@+id/registerButton"
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:text="@registerButton"
-            tools:layout_editor_absoluteX="58dp"
-            tools:layout_editor_absoluteY="24dp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
