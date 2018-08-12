@@ -31,7 +31,7 @@ public class PassengerNewTravelActivity extends AppCompatActivity {
         btnNextScreen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), PassengerNewTravelActivity.class);
+                Intent nextScreen = new Intent(getApplicationContext(), BrowseTravelsActivity.class);
 
                 EditText startTravelPlace = (EditText) findViewById(R.id.startTravelPlace);
                 String startTravelPlaceMessage = startTravelPlace.getText().toString();
@@ -45,8 +45,36 @@ public class PassengerNewTravelActivity extends AppCompatActivity {
                 EditText howManyPeopleToPickUp = (EditText) findViewById(R.id.howManyPeopleToPickUp);
                 String howManyPeopleToPickUpMessage = endTravelPlace.getText().toString();
 
+                // Function sendTravelData doesn't work properly. Should be fixed. Expected response below.
                 sendTravelData(startTravelPlaceMessage, endTravelPlaceMessage, pickUpTimeMessage, howManyPeopleToPickUpMessage);
 
+                String expected_response =
+                        "{\n" +
+                                "  \"_embedded\" : {\n" +
+                                "    \"travels\" : [ {\n" +
+                                "      \"login\" : \"bartek\",\n" +
+                                "      \"firstName\" : \"Maciej\",\n" +
+                                "      \"lastName\" : \"Topola\",\n" +
+                                "      \"passengersCount\" : \"2\",\n" +
+                                "      \"maxPassengers\" : \"3\",\n" +
+                                "      \"startDatetime\" : \"2016-03-16 12:56\",\n" +
+                                "      \"startPlace\" : \"Gdynia, 10 Lutego\",\n" +
+                                "      \"endPlace\" : \"Gdańsk, Wrzeszcz\"\n" +
+                                "    },\n" +
+                                "\t{\n" +
+                                "      \"login\" : \"bartek\",\n" +
+                                "      \"firstName\" : \"Maciej\",\n" +
+                                "      \"lastName\" : \"Topola\",\n" +
+                                "      \"passengersCount\" : \"2\",\n" +
+                                "      \"maxPassengers\" : \"3\",\n" +
+                                "      \"startDatetime\" : \"2016-03-16 12:56\",\n" +
+                                "      \"startPlace\" : \"Gdynia, 10 Lutego\",\n" +
+                                "      \"endPlace\" : \"Gdańsk, Matarnia\"\n" +
+                                "    } ]\n" +
+                                "}\n" +
+                                "}";
+
+                nextScreen.putExtra("TRAVELS", expected_response);
                 startActivity(nextScreen);
 
             }

@@ -1,74 +1,78 @@
 package podwozka.podwozka.entity;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+public class Travel {
+    private String login;
+    private String firstName;
+    private String lastName;
+    private String passengersCount;
+    private String maxPassengers;
+    private String startDatetime;
+    private String startPlace;
+    private String endPlace;
 
-public class Travel implements Parcelable {
-    private String name;
-    private String start;
-    private String end;
 
-    public Travel(String name, String start, String end) {
-        this.name = name;
-        this.start = start;
-        this.end = end;
+    public Travel(String login, String firstName, String lastName, String passengersCount,
+                  String maxPassengers, String startDatetime, String startPlace, String endPlace) {
+        this.login = login;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.passengersCount = passengersCount;
+        this.maxPassengers = maxPassengers;
+        this.startDatetime = startDatetime;
+        this.startPlace = startPlace;
+        this.endPlace = endPlace;
     }
 
-    public Travel()  {
+    public String getLogin() {
+        return login;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setStart(String start) {
-        this.start = start;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setEnd(String end) {
-        this.end = end;
+    public String getPassengersCount() {
+        return passengersCount;
     }
 
-    public String getName() {
-        return name;
+    public void setPassengersCount(String passengersCount) {
+        this.passengersCount = passengersCount;
     }
 
-    public String getStart() {
-        return start;
+    public String getStartDatetime() {
+        return startDatetime;
     }
 
-    public String getEnd() {
-        return end;
+    public void setStartDatetime(String startDatetime) {
+        this.startDatetime = startDatetime;
     }
 
-    public Travel(Parcel in){
-        String[] data = new String[3];
-
-        in.readStringArray(data);
-
-        this.name = data[0];
-        this.start = data[1];
-        this.end = data[2];
+    public String getStartPlace() {
+        return startPlace;
     }
 
-    public int describeContents(){
-        return 0;
+    public void setStartPlace(String startPlace) {
+        this.startPlace = startPlace;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] {this.name,
-                this.start,
-                this.end});
+    public String getEndPlace() {
+        return endPlace;
     }
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Travel createFromParcel(Parcel in) {
-            return new Travel(in);
-        }
 
-        public Travel[] newArray(int size) {
-            return new Travel[size];
-        }
-    };
+    public void setEndPlace(String endPlace) {
+        this.endPlace = endPlace;
+    }
+
+    public String getMaxPassengers() {
+        return maxPassengers;
+    }
+
+    public void setMaxPassengers(String maxPassengers) {
+        this.maxPassengers = maxPassengers;
+    }
 }
 
