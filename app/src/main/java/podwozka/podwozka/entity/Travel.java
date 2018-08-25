@@ -37,7 +37,7 @@ public class Travel implements Parcelable {
     }
 
 	public Travel(Parcel in) {
-        String[] data = new String[3];
+        String[] data = new String[7];
 
         in.readStringArray(data);
 
