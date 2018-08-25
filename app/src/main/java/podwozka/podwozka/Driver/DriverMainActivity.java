@@ -13,12 +13,24 @@ public class DriverMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_main);
+
         Button newTravelButton = (Button) findViewById(R.id.newTravelButton);
+        Button carInfoButton = (Button) findViewById(R.id.myAccountButton);
+
         newTravelButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
                 //Starting a new Intent
                 Intent nextScreen = new Intent(getApplicationContext(), DriverNewTravelActivity.class);
+                startActivity(nextScreen);
+            }
+        });
+
+        carInfoButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                //Starting a new Intent
+                Intent nextScreen = new Intent(getApplicationContext(), DriverCarInfoActivity.class);
                 startActivity(nextScreen);
             }
         });
