@@ -1,42 +1,79 @@
-package podwozka.podwozka.entity;
-
-import podwozka.podwozka.entity.HttpCommands;
+package podwozka.podwozka.Passenger.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Scanner;
-
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-public class Travel implements Parcelable {
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import podwozka.podwozka.entity.HttpCommands;
+import podwozka.podwozka.LoginActivity;
+
+public class PassangerTravel implements Parcelable {
     private String login;
     private String firstName;
     private String lastName;
-    private String passengersCount;
     private String maxPassengers;
+    private String passengersCount;
     private String startDatetime;
     private String startPlace;
     private String endPlace;
 
-
-    public Travel(String login, String firstName, String lastName, String passengersCount,
-                  String maxPassengers, String startDatetime, String startPlace, String endPlace) {
-        this.login = login;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public PassangerTravel(String login, String startPlace, String endPlace, String startDatetime, String passengersCount) {
+        if (login == null) {
+            this.login = LoginActivity.user.getLogin();
+        }
+        else {
+            this.login = login;
+        }
         this.passengersCount = passengersCount;
-        this.maxPassengers = maxPassengers;
         this.startDatetime = startDatetime;
         this.startPlace = startPlace;
         this.endPlace = endPlace;
     }
 
-	public Travel(Parcel in) {
+    public PassangerTravel(String login, String firstName, String lastName, String startPlace, String endPlace, String startDatetime, String passengersCount) {
+        if (login == null) {
+            this.login = LoginActivity.user.getLogin();
+        }
+        else {
+            this.login = login;
+        }
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.passengersCount = passengersCount;
+        this.startDatetime = startDatetime;
+        this.startPlace = startPlace;
+        this.endPlace = endPlace;
+    }
+
+    public PassangerTravel(String login, String firstName, String lastName, String passengersCount, String maxPassengers, String startPlace, String endPlace, String startDatetime) {
+        if (login == null) {
+            this.login = LoginActivity.user.getLogin();
+        }
+        else {
+            this.login = login;
+        }
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.maxPassengers = maxPassengers;
+        this.passengersCount = passengersCount;
+        this.startDatetime = startDatetime;
+        this.startPlace = startPlace;
+        this.endPlace = endPlace;
+    }
+
+	public PassangerTravel(Parcel in) {
         String[] data = new String[7];
 
         in.readStringArray(data);
@@ -45,13 +82,12 @@ public class Travel implements Parcelable {
         this.firstName = data[1];
         this.lastName = data[2];
         this.passengersCount = data[3];
-        this.maxPassengers = data[4];
-        this.startDatetime = data[5];
-        this.startPlace = data[6];
-        this.endPlace = data[7];
+        this.startDatetime = data[4];
+        this.startPlace = data[5];
+        this.endPlace = data[6];
     }
 
-    public Travel(){}
+    public PassangerTravel(){}
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeStringArray(new String[]{
@@ -61,13 +97,13 @@ public class Travel implements Parcelable {
         });
     }
 
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Travel createFromParcel(Parcel in) {
-            return new Travel(in);
+    public static final Creator CREATOR = new Creator() {
+        public PassangerTravel createFromParcel(Parcel in) {
+            return new PassangerTravel(in);
         }
 
-        public Travel[] newArray(int size) {
-            return new Travel[size];
+        public PassangerTravel[] newArray(int size) {
+            return new PassangerTravel[size];
         }
     };
 	
@@ -110,14 +146,6 @@ public class Travel implements Parcelable {
     public void setEndPlace(String endPlace) {
         this.endPlace = endPlace;
     }
-
-    public String getMaxPassengers() {
-        return maxPassengers;
-    }
-
-    public void setMaxPassengers(String maxPassengers) {
-        this.maxPassengers = maxPassengers;
-    }
 	
 	    public int describeContents() {
         return 0;
@@ -139,9 +167,28 @@ public class Travel implements Parcelable {
         return userTravlesArrayList;
     }
 
-    private ArrayList<Travel> getTravelsJSONParser(String travelsJSON) {
-        ArrayList<Travel> travels = new ArrayList<Travel>();
+    public String findMatchingTravels(PassangerTravel passengerTravel){
+        String travelsFound;
+        List<NameValuePair> travel = new ArrayList<>(1);
+        HttpCommands httpCommand = new HttpCommands();
+            try {
+                // Automate this
+                travel.add(new BasicNameValuePair("login", passengerTravel.getLogin()));
+                travel.add(new BasicNameValuePair("startPlace", passengerTravel.getStartPlace()));
+                travel.add(new BasicNameValuePair("endPlace", passengerTravel.getEndPlace()));
+                travel.add(new BasicNameValuePair("startDatetime", passengerTravel.getStartDatetime()));
+                travel.add(new BasicNameValuePair("passengersCount", passengerTravel.getPassengersCount()));
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        travelsFound = httpCommand.findMatchingTravels(travel);
+        return travelsFound;
+    }
+
+    private ArrayList<PassangerTravel> getTravelsJSONParser(String travelsJSON) {
+        ArrayList<PassangerTravel> travels = new ArrayList<PassangerTravel>();
         JSONParser parser = new JSONParser();
+
         try {
             Object travelsObjects = parser.parse(travelsJSON);
             JSONObject jsonObject = (JSONObject) travelsObjects;
@@ -149,12 +196,11 @@ public class Travel implements Parcelable {
 
             for (Object obj : entityList) {
                 JSONObject jsonObj = (JSONObject) obj;
-                travels.add(new Travel(
+                travels.add(new PassangerTravel(
                         (String)jsonObj.get("login"),
                         (String)jsonObj.get("firstName"),
                         (String)jsonObj.get("lastName"),
                         (String)jsonObj.get("passengersCount"),
-                        (String)jsonObj.get("maxPassengers"),
                         (String)jsonObj.get("startDatetime"),
                         (String)jsonObj.get("startPlace"),
                         (String)jsonObj.get("endPlace")

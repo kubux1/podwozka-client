@@ -16,10 +16,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+import podwozka.podwozka.entity.User;
 import settings.ConnectionSettings;
 
 public class LoginActivity extends AppCompatActivity {
-
+    public static User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +52,16 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else {
                     PopUpWindows alertWindow = new PopUpWindows();
-                    alertWindow.showAlert(LoginActivity.this, null, "Proszę wybrać profil logowania");
+                    alertWindow.showAlertWindow(LoginActivity.this, null, "Proszę wybrać profil logowania");
                     errorsCount +=1 ;
                 }
 
                 if (errorsCount == 0){
+                    user = new User(loginMessage);
                     sendLoginData(loginMessage, passwordMessage, loginOptionMessage);
+                    nextScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(nextScreen);
+                    finish(); // call this to finish the current activity
                 }
             }
         });

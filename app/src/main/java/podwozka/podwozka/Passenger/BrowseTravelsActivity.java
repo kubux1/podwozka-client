@@ -13,17 +13,19 @@ import org.json.simple.parser.JSONParser;
 import java.util.ArrayList;
 import java.util.List;
 
+import podwozka.podwozka.Passenger.entity.PassangerTravel;
 import podwozka.podwozka.R;
-import podwozka.podwozka.entity.Travel;
 
 
 public class BrowseTravelsActivity extends AppCompatActivity {
-    private List<Travel> travelList = new ArrayList<>();
+    private List<PassangerTravel> travelList = new ArrayList<>();
     private RecyclerView recyclerView;
     private BrowseTravelsActivityAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String travelsFound;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_travels_list);
 
@@ -35,9 +37,8 @@ public class BrowseTravelsActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        String travelsJSON = getIntent().getStringExtra("TRAVELS");
-
-        prepareTravelData(travelsJSON);
+        travelsFound = getIntent().getStringExtra("TRAVELS");
+        prepareTravelData(travelsFound);
     }
 
 
@@ -50,7 +51,7 @@ public class BrowseTravelsActivity extends AppCompatActivity {
 
             for (Object obj : entityList) {
                 JSONObject jsonObj = (JSONObject) obj;
-                travelList.add(new Travel(
+                travelList.add(new PassangerTravel(
                         (String)jsonObj.get("login"),
                         (String)jsonObj.get("firstName"),
                         (String)jsonObj.get("lastName"),

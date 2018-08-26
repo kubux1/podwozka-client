@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -13,11 +14,12 @@ import java.net.URL;
 import java.util.Scanner;
 
 import podwozka.podwozka.R;
+import podwozka.podwozka.Passenger.entity.PassangerTravel;
 import settings.ConnectionSettings;
 
 
 public class PassengerNewTravelActivity extends AppCompatActivity {
-
+    String travelsFound;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,15 +42,18 @@ public class PassengerNewTravelActivity extends AppCompatActivity {
                 String endTravelPlaceMessage = endTravelPlace.getText().toString();
 
                 EditText pickUpTime = (EditText) findViewById(R.id.pickUpTime);
-                String pickUpTimeMessage = endTravelPlace.getText().toString();
+                String pickUpTimeMessage = pickUpTime.getText().toString();
 
                 EditText howManyPeopleToPickUp = (EditText) findViewById(R.id.howManyPeopleToPickUp);
-                String howManyPeopleToPickUpMessage = endTravelPlace.getText().toString();
+                String howManyPeopleToPickUpMessage = howManyPeopleToPickUp.getText().toString();
 
-                // Function sendTravelData doesn't work properly. Should be fixed. Expected response below.
-                sendTravelData(startTravelPlaceMessage, endTravelPlaceMessage, pickUpTimeMessage, howManyPeopleToPickUpMessage);
+                PassangerTravel passengerTravel = new PassangerTravel(null, startTravelPlaceMessage, endTravelPlaceMessage, pickUpTimeMessage, howManyPeopleToPickUpMessage);
+                // Not working yet, waiting for testing with server
+                // Server should return all travels found
+                //travelsFound = passengerTravel.findMatchingTravels(passengerTravel);
 
-                String expected_response =
+                // Expected response
+                travelsFound =
                         "{\n" +
                                 "  \"_embedded\" : {\n" +
                                 "    \"travels\" : [ {\n" +
@@ -74,7 +79,7 @@ public class PassengerNewTravelActivity extends AppCompatActivity {
                                 "}\n" +
                                 "}";
 
-                nextScreen.putExtra("TRAVELS", expected_response);
+                nextScreen.putExtra("TRAVELS", travelsFound);
                 startActivity(nextScreen);
 
             }
@@ -97,46 +102,5 @@ public class PassengerNewTravelActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void sendTravelData(final String startPlace, final String endPlace, final String pickUpTime, final String howManyPeopleToPickUp) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ConnectionSettings connectionSettings = new ConnectionSettings();
-                    URL url = new URL(connectionSettings.getHostIP() + ":"
-                            + connectionSettings.getHostPort()
-                            + "/travel_data/?startPlace=" + startPlace
-                            +"&endPlace=" + endPlace
-                            +"&pickUpTime=" + pickUpTime
-                            +"&howManyPeopleToPickUp=" + howManyPeopleToPickUp);
-
-                    HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-
-                    connection.setRequestMethod("GET");
-
-                    connection.connect();
-                    int code = connection.getResponseCode();
-                    if (code == 200) {
-                        InputStream in = connection.getInputStream();
-
-                        Scanner scanner = new Scanner(in);
-                        scanner.useDelimiter("\\A");
-
-                        boolean hasInput = scanner.hasNext();
-                        if (hasInput) {
-                            String content = scanner.next();
-                        }
-                    }
-
-                    connection.disconnect();
-                } catch(Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-
-        thread.start();
     }
 }

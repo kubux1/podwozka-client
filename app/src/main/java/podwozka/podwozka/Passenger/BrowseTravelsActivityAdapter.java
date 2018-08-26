@@ -9,12 +9,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import podwozka.podwozka.Passenger.entity.PassangerTravel;
 import podwozka.podwozka.R;
-import podwozka.podwozka.entity.Travel;
 
 public class BrowseTravelsActivityAdapter extends RecyclerView.Adapter<BrowseTravelsActivityAdapter.MyViewHolder> {
 
-    private List<Travel> travelsList;
+    private List<PassangerTravel> travelsList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, date, freeSpace;
@@ -28,7 +28,7 @@ public class BrowseTravelsActivityAdapter extends RecyclerView.Adapter<BrowseTra
     }
 
 
-    public BrowseTravelsActivityAdapter(List<Travel> travelsList) {
+    public BrowseTravelsActivityAdapter(List<PassangerTravel> travelsList) {
         this.travelsList = travelsList;
     }
 
@@ -42,7 +42,7 @@ public class BrowseTravelsActivityAdapter extends RecyclerView.Adapter<BrowseTra
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Travel travel = travelsList.get(position);
+        PassangerTravel travel = travelsList.get(position);
         String title = travel.getStartPlace() + " - " + travel.getEndPlace();
         holder.title.setText(title);
         String startDatetime = "Czas odjazdu: " + travel.getStartDatetime();

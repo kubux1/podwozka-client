@@ -24,6 +24,14 @@
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="277dp" />
 
+        <Button
+            android:id="@+id/travelsHistoryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Twoje podróże"
+            tools:layout_editor_absoluteX="161dp"
+            tools:layout_editor_absoluteY="277dp" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
