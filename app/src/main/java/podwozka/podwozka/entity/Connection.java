@@ -72,12 +72,15 @@ public class Connection {
             if(getHttpResponseCode() == 200) {
                 HttpEntity resEntityGet = httpResponse.getEntity();
                 if(resEntityGet !=null ){
+                    // Response is in JSON
                     response = EntityUtils.toString(resEntityGet);
                 }
             }
 
         } catch (ClientProtocolException e) {
+            e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return response;

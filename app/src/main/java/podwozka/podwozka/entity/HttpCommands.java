@@ -14,7 +14,7 @@ public class HttpCommands {
         InputStream allUserTravels = null;
 
         Connection connection = new Connection();
-        int code = connection.sendGetCommand("travels/?login="+login);
+        int code = connection.sendGetCommand("/api/travels/?login="+login);
         if (code == 200) {
             allUserTravels = connection.getInputStream();
         }
@@ -26,7 +26,7 @@ public class HttpCommands {
         String travelsFound;
         Connection connection = new Connection();
 
-        travelsFound = connection.sendPostCommand("travels", object);
+        travelsFound = connection.sendPostCommand("/api/travels", object);
 
         return travelsFound;
     }
