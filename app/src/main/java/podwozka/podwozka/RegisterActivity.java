@@ -60,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 else {
                 PopUpWindows alertWindow = new PopUpWindows();
-                alertWindow.showAlert(RegisterActivity.this, null, "Proszę podać poprawny adres email");
+                alertWindow.showAlertWindow(RegisterActivity.this, null, "Proszę podać poprawny adres email");
                 }
             }
         });

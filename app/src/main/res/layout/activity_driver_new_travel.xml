@@ -40,11 +40,11 @@ tools:context=".Passenger.NewTravelActivity">
         android:inputType="textPersonName" />
 
     <EditText
-        android:id="@+id/howManyPeopleToPickUp"
+        android:id="@+id/maxPassengers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Ile osób z tobą jedzie?"
+        android:hint="Ile możesz zabrać maksymalnie osób"
         android:inputType="textPersonName" />
 
     <Button

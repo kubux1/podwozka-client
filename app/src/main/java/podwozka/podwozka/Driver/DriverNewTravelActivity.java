@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.R;
 import settings.ConnectionSettings;
 
@@ -40,12 +41,13 @@ public class DriverNewTravelActivity extends AppCompatActivity {
                 String endTravelPlaceMessage = endTravelPlace.getText().toString();
 
                 EditText pickUpTime = (EditText) findViewById(R.id.pickUpTime);
-                String pickUpTimeMessage = endTravelPlace.getText().toString();
+                String pickUpTimeMessage = pickUpTime.getText().toString();
 
-                EditText howManyPeopleToPickUp = (EditText) findViewById(R.id.howManyPeopleToPickUp);
-                String howManyPeopleToPickUpMessage = endTravelPlace.getText().toString();
+                EditText maxPassengers = (EditText) findViewById(R.id.maxPassengers);
+                String maxPassengersMessage = maxPassengers.getText().toString();
 
-                sendTravelData(startTravelPlaceMessage, endTravelPlaceMessage, pickUpTimeMessage, howManyPeopleToPickUpMessage);
+                DriverTravel newTravel = new DriverTravel(null, startTravelPlaceMessage, endTravelPlaceMessage, pickUpTimeMessage, maxPassengersMessage);
+                newTravel.postNewTravel(newTravel);
 
                 startActivity(nextScreen);
 
@@ -69,46 +71,5 @@ public class DriverNewTravelActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void sendTravelData(final String startPlace, final String endPlace, final String pickUpTime, final String howManyPeopleToPickUp) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ConnectionSettings connectionSettings = new ConnectionSettings();
-                    URL url = new URL(connectionSettings.getHostIP() + ":"
-                            + connectionSettings.getHostPort()
-                            + "/travel_data/?startPlace=" + startPlace
-                            +"&endPlace=" + endPlace
-                            +"&pickUpTime=" + pickUpTime
-                            +"&howManyPeopleToPickUp=" + howManyPeopleToPickUp);
-
-                    HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-
-                    connection.setRequestMethod("GET");
-
-                    connection.connect();
-                    int code = connection.getResponseCode();
-                    if (code == 200) {
-                        InputStream in = connection.getInputStream();
-
-                        Scanner scanner = new Scanner(in);
-                        scanner.useDelimiter("\\A");
-
-                        boolean hasInput = scanner.hasNext();
-                        if (hasInput) {
-                            String content = scanner.next();
-                        }
-                    }
-
-                    connection.disconnect();
-                } catch(Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-
-        thread.start();
     }
 }
