@@ -32,6 +32,22 @@
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="277dp" />
 
+        <Button
+            android:id="@+id/accountInformationButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Twoje konto"
+            tools:layout_editor_absoluteX="161dp"
+            tools:layout_editor_absoluteY="277dp" />
+
+        <Button
+            android:id="@+id/logOutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wyloguj się"
+            tools:layout_editor_absoluteX="161dp"
+            tools:layout_editor_absoluteY="277dp" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

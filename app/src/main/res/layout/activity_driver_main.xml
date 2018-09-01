@@ -25,10 +25,26 @@
             tools:layout_editor_absoluteY="277dp" />
 
         <Button
-            android:id="@+id/myAccountButton"
+            android:id="@+id/travelsHistoryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Informacje o aucie"
+            android:text="Twoje podróże"
+            tools:layout_editor_absoluteX="161dp"
+            tools:layout_editor_absoluteY="277dp" />
+
+        <Button
+            android:id="@+id/accountInformationButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Twoje konto"
+            tools:layout_editor_absoluteX="161dp"
+            tools:layout_editor_absoluteY="277dp" />
+
+        <Button
+            android:id="@+id/logOutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wyloguj się"
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="277dp" />
 

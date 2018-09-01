@@ -18,12 +18,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+import podwozka.podwozka.entity.User;
 import settings.ConnectionSettings;
 
 
 
 public class RegisterActivity extends AppCompatActivity {
-
+    public static User user;
     public final static boolean isValidEmail(CharSequence target) {
         if (TextUtils.isEmpty(target)) {
             return false;
@@ -41,6 +42,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
+                int httpResponseCode;
+                PopUpWindows alertWindow = new PopUpWindows();
                 //Starting a new Intent
                 Intent nextScreen = new Intent(getApplicationContext(), RegisterActivity.class);
 
@@ -52,56 +55,40 @@ public class RegisterActivity extends AppCompatActivity {
 
                 EditText emailAddress = (EditText) findViewById(R.id.emailAddressField);
                 String emailAddressMessage = emailAddress.getText().toString();
-                boolean emailValidation = isValidEmail(emailAddressMessage);
 
-                if(emailValidation == true) {
-                    sendRegisterData(loginMessage, passwordMessage, emailAddressMessage);
-                    startActivity(nextScreen);
+                if (emailAddressMessage.isEmpty())
+                {
+                    alertWindow.showAlertWindow(RegisterActivity.this, null, "Proszę podać adres email");
                 }
-                else {
-                PopUpWindows alertWindow = new PopUpWindows();
-                alertWindow.showAlertWindow(RegisterActivity.this, null, "Proszę podać poprawny adres email");
+                else if (loginMessage.isEmpty())
+                {
+                    alertWindow.showAlertWindow(RegisterActivity.this, null, "Proszę podać login");
                 }
-            }
-        });
+                else if (passwordMessage.isEmpty())
+                {
+                    alertWindow.showAlertWindow(RegisterActivity.this, null, "Proszę podać hasło");
+                }
+                else
+                {
+                    boolean emailValidation = isValidEmail(emailAddressMessage);
 
-    }
-
-    private void sendRegisterData(final String login, final String password, final String emailAddress) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ConnectionSettings connectionSettings = new ConnectionSettings();
-                    URL url = new URL(connectionSettings.getHostIP() + ":"
-                            + connectionSettings.getHostPort()
-                            + "/travel_data/?login=" + login
-                            +"&password=" + password);
-
-                    HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-
-                    connection.setRequestMethod("GET");
-
-                    connection.connect();
-                    int code = connection.getResponseCode();
-                    if (code == 200) {
-                        InputStream in = connection.getInputStream();
-
-                        Scanner scanner = new Scanner(in);
-                        scanner.useDelimiter("\\A");
-
-                        boolean hasInput = scanner.hasNext();
-                        if (hasInput) {
-                            String content = scanner.next();
+                    if (emailValidation == true)
+                    {
+                        user = new User();
+                        httpResponseCode = user.registerUser(loginMessage, passwordMessage, emailAddressMessage);
+                        if(httpResponseCode == 201) {
+                            alertWindow.showAlertWindow(RegisterActivity.this, null, "Udało zarejestrować się konto");
+                            startActivity(nextScreen);
+                        } else if (httpResponseCode == 400){
+                            alertWindow.showAlertWindow(RegisterActivity.this, null, "Konto z podanym adresem email lub login już istnieje");
                         }
+                    } else
+                    {
+                        alertWindow.showAlertWindow(RegisterActivity.this, null, "Proszę podać istniejący adres email");
                     }
-
-                    connection.disconnect();
-                } catch(Exception ex) {
-                    ex.printStackTrace();
                 }
             }
         });
-        thread.start();
+
     }
 }

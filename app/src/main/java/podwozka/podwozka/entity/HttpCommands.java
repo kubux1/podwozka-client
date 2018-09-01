@@ -40,4 +40,24 @@ public class HttpCommands {
 
         return httpResponse;
     }
+
+    public int sendLogInData(List<NameValuePair> object){
+        int httpResponse;
+        Connection connection = new Connection();
+
+        connection.sendPostCommand("users", object);
+        httpResponse = connection.getHttpResponseCode();
+
+        return httpResponse;
+    }
+
+    public int sendRegisterData(List<NameValuePair> object){
+        int httpResponse;
+        Connection connection = new Connection();
+
+        connection.sendPostCommand("users", object);
+        httpResponse = connection.getHttpResponseCode();
+
+        return httpResponse;
+    }
 }

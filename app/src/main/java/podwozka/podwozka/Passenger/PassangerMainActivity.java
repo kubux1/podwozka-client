@@ -37,11 +37,30 @@ public class PassangerMainActivity extends AppCompatActivity {
                 startActivity(nextScreen);
             }
         });
+
+        Button accountInfo = findViewById(R.id.accountInformationButton);
+        accountInfo.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                //TODO: Implement functionality
+            }
+        });
+
+        final Button logOut = findViewById(R.id.logOutButton);
+        logOut.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                logOut();
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
-        String response;
+        logOut();
+    }
+
+    public void logOut(){
         AlertDialog.Builder builder = new AlertDialog.Builder(PassangerMainActivity.this);
 
         builder.setMessage("Czy napewno chcesz sie wylogowac?");
