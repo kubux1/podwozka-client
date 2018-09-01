@@ -57,7 +57,7 @@ public class PassangerTravel implements Parcelable {
         this.endPlace = endPlace;
     }
 
-    public PassangerTravel(String login, String firstName, String lastName, String passengersCount, String maxPassengers, String startPlace, String endPlace, String startDatetime) {
+    public PassangerTravel(String login, String firstName, String lastName, String passengersCount, String maxPassengers, String startDatetime, String startPlace, String endPlace) {
         if (login == null) {
             this.login = LoginActivity.user.getLogin();
         }

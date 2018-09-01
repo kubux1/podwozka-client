@@ -37,7 +37,7 @@ public class DriverBrowseTravels extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        travelsFound = getIntent().getStringExtra("TRAVELS");
+        travelsFound = new DriverTravel().getAllUserTravlesFromServer();
         prepareTravelData(travelsFound);
     }
 

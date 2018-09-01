@@ -136,20 +136,12 @@ public class DriverTravel implements Parcelable {
         return 0;
     }
 	
-    public ArrayList getAllUserTravlesFromServer() {
-        ArrayList userTravlesArrayList = null;
-        InputStream userTravelsStream = null;
+    public String getAllUserTravlesFromServer() {
+        String userTravles;
         HttpCommands httpCommand = new HttpCommands();
 
-        userTravelsStream = httpCommand.getAllUserTravles(this.login);
-        Scanner scanner = new Scanner(userTravelsStream);
-        scanner.useDelimiter("\\A");
-        boolean hasInput = scanner.hasNext();
-        if (hasInput) {
-            String content = scanner.next();
-            userTravlesArrayList = getTravelsJSONParser(content);
-        }
-        return userTravlesArrayList;
+        userTravles = httpCommand.getAllUserTravles(this.login).toString();
+        return userTravles;
     }
 
     public int postNewTravel (DriverTravel newTravel)

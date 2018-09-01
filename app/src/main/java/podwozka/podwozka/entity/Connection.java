@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class Connection {
     private URL url;
@@ -41,20 +42,28 @@ public class Connection {
 
     public Connection(){ }
 
-    public int sendGetCommand(String httpCommand) {
-        try {
-            ConnectionSettings connectionSettings = new ConnectionSettings();
-            this.url = new URL(connectionSettings.getHostIP() + ":" + connectionSettings.getHostPort() + "/" + httpCommand);
-            HttpURLConnection connection = (HttpURLConnection) this.url.openConnection();
-            connection.setRequestMethod("GET");
-            setHttpResponseCode(connection.getResponseCode());
-            if (getHttpResponseCode() == 200) {
-                setInputStream(connection.getInputStream());
+    public int sendGetCommand(final String httpCommand, final CountDownLatch latch) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ConnectionSettings connectionSettings = new ConnectionSettings();
+                    URL url = new URL(connectionSettings.getHostIP() + ":" + connectionSettings.getHostPort() + "/" + httpCommand);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+                    connection.connect();
+                    setHttpResponseCode(connection.getResponseCode());
+                    if (getHttpResponseCode() == 200) {
+                        setInputStream(connection.getInputStream());
+                    }
+                    connection.disconnect();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                latch.countDown();
             }
-            connection.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
+        thread.start();
         return getHttpResponseCode();
     }
 
