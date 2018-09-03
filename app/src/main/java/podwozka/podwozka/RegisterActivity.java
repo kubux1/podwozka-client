@@ -45,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
                 int httpResponseCode;
                 PopUpWindows alertWindow = new PopUpWindows();
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), RegisterActivity.class);
+                Intent nextScreen = new Intent(getApplicationContext(), MainActivity.class);
 
                 EditText login = (EditText) findViewById(R.id.loginField);
                 String loginMessage = login.getText().toString();
@@ -75,7 +75,10 @@ public class RegisterActivity extends AppCompatActivity {
                     if (emailValidation == true)
                     {
                         user = new User();
-                        httpResponseCode = user.registerUser(loginMessage, passwordMessage, emailAddressMessage);
+                        //httpResponseCode = user.registerUser(loginMessage, passwordMessage, emailAddressMessage);
+                        //--------- START MOCK ---------
+                        httpResponseCode = 201;
+                        //--------- END MOCK ---------
                         if(httpResponseCode == 201) {
                             alertWindow.showAlertWindow(RegisterActivity.this, null, "Udało zarejestrować się konto");
                             startActivity(nextScreen);

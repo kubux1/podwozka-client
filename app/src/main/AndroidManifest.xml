@@ -27,6 +27,9 @@
         <activity android:name=".Driver.DriverNewTravelActivity"></activity>
         <activity android:name=".Driver.DriverCarInfoActivity"></activity>
         <activity android:name=".Driver.DriverBrowseTravels"></activity>
+        <activity android:name=".Driver.DriverTravelEditorActivity"></activity>
+        <activity android:name=".Driver.DriverEditTravelInfoActivity"></activity>
+
     </application>
 
 </manifest>

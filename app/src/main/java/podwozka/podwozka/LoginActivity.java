@@ -68,13 +68,13 @@ public class LoginActivity extends AppCompatActivity {
                 if (errorsCount == 0) {
                     user = new User(loginMessage);
                     //httpResponseCode = user.logInUser(loginMessage, passwordMessage);
-                    httpResponseCode = 201;
-                    if (httpResponseCode == 201) {
+                    httpResponseCode = 200;
+                    if (httpResponseCode == 200) {
                         nextScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(nextScreen);
                         finish(); // call this to finish the current activity
                     } else {
-                        alertWindow.showAlertWindow(LoginActivity.this, null, "Nie udało się zalogować");
+                        alertWindow.showAlertWindow(LoginActivity.this, null, "Takie konto nie istnieje");
                     }
                 }
             }

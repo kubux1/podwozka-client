@@ -1,16 +1,17 @@
 package podwozka.podwozka.Driver;
 
-
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView;;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Iterator;
 import java.util.List;
 
 import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.R;
+
 
 public class DriverBrowseTravelsActivityAdapter extends RecyclerView.Adapter<DriverBrowseTravelsActivityAdapter.MyViewHolder> {
 
@@ -55,4 +56,20 @@ public class DriverBrowseTravelsActivityAdapter extends RecyclerView.Adapter<Dri
     public int getItemCount() {
         return travelsList.size();
     }
+
+    public DriverTravel returnTravel (int position){
+        return travelsList.get(position);
+    }
+
+    public void deleteTravel (int travelId){
+        int x = 0;
+        for (Iterator<DriverTravel> iter = travelsList.listIterator(); iter.hasNext(); ) {
+            DriverTravel travel = iter.next();
+            if (x == travelId) {
+                iter.remove();
+            }
+            x++;
+        }
+    }
+
 }

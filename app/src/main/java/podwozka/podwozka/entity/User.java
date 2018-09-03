@@ -31,7 +31,7 @@ public class User {
         // Convert login data into Json
         try {
             // Automate this
-            logInData.add(new BasicNameValuePair("login", login));
+            logInData.add(new BasicNameValuePair("username", login));
             logInData.add(new BasicNameValuePair("password", password));
         } catch (Exception e){
             e.printStackTrace();
@@ -50,9 +50,18 @@ public class User {
         // Convert login data into Json
         try {
             // Automate this
+            registerData.add(new BasicNameValuePair("id", null));
             registerData.add(new BasicNameValuePair("login", login));
             registerData.add(new BasicNameValuePair("password", password));
             registerData.add(new BasicNameValuePair("email", email));
+
+            // TODO: Implement
+            registerData.add(new BasicNameValuePair("firstName", null));
+            registerData.add(new BasicNameValuePair("lastName", null));
+            registerData.add(new BasicNameValuePair("activated", null));
+            registerData.add(new BasicNameValuePair("langKey", null));
+            registerData.add(new BasicNameValuePair("authorities", null));
+            registerData.add(new BasicNameValuePair("authorities", null));
         } catch (Exception e){
             e.printStackTrace();
         }

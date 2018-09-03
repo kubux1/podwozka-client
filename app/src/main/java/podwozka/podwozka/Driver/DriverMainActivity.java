@@ -1,5 +1,7 @@
 package podwozka.podwozka.Driver;
 
+import podwozka.podwozka.Driver.entity.DriverTravel;
+import podwozka.podwozka.MainActivity;
 import podwozka.podwozka.R;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.content.DialogInterface;
 
+import java.util.ArrayList;
+
 public class DriverMainActivity extends AppCompatActivity {
+    public static ArrayList<DriverTravel> driverTravels = new ArrayList<DriverTravel>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +72,8 @@ public class DriverMainActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int which) {
                 // Do nothing but close the dialog
+                Intent nextScreen = new Intent(DriverMainActivity.this, MainActivity.class);
+                startActivity(nextScreen);
                 finish();
                 dialog.dismiss();
             }
