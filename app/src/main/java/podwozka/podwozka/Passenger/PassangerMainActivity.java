@@ -1,5 +1,6 @@
 package podwozka.podwozka.Passenger;
 
+import podwozka.podwozka.MainActivity;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 
@@ -68,7 +69,8 @@ public class PassangerMainActivity extends AppCompatActivity {
         builder.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                // Do nothing but close the dialog
+                Intent nextScreen = new Intent(PassangerMainActivity.this, MainActivity.class);
+                startActivity(nextScreen);
                 finish();
                 dialog.dismiss();
             }

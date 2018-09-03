@@ -66,7 +66,7 @@ public class DriverNewTravelActivity extends AppCompatActivity {
                 }
                 else if (maxPassengersMessage.isEmpty())
                 {
-                    alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, "Proszę podać adres maksymalną liczbę pasażerów");
+                    alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, "Proszę podać maksymalną liczbę pasażerów jaką możesz zabrać");
                     noErrors = false;
                 }
                 else if(!pickUpTimeMessage.matches("[0-9]+")) {
