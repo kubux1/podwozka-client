@@ -37,18 +37,10 @@ public class DriverEditTravelInfoActivity extends AppCompatActivity {
         saveChanges.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                // TODO: Uncomment when App will be integrated with a Server
-                //int httpResponse = travel.editTravelInfo(null);
-                //--------- START MOCK ---------
-                int httpResponse = 200;
-                //--------- END MOCK ---------
+                //DriverTravel editedTravel = new DriverTravel(travel.getTravelId(), startPlace,"","","");
+                //int httpResponse = travel.editTravelInfo(new DriverTravel(travel.getTravelId()));
+                int httpResponse = 0;
                 if(httpResponse == 200){
-                    //--------- START MOCK ---------
-                    DriverMainActivity.driverTravels.get(travel.getTravelId()).setStartPlace(startPlace.getText().toString());
-                    DriverMainActivity.driverTravels.get(travel.getTravelId()).setEndPlace(endPlace.getText().toString());
-                    DriverMainActivity.driverTravels.get(travel.getTravelId()).setMaxPassengers(maxPassengers.getText().toString());
-                    DriverMainActivity.driverTravels.get(travel.getTravelId()).setStartDatetime(pickUpTime.getText().toString());
-                    //--------- END MOCK ---------
                     Intent nextScreen = new Intent(DriverEditTravelInfoActivity.this, DriverBrowseTravels.class);
                     startActivity(nextScreen);
                 }

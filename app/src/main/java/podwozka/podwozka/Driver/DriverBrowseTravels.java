@@ -22,6 +22,8 @@ import podwozka.podwozka.Driver.DriverBrowseTravelsActivityAdapter;
 import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.R;
 
+import static podwozka.podwozka.LoginActivity.user;
+
 public class DriverBrowseTravels extends AppCompatActivity {
     private List<DriverTravel> travelList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -29,11 +31,10 @@ public class DriverBrowseTravels extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String travelsFound = null;
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_travels_list);
 
+        String travelsFound;
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         recyclerView.addOnItemTouchListener(
@@ -42,7 +43,6 @@ public class DriverBrowseTravels extends AppCompatActivity {
                         Intent nextScreen = new Intent(DriverBrowseTravels.this, DriverTravelEditorActivity.class);
                         DriverTravel travel = mAdapter.returnTravel(position);
                         nextScreen.putExtra("TRAVEL", (Parcelable)travel);
-                        nextScreen.putExtra("TRAVEL_ID", position);
                         startActivity(nextScreen);
                     }
 
@@ -58,27 +58,8 @@ public class DriverBrowseTravels extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        // TODO: Uncomment when App will be integrated with a Server
-        //travelsFound = new DriverTravel().getAllUserTravlesFromServer();
-
-        //--------- START MOCK ---------
-        if(DriverMainActivity.driverTravels.size() > 0) {
-            travelsFound = new DriverTravel().convcerTravelsForRecyclerFormat(DriverMainActivity.driverTravels);
-        }
-        //--------- END MOCK ---------
-
+        travelsFound = new DriverTravel().getAllUserTravlesFromServer(user.getLogin(), user.getIdToken());
         prepareTravelData(travelsFound);
-
-        //--------- START MOCK ---------
-        /*
-        Intent i = getIntent();
-        int travelId = i.getIntExtra("TRAVEL_DELETE", -1);
-        if(travelId != -1) {
-            mAdapter.deleteTravel(travelId);
-            mAdapter.notifyDataSetChanged();
-        }
-        */
-        //--------- END MOCK ---------
     }
 
     @Override
@@ -91,7 +72,7 @@ public class DriverBrowseTravels extends AppCompatActivity {
     private void prepareTravelData(String travelsJSON) {
         JSONParser parser = new JSONParser();
         try {
-            Object travelsObjects = parser.parse(travelsJSON);
+           Object travelsObjects = parser.parse(travelsJSON);
             JSONObject jsonObject = (JSONObject) travelsObjects;
             JSONArray entityList = (JSONArray) ((JSONObject) jsonObject.get("_embedded")).get("travels");
 

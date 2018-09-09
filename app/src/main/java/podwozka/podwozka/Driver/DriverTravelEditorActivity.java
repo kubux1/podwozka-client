@@ -21,7 +21,6 @@ public class DriverTravelEditorActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         final DriverTravel travel = (DriverTravel) i.getParcelableExtra("TRAVEL");
-        final int travelId = i.getIntExtra("TRAVEL_ID", -1);
 
         Button editTravel = (Button) findViewById(R.id.editTravel);
         editTravel.setOnClickListener(new View.OnClickListener() {
@@ -43,20 +42,13 @@ public class DriverTravelEditorActivity extends AppCompatActivity {
                 builder.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
-                        //int httpResponse = travel.deleteTravel(travelId);
-                        //--------- START MOCK ---------
-                        int httpResponse = 200;
-                        //--------- END MOCK ---------
+                        int httpResponse = travel.deleteTravel(travel.getTravelId());
                         if(httpResponse == 200){
                             PopUpWindows successWindow = new PopUpWindows();
                             successWindow.showAlertWindow(DriverTravelEditorActivity.this, null, "Podróż usunięta");
                             Intent nextScreen = new Intent(DriverTravelEditorActivity.this, DriverBrowseTravels.class);
-                            //--------- START MOCK ---------
-                            nextScreen.putExtra("TRAVEL_DELETE",travelId);
-                            DriverMainActivity.driverTravels.remove(travelId);
-                            //--------- END MOCK ---------
                             startActivity(nextScreen);
-                            //finish();
+                            finish();
                         }
                         dialog.dismiss();
                     }

@@ -43,17 +43,12 @@
         this.endPlace = endPlace;
     }
 
-    // Remove travelId after Mock
-    public DriverTravel(String login, String startPlace, String endPlace, String startDatetime, String maxPassengers, int travelId) {
+    public DriverTravel(String login, String startPlace, String endPlace, String startDatetime, String maxPassengers) {
         this.login = login;
         this.maxPassengers = maxPassengers;
         this.startDatetime = startDatetime;
         this.startPlace = startPlace;
         this.endPlace = endPlace;
-
-        //--------- START MOCK ---------
-        this.travelId = travelId;
-        //--------- END MOCK ---------
     }
 
 	public DriverTravel(Parcel in) {
@@ -149,69 +144,68 @@
         return 0;
     }
 	
-    public String getAllUserTravlesFromServer() {
-        String userTravles;
+    public String getAllUserTravlesFromServer(final String login, final String idToken) {
         HttpCommands httpCommand = new HttpCommands();
 
-        userTravles = httpCommand.getAllUserTravles(this.login).toString();
-        return userTravles;
+        httpCommand.getAllUserTravles();
+        return httpCommand.getResponse();
     }
 
-    public int postNewTravel (DriverTravel newTravel)
+    public int postNewTravel (DriverTravel newTravel, String userIdToken)
     {
-        int httpResponse;
-        List<NameValuePair> travel = new ArrayList<>(1);
+        int httpResponse = -1;
         HttpCommands httpCommand = new HttpCommands();
+        org.json.JSONObject jsonObject = new org.json.JSONObject();
+
+        // Convert POST data into JSON format
         try {
             // Automate this
-            travel.add(new BasicNameValuePair("id", null));
-            travel.add(new BasicNameValuePair("login", newTravel.getLogin()));
-            travel.add(new BasicNameValuePair("startPlace", newTravel.getStartPlace()));
-            travel.add(new BasicNameValuePair("endPlace", newTravel.getEndPlace()));
-            travel.add(new BasicNameValuePair("startDatetime", newTravel.getStartDatetime()));
-            travel.add(new BasicNameValuePair("maxPassengers", newTravel.getPassengersCount()));
+            jsonObject.put("id", jsonObject.NULL);
+            jsonObject.put("login", newTravel.getLogin());
+            jsonObject.put("startPlace", newTravel.getStartPlace());
+            jsonObject.put("endPlace", newTravel.getEndPlace());
+            jsonObject.put("pickUpDatetime", newTravel.getStartDatetime());
+            jsonObject.put("passengersCount", newTravel.getMaxPassengers());
+
+            httpResponse = httpCommand.postNewTravel(jsonObject.toString());
         } catch (Exception e){
             e.printStackTrace();
         }
-        httpResponse = httpCommand.postNewTravel(travel);
         return httpResponse;
     }
 
 
     public int editTravelInfo(DriverTravel editedTravel){
-        int httpResponse;
-        List<NameValuePair> travel = new ArrayList<>(1);
         HttpCommands httpCommand = new HttpCommands();
+        org.json.JSONObject jsonObject = new org.json.JSONObject();
+
+        // Convert PUT data into JSON format
         try {
             // Automate this
-            travel.add(new BasicNameValuePair("id", new Integer(editedTravel.getTravelId()).toString()));
-            travel.add(new BasicNameValuePair("login", editedTravel.getLogin()));
-            travel.add(new BasicNameValuePair("startPlace", editedTravel.getStartPlace()));
-            travel.add(new BasicNameValuePair("endPlace", editedTravel.getEndPlace()));
-            travel.add(new BasicNameValuePair("startDatetime", editedTravel.getStartDatetime()));
-            travel.add(new BasicNameValuePair("maxPassengers", editedTravel.getPassengersCount()));
+            jsonObject.put("id", editedTravel.getTravelId());
+            jsonObject.put("login", editedTravel.getLogin());
+            jsonObject.put("startPlace", editedTravel.getStartPlace());
+            jsonObject.put("endPlace", editedTravel.getEndPlace());
+            jsonObject.put("pickUpDatetime", editedTravel.getStartDatetime());
+            jsonObject.put("passengersCount", editedTravel.getMaxPassengers());
+
+             httpCommand.editTravelInfo(jsonObject.toString());
         } catch (Exception e){
             e.printStackTrace();
         }
-        httpResponse = httpCommand.editTravelInfo(travel);
-        return httpResponse;
+        return httpCommand.getHttpResponseCode();
     }
 
     public int deleteTravel(int travelId){
         int httpResponse;
         List<NameValuePair> travel = new ArrayList<>(1);
         HttpCommands httpCommand = new HttpCommands();
-        try {
-            // Automate this
-            travel.add(new BasicNameValuePair("travelId", new Integer(travelId).toString()));
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        httpResponse = httpCommand.deleteTravel(travel);
+
+        httpResponse = httpCommand.deleteTravel(travelId);
         return httpResponse;
     }
 
-    private ArrayList<DriverTravel> getTravelsJSONParser(String travelsJSON) {
+    public ArrayList<DriverTravel> getTravelsJSONParser(String travelsJSON) {
         ArrayList<DriverTravel> travels = new ArrayList<DriverTravel>();
         JSONParser parser = new JSONParser();
 

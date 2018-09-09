@@ -75,10 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
                     if (emailValidation == true)
                     {
                         user = new User();
-                        //httpResponseCode = user.registerUser(loginMessage, passwordMessage, emailAddressMessage);
-                        //--------- START MOCK ---------
-                        httpResponseCode = 201;
-                        //--------- END MOCK ---------
+                        httpResponseCode = user.registerUser(loginMessage, passwordMessage, emailAddressMessage);
                         if(httpResponseCode == 201) {
                             alertWindow.showAlertWindow(RegisterActivity.this, null, "Udało zarejestrować się konto");
                             startActivity(nextScreen);

@@ -32,11 +32,19 @@ tools:context=".Passenger.NewTravelActivity">
         android:inputType="textPersonName" />
 
     <EditText
+        android:id="@+id/pickUpDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Kiedy chcesz wyjechać?"
+        android:inputType="textPersonName" />
+
+    <EditText
         android:id="@+id/pickUpTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="O której chcesz być wyjechać?"
+        android:hint="O której chcesz wyjechać?"
         android:inputType="textPersonName" />
 
     <EditText

@@ -1,141 +1,149 @@
 package podwozka.podwozka.entity;
 
 import org.apache.http.NameValuePair;
+import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import static podwozka.podwozka.LoginActivity.user;
+
 public class HttpCommands {
+    private int httpResponseCode;
+    private String response;
 
     public HttpCommands(){};
 
-    public InputStream getAllUserTravles(String login){
-        Thread thread = new Thread();
-        InputStream allUserTravels = null;
+    public int getHttpResponseCode() {
+        return this.httpResponseCode;
+    }
 
+    private void setHttpResponseCode(int httpResponseCode){
+        this.httpResponseCode = httpResponseCode;
+    }
+
+    public String getResponse() {
+        return this.response;
+    }
+
+    private void setResponse(String response) {
+        this.response = response;
+    }
+
+    public int sendLogInData(String dataToSend){
+        CountDownLatch latch = new CountDownLatch(1);
+        Connection connection = new Connection();
+
+        connection.sendPostCommand("api/authenticate", dataToSend, latch);
+        // Wait for task to end
+        try {
+            latch.await();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            // Extract user id token from server response
+            JSONObject jsonObj = new JSONObject(connection.getResponse());
+            setResponse(jsonObj.getString("id_token"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return connection.getHttpResponseCode();
+    }
+
+    public int sendRegisterData(String data){
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
-        connection.sendGetCommand("api/travels?login="+login, null, latch);
+
+        connection.sendPostCommand("api/register", data, latch);
+        // Wait for a task to end
+        try {
+            latch.await();
+        } catch (Exception e)
+        {
+
+        }
+        return connection.getHttpResponseCode();
+    }
+
+    public int postNewTravel(String dataToSend){
+        Connection connection = new Connection();
+        CountDownLatch latch = new CountDownLatch(1);
+
+        connection.sendPostCommand("api/travels", dataToSend, user.getIdToken(), latch);
+        // Wait for a task to end
         try {
             latch.await();
         } catch (Exception e)
         {
             e.printStackTrace();
         }
-        int code = connection.getHttpResponseCode();
-        if (code == 200) {
-            allUserTravels = connection.getInputStream();
-        }
-
-        return allUserTravels;
+        return connection.getHttpResponseCode();
     }
 
-    public String findMatchingTravels(List<NameValuePair> object){
-        String travelsFound = null;
+    public int editTravelInfo(String dataToSend){
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
-        //travelsFound = connection.sendPostCommand("/api/travels", object, latch);
+        connection.sendPutCommand("api/travels", dataToSend, user.getIdToken(), latch);
+        // Wait for a task to end
         try {
             latch.await();
         } catch (Exception e)
         {
             e.printStackTrace();
         }
-
-        return travelsFound;
+        return connection.getHttpResponseCode();
     }
 
-    public int postNewTravel(List<NameValuePair> object){
-        int httpResponse;
+    public int deleteTravel(int travelId){
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
-        //connection.sendPostCommand("api/travels", object, latch);
+        connection.sendDeleteCommand("api/travels/delete/" + travelId, user.getIdToken(), latch);
+        // Wait for a task to end
         try {
             latch.await();
         } catch (Exception e)
         {
             e.printStackTrace();
         }
-
-        httpResponse = connection.getHttpResponseCode();
-        return httpResponse;
+        return connection.getHttpResponseCode();
     }
 
-    public int sendLogInData(List<NameValuePair> object){
-        int httpResponse;
+    public int getAllUserTravles(){
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
-        String[] params = new String[3];
-        params[0] = "api/authenticate";
-        params[1]= object.toString();
-        //connection.sendPostCommand("api/authenticate", object, latch);
-        //connection.doInBackground(params);
+
+        connection.sendGetCommand("api/travels?login=" + user.getLogin(), null, user.getIdToken(), latch);
+        // Wait for a task to end
         try {
             latch.await();
         } catch (Exception e)
         {
             e.printStackTrace();
         }
+        setResponse(connection.getResponse());
 
-        httpResponse = connection.getHttpResponseCode();
-        return httpResponse;
+        return connection.getHttpResponseCode();
     }
 
-    public int sendRegisterData(List<NameValuePair> object){
-        int httpResponse;
+    public String findMatchingTravels(String dataToSend){
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
-        //connection.sendPostCommand("api/users", object, latch);
+        //TODO: Waiting for a server side to have functionality to return matching travels for a passanger travel
+        // connection.someCommandWhichWillReturnMatchingTravels
+        // Wait for a task to end
         try {
             latch.await();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        httpResponse = connection.getHttpResponseCode();
-        return httpResponse;
+        return connection.getResponse();
     }
-
-    public int editTravelInfo(List<NameValuePair> object){
-        int httpResponse;
-        Thread thread = new Thread();
-        Connection connection = new Connection();
-        CountDownLatch latch = new CountDownLatch(1);
-
-        connection.sendGetCommand("api/travels", object, latch);
-        try {
-            latch.await();
-        } catch (Exception e)
-        {
-
-        }
-
-        httpResponse = connection.getHttpResponseCode();
-        return httpResponse;
-    }
-
-    public int deleteTravel(List<NameValuePair> object){
-        int httpResponse;
-        Thread thread = new Thread();
-        Connection connection = new Connection();
-        CountDownLatch latch = new CountDownLatch(1);
-
-        int travelId =  Integer.parseInt(object.get(0).getValue());
-        connection.sendGetCommand("api/travels/delete/"+travelId, null, latch);
-        try {
-            latch.await();
-        } catch (Exception e)
-        {
-
-        }
-
-        httpResponse = connection.getHttpResponseCode();
-        return httpResponse;
-    }
-
 }
