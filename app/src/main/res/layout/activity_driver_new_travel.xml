@@ -36,7 +36,7 @@ tools:context=".Passenger.NewTravelActivity">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="O której chcesz być odebrany?"
+        android:hint="O której chcesz być wyjechać?"
         android:inputType="textPersonName" />
 
     <EditText
@@ -44,7 +44,7 @@ tools:context=".Passenger.NewTravelActivity">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Ile możesz zabrać maksymalnie osób"
+        android:hint="Ile możesz zabrać maksymalnie pasażerów?"
         android:inputType="textPersonName" />
 
     <Button

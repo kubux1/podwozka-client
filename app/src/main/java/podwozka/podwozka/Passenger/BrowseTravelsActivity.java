@@ -1,5 +1,6 @@
 package podwozka.podwozka.Passenger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -38,9 +39,40 @@ public class BrowseTravelsActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
         travelsFound = getIntent().getStringExtra("TRAVELS");
+        travelsFound =
+                "{\n" +
+                        "  \"_embedded\" : {\n" +
+                        "    \"travels\" : [ {\n" +
+                        "      \"login\" : \"bartek\",\n" +
+                        "      \"firstName\" : \"Maciej\",\n" +
+                        "      \"lastName\" : \"Topola\",\n" +
+                        "      \"passengersCount\" : \"2\",\n" +
+                        "      \"maxPassengers\" : \"3\",\n" +
+                        "      \"startDatetime\" : \"2016-03-16 12:56\",\n" +
+                        "      \"startPlace\" : \"Gdynia, 10 Lutego\",\n" +
+                        "      \"endPlace\" : \"Gdańsk, Wrzeszcz\"\n" +
+                        "    },\n" +
+                        "\t{\n" +
+                        "      \"login\" : \"bartek\",\n" +
+                        "      \"firstName\" : \"Maciej\",\n" +
+                        "      \"lastName\" : \"Topola\",\n" +
+                        "      \"passengersCount\" : \"2\",\n" +
+                        "      \"maxPassengers\" : \"3\",\n" +
+                        "      \"startDatetime\" : \"2016-03-16 12:56\",\n" +
+                        "      \"startPlace\" : \"Gdynia, 10 Lutego\",\n" +
+                        "      \"endPlace\" : \"Gdańsk, Matarnia\"\n" +
+                        "    } ]\n" +
+                        "}\n" +
+                        "}";
         prepareTravelData(travelsFound);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent nextScreen = new Intent(BrowseTravelsActivity.this, PassangerMainActivity.class);
+        startActivity(nextScreen);
+        finish();
+    }
 
     private void prepareTravelData (String travelsJSON) {
         JSONParser parser = new JSONParser();

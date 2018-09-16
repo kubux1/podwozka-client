@@ -1,5 +1,6 @@
 package podwozka.podwozka.Passenger;
 
+import podwozka.podwozka.MainActivity;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 
@@ -37,11 +38,30 @@ public class PassangerMainActivity extends AppCompatActivity {
                 startActivity(nextScreen);
             }
         });
+
+        Button accountInfo = findViewById(R.id.accountInformationButton);
+        accountInfo.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                //TODO: Implement functionality
+            }
+        });
+
+        final Button logOut = findViewById(R.id.logOutButton);
+        logOut.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                logOut();
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
-        String response;
+        logOut();
+    }
+
+    public void logOut(){
         AlertDialog.Builder builder = new AlertDialog.Builder(PassangerMainActivity.this);
 
         builder.setMessage("Czy napewno chcesz sie wylogowac?");
@@ -49,7 +69,8 @@ public class PassangerMainActivity extends AppCompatActivity {
         builder.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                // Do nothing but close the dialog
+                Intent nextScreen = new Intent(PassangerMainActivity.this, MainActivity.class);
+                startActivity(nextScreen);
                 finish();
                 dialog.dismiss();
             }

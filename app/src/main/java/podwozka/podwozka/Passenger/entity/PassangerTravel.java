@@ -28,6 +28,7 @@ public class PassangerTravel implements Parcelable {
     private String startDatetime;
     private String startPlace;
     private String endPlace;
+    private int travelId;
 
     public PassangerTravel(String login, String startPlace, String endPlace, String startDatetime, String passengersCount) {
         if (login == null) {
@@ -57,7 +58,7 @@ public class PassangerTravel implements Parcelable {
         this.endPlace = endPlace;
     }
 
-    public PassangerTravel(String login, String firstName, String lastName, String passengersCount, String maxPassengers, String startPlace, String endPlace, String startDatetime) {
+    public PassangerTravel(String login, String firstName, String lastName, String passengersCount, String maxPassengers, String startDatetime, String startPlace, String endPlace) {
         if (login == null) {
             this.login = LoginActivity.user.getLogin();
         }
@@ -146,6 +147,10 @@ public class PassangerTravel implements Parcelable {
     public void setEndPlace(String endPlace) {
         this.endPlace = endPlace;
     }
+
+    public int getTravelId () { return travelId; }
+
+    public void setTravelId (int travelId) { this.travelId = travelId; }
 	
 	    public int describeContents() {
         return 0;
@@ -173,6 +178,7 @@ public class PassangerTravel implements Parcelable {
         HttpCommands httpCommand = new HttpCommands();
             try {
                 // Automate this
+                travel.add(new BasicNameValuePair("id", null));
                 travel.add(new BasicNameValuePair("login", passengerTravel.getLogin()));
                 travel.add(new BasicNameValuePair("startPlace", passengerTravel.getStartPlace()));
                 travel.add(new BasicNameValuePair("endPlace", passengerTravel.getEndPlace()));
