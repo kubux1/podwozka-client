@@ -28,7 +28,7 @@
     private String startDatetime;
     private String startPlace;
     private String endPlace;
-    private int travelId;
+    private String travelId;
 
 
     public DriverTravel(String login, String firstName, String lastName, String passengersCount,
@@ -50,9 +50,17 @@
         this.startPlace = startPlace;
         this.endPlace = endPlace;
     }
+    public DriverTravel(String travelId, String login, String startPlace, String endPlace, String startDatetime, String maxPassengers) {
+        this.travelId = travelId;
+        this.login = login;
+        this.maxPassengers = maxPassengers;
+        this.startDatetime = startDatetime;
+        this.startPlace = startPlace;
+        this.endPlace = endPlace;
+        }
 
 	public DriverTravel(Parcel in) {
-        this.travelId = in.readInt();
+        this.travelId = in.readString();
         this.login = in.readString();
         this.firstName = in.readString();
         this.lastName = in.readString();
@@ -64,9 +72,10 @@
     }
 
     public DriverTravel(){}
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.travelId);
+        dest.writeString(this.travelId);
         dest.writeString(this.login);
         dest.writeString(this.firstName);
         dest.writeString(this.lastName);
@@ -136,9 +145,9 @@
         this.maxPassengers = maxPassengers;
     }
 
-    public int getTravelId () { return travelId; }
+    public String getTravelId () { return travelId; }
 
-    public void setTravelId (int travelId) { this.travelId = travelId; }
+    public void setTravelId (String travelId) { this.travelId = travelId; }
 
     public int describeContents() {
         return 0;
@@ -196,7 +205,7 @@
         return httpCommand.getHttpResponseCode();
     }
 
-    public int deleteTravel(int travelId){
+    public int deleteTravel(String travelId){
         int httpResponse;
         List<NameValuePair> travel = new ArrayList<>(1);
         HttpCommands httpCommand = new HttpCommands();

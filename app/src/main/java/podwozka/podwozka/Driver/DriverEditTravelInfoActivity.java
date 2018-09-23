@@ -37,9 +37,13 @@ public class DriverEditTravelInfoActivity extends AppCompatActivity {
         saveChanges.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                //DriverTravel editedTravel = new DriverTravel(travel.getTravelId(), startPlace,"","","");
-                //int httpResponse = travel.editTravelInfo(new DriverTravel(travel.getTravelId()));
-                int httpResponse = 0;
+                int httpResponse = travel.editTravelInfo(new DriverTravel(
+                        travel.getTravelId(),
+                        travel.getLogin(),
+                        startPlace.getText().toString(),
+                        endPlace.getText().toString(),
+                        pickUpTime.getText().toString(),
+                        maxPassengers.getText().toString()));
                 if(httpResponse == 200){
                     Intent nextScreen = new Intent(DriverEditTravelInfoActivity.this, DriverBrowseTravels.class);
                     startActivity(nextScreen);

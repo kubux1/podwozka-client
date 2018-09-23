@@ -35,8 +35,8 @@ public class HttpCommands {
         CountDownLatch latch = new CountDownLatch(1);
         Connection connection = new Connection();
 
-        connection.sendPostCommand("api/authenticate", dataToSend, latch);
-        // Wait for task to end
+        connection.sendCommand("api/authenticate", "POST", dataToSend, null, latch);
+        // Wait for a sendCommand task to end
         try {
             latch.await();
         } catch (Exception e) {
@@ -58,13 +58,13 @@ public class HttpCommands {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
-        connection.sendPostCommand("api/register", data, latch);
-        // Wait for a task to end
+        connection.sendCommand("api/register", "POST", data,null, latch);
+        // Wait for a sendCommand task to end
         try {
             latch.await();
         } catch (Exception e)
         {
-
+            e.printStackTrace();
         }
         return connection.getHttpResponseCode();
     }
@@ -73,8 +73,9 @@ public class HttpCommands {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
-        connection.sendPostCommand("api/travels", dataToSend, user.getIdToken(), latch);
-        // Wait for a task to end
+        //connection.sendPostCommand("api/travels", dataToSend, user.getIdToken(), latch);
+        connection.sendCommand("api/travels", "POST", dataToSend, user.getIdToken(), latch);
+        // Wait for a sendCommand task to end
         try {
             latch.await();
         } catch (Exception e)
@@ -88,8 +89,8 @@ public class HttpCommands {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
-        connection.sendPutCommand("api/travels", dataToSend, user.getIdToken(), latch);
-        // Wait for a task to end
+        connection.sendCommand("api/travels", "PUT", dataToSend, user.getIdToken(), latch);
+        // Wait for a sendCommand task to end
         try {
             latch.await();
         } catch (Exception e)
@@ -99,12 +100,13 @@ public class HttpCommands {
         return connection.getHttpResponseCode();
     }
 
-    public int deleteTravel(int travelId){
+    public int deleteTravel(String travelId){
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
-        connection.sendDeleteCommand("api/travels/delete/" + travelId, user.getIdToken(), latch);
-        // Wait for a task to end
+        //connection.sendDeleteCommand("api/travels/delete/" + travelId, user.getIdToken(), latch);
+        connection.sendCommand("api/travels/delete/" + travelId, "DELETE", null, user.getIdToken(), latch);
+        // Wait for a sendCommand task to end
         try {
             latch.await();
         } catch (Exception e)
@@ -118,8 +120,8 @@ public class HttpCommands {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
-        connection.sendGetCommand("api/travels?login=" + user.getLogin(), null, user.getIdToken(), latch);
-        // Wait for a task to end
+        connection.sendCommand("api/travels?login=" + user.getLogin(), "GET",null, user.getIdToken(), latch);
+        // Wait for a sendCommand task to end
         try {
             latch.await();
         } catch (Exception e)
