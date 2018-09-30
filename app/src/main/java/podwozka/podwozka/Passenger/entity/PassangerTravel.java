@@ -156,39 +156,33 @@ public class PassangerTravel implements Parcelable {
         return 0;
     }
 	
-    public ArrayList getAllUserTravlesFromServer() {
-        ArrayList userTravlesArrayList = null;
-        InputStream userTravelsStream = null;
+    public int getAllUserTravlesFromServer() {
         HttpCommands httpCommand = new HttpCommands();
 
-        userTravelsStream = httpCommand.getAllUserTravles(this.login);
-        Scanner scanner = new Scanner(userTravelsStream);
-        scanner.useDelimiter("\\A");
-        boolean hasInput = scanner.hasNext();
-        if (hasInput) {
-            String content = scanner.next();
-            userTravlesArrayList = getTravelsJSONParser(content);
-        }
-        return userTravlesArrayList;
+        httpCommand.getAllUserTravles();
+        return httpCommand.getHttpResponseCode();
     }
 
     public String findMatchingTravels(PassangerTravel passengerTravel){
-        String travelsFound;
-        List<NameValuePair> travel = new ArrayList<>(1);
         HttpCommands httpCommand = new HttpCommands();
-            try {
-                // Automate this
-                travel.add(new BasicNameValuePair("id", null));
-                travel.add(new BasicNameValuePair("login", passengerTravel.getLogin()));
-                travel.add(new BasicNameValuePair("startPlace", passengerTravel.getStartPlace()));
-                travel.add(new BasicNameValuePair("endPlace", passengerTravel.getEndPlace()));
-                travel.add(new BasicNameValuePair("startDatetime", passengerTravel.getStartDatetime()));
-                travel.add(new BasicNameValuePair("passengersCount", passengerTravel.getPassengersCount()));
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        travelsFound = httpCommand.findMatchingTravels(travel);
-        return travelsFound;
+        org.json.JSONObject jsonObject = new org.json.JSONObject();
+
+        // Convert POST data into JSON format
+        try {
+            // Automate this
+            jsonObject.put("id", jsonObject.NULL);
+            jsonObject.put("login", passengerTravel.getLogin());
+            jsonObject.put("startPlace", passengerTravel.getStartPlace());
+            jsonObject.put("endPlace", passengerTravel.getEndPlace());
+            jsonObject.put("pickUpDatetime", passengerTravel.getStartDatetime());
+            jsonObject.put("passengersCount", passengerTravel.getPassengersCount());
+
+            //TODO: Waiting for a server side to have functionality to return matching travels for a passanger travel
+            // httpCommand.someCommandWhichWillReturnMatchingTravels
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return httpCommand.getResponse();
     }
 
     private ArrayList<PassangerTravel> getTravelsJSONParser(String travelsJSON) {

@@ -2,14 +2,18 @@ package podwozka.podwozka.entity;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import podwozka.podwozka.entity.HttpCommands;
 
 public class User {
     private String login;
+    private String idToken;
 
     public User(String login){
         this.login = login;
@@ -21,52 +25,55 @@ public class User {
         return login;
     }
 
+    private void setIdToken(String idToken){
+        this.idToken = idToken;
+    }
+
+    public String getIdToken(){
+        return this.idToken;
+    }
 
     public int logInUser(String login, String password)
     {
-        int httpResponseCode;
+        int httpResponseCode = -1;
         HttpCommands httpCommand = new HttpCommands();
-        List<NameValuePair> logInData = new ArrayList<>(1);
+        JSONObject jsonObject = new JSONObject();
 
         // Convert login data into Json
         try {
             // Automate this
-            logInData.add(new BasicNameValuePair("username", login));
-            logInData.add(new BasicNameValuePair("password", password));
+            jsonObject.put("username", login);
+            jsonObject.put("password", password);
+
+            httpResponseCode =  httpCommand.sendLogInData(jsonObject.toString());
+            setIdToken(httpCommand.getResponse());
         } catch (Exception e){
             e.printStackTrace();
         }
-
-        httpResponseCode =  httpCommand.sendLogInData(logInData);
         return httpResponseCode;
     }
 
     public int registerUser(String login, String password, String email)
     {
-        int httpResponseCode;
+        JSONObject jsonObject = new JSONObject();
+        int httpResponseCode = 0;
         HttpCommands httpCommand = new HttpCommands();
-        List<NameValuePair> registerData = new ArrayList<>(1);
 
-        // Convert login data into Json
+        // Convert register data into Json
         try {
-            // Automate this
-            registerData.add(new BasicNameValuePair("id", null));
-            registerData.add(new BasicNameValuePair("login", login));
-            registerData.add(new BasicNameValuePair("password", password));
-            registerData.add(new BasicNameValuePair("email", email));
+            jsonObject.put("id", jsonObject.NULL);
+            jsonObject.put("login", login);
+            jsonObject.put("password", password);
+            jsonObject.put("email", email);
 
             // TODO: Implement
-            registerData.add(new BasicNameValuePair("firstName", null));
-            registerData.add(new BasicNameValuePair("lastName", null));
-            registerData.add(new BasicNameValuePair("activated", null));
-            registerData.add(new BasicNameValuePair("langKey", null));
-            registerData.add(new BasicNameValuePair("authorities", null));
-            registerData.add(new BasicNameValuePair("authorities", null));
+            jsonObject.put("firstName", "testName");
+            jsonObject.put("lastName", "testSurname");
+
+            httpResponseCode =  httpCommand.sendRegisterData(jsonObject.toString());
         } catch (Exception e){
             e.printStackTrace();
         }
-
-        httpResponseCode =  httpCommand.sendRegisterData(registerData);
         return httpResponseCode;
     }
 }

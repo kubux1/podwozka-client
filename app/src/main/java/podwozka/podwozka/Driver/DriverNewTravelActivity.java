@@ -17,6 +17,8 @@ import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import settings.ConnectionSettings;
 
+import static podwozka.podwozka.LoginActivity.user;
+
 
 public class DriverNewTravelActivity extends AppCompatActivity {
 
@@ -34,6 +36,8 @@ public class DriverNewTravelActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 PopUpWindows alertWindow = new PopUpWindows();
                 boolean noErrors = true;
+                int httpResponse;
+
                 //Starting a new Intent
                 Intent nextScreen = new Intent(getApplicationContext(), DriverNewTravelActivity.class);
 
@@ -45,6 +49,9 @@ public class DriverNewTravelActivity extends AppCompatActivity {
 
                 EditText pickUpTime = (EditText) findViewById(R.id.pickUpTime);
                 String pickUpTimeMessage = pickUpTime.getText().toString();
+
+                EditText pickUpDate = (EditText) findViewById(R.id.pickUpDate);
+                String pickUpDateMessage = pickUpDate.getText().toString();
 
                 EditText maxPassengers = (EditText) findViewById(R.id.maxPassengers);
                 String maxPassengersMessage = maxPassengers.getText().toString();
@@ -69,8 +76,9 @@ public class DriverNewTravelActivity extends AppCompatActivity {
                     alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, "Proszę podać maksymalną liczbę pasażerów jaką możesz zabrać");
                     noErrors = false;
                 }
-                else if(!pickUpTimeMessage.matches("[0-9]+")) {
-                    alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, "Proszę podać tylko liczby w polu Godzina odjazdu");
+                else if (pickUpDateMessage.isEmpty())
+                {
+                    alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, "Proszę podać datę wyjazdu");
                     noErrors = false;
                 }
                 else if(!maxPassengersMessage.matches("[0-9]+")) {
@@ -78,17 +86,12 @@ public class DriverNewTravelActivity extends AppCompatActivity {
                     noErrors = false;
                 }
                 if(noErrors == true) {
-                DriverTravel newTravel = new DriverTravel(null, startTravelPlaceMessage, endTravelPlaceMessage, pickUpTimeMessage, maxPassengersMessage, DriverMainActivity.driverTravels.size());
-                    alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, "Podróż dodana");
-
-                //--------- START MOCK ---------
-                DriverMainActivity.driverTravels.add(newTravel);
-                //--------- END MOCK ---------
-
-                // TODO: Uncomment when App will be integrated with a Server
-                //newTravel.postNewTravel(newTravel);
-
-                startActivity(nextScreen);
+                DriverTravel newTravel = new DriverTravel("user", startTravelPlaceMessage, endTravelPlaceMessage, (pickUpDateMessage+"T"+pickUpTimeMessage), maxPassengersMessage);
+                    //alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, "Podróż dodana");
+                    httpResponse = newTravel.postNewTravel(newTravel, user.getIdToken());
+                    if(httpResponse == 201) {
+                        startActivity(nextScreen);
+                    }
                 }
 
             }

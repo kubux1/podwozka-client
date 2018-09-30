@@ -67,8 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if (errorsCount == 0) {
                     user = new User(loginMessage);
-                    //httpResponseCode = user.logInUser(loginMessage, passwordMessage);
-                    httpResponseCode = 200;
+                    httpResponseCode = user.logInUser(loginMessage, passwordMessage);
                     if (httpResponseCode == 200) {
                         nextScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(nextScreen);
