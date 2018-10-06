@@ -59,7 +59,7 @@ public class Connection {
             @Override
             public void run() {
                 final ConnectionSettings connectionSettings = new ConnectionSettings();
-                String url = connectionSettings.getHostIP() + ":" + connectionSettings.getHostPort() + "/" + httpCommand; // URL to cal
+                String url = connectionSettings.getHostIP() + ":" + connectionSettings.getHostPort() + "/" + httpCommand; // URL to call
 
                 try {
                     URL obj = new URL(url);

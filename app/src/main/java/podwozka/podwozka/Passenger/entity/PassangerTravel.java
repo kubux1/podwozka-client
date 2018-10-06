@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.entity.HttpCommands;
 import podwozka.podwozka.LoginActivity;
 
@@ -156,7 +157,7 @@ public class PassangerTravel implements Parcelable {
         return 0;
     }
 	
-    public int getAllUserTravlesFromServer() {
+    public int getAllUserTravles() {
         HttpCommands httpCommand = new HttpCommands();
 
         httpCommand.getAllUserTravles();
@@ -177,12 +178,18 @@ public class PassangerTravel implements Parcelable {
             jsonObject.put("pickUpDatetime", passengerTravel.getStartDatetime());
             jsonObject.put("passengersCount", passengerTravel.getPassengersCount());
 
-            //TODO: Waiting for a server side to have functionality to return matching travels for a passanger travel
-            // httpCommand.someCommandWhichWillReturnMatchingTravels
+            httpCommand.findTravels(jsonObject.toString());
         } catch (Exception e){
             e.printStackTrace();
         }
         return httpCommand.getResponse();
+    }
+
+    public int signUpForTravel(int travelId) {
+        HttpCommands httpCommand = new HttpCommands();
+
+        httpCommand.signUpForTravel(Integer.toString(travelId));
+        return httpCommand.getHttpResponseCode();
     }
 
     private ArrayList<PassangerTravel> getTravelsJSONParser(String travelsJSON) {

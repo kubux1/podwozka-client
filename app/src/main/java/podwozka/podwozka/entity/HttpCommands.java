@@ -13,13 +13,16 @@ public class HttpCommands {
     private int httpResponseCode;
     private String response;
 
-    public HttpCommands(){};
+    public HttpCommands() {
+    }
+
+    ;
 
     public int getHttpResponseCode() {
         return this.httpResponseCode;
     }
 
-    private void setHttpResponseCode(int httpResponseCode){
+    private void setHttpResponseCode(int httpResponseCode) {
         this.httpResponseCode = httpResponseCode;
     }
 
@@ -31,7 +34,7 @@ public class HttpCommands {
         this.response = response;
     }
 
-    public int sendLogInData(String dataToSend){
+    public int sendLogInData(String dataToSend) {
         CountDownLatch latch = new CountDownLatch(1);
         Connection connection = new Connection();
 
@@ -45,8 +48,10 @@ public class HttpCommands {
 
         try {
             // Extract user id token from server response
-            JSONObject jsonObj = new JSONObject(connection.getResponse());
-            setResponse(jsonObj.getString("id_token"));
+            if (connection.getHttpResponseCode() == 200) {
+                JSONObject jsonObj = new JSONObject(connection.getResponse());
+                setResponse(jsonObj.getString("id_token"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -54,38 +59,35 @@ public class HttpCommands {
         return connection.getHttpResponseCode();
     }
 
-    public int sendRegisterData(String data){
+    public int sendRegisterData(String data) {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
-        connection.sendCommand("api/register", "POST", data,null, latch);
+        connection.sendCommand("api/register", "POST", data, null, latch);
         // Wait for a sendCommand task to end
         try {
             latch.await();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return connection.getHttpResponseCode();
     }
 
-    public int postNewTravel(String dataToSend){
+    public int postNewTravel(String dataToSend) {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
-        //connection.sendPostCommand("api/travels", dataToSend, user.getIdToken(), latch);
         connection.sendCommand("api/travels", "POST", dataToSend, user.getIdToken(), latch);
         // Wait for a sendCommand task to end
         try {
             latch.await();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return connection.getHttpResponseCode();
     }
 
-    public int editTravelInfo(String dataToSend){
+    public int editTravelInfo(String dataToSend) {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -93,39 +95,39 @@ public class HttpCommands {
         // Wait for a sendCommand task to end
         try {
             latch.await();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return connection.getHttpResponseCode();
     }
 
-    public int deleteTravel(String travelId){
+    public int deleteTravel(String travelId) {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
-        //connection.sendDeleteCommand("api/travels/delete/" + travelId, user.getIdToken(), latch);
         connection.sendCommand("api/travels/delete/" + travelId, "DELETE", null, user.getIdToken(), latch);
         // Wait for a sendCommand task to end
         try {
             latch.await();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return connection.getHttpResponseCode();
     }
 
-    public int getAllUserTravles(){
+    public int getAllUserTravles() {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
-        connection.sendCommand("api/travels?login=" + user.getLogin(), "GET",null, user.getIdToken(), latch);
+        if(user.getLoginOption() == user.driver) {
+            connection.sendCommand("api/travels?login=" + user.getLogin(), "GET", null, user.getIdToken(), latch);
+        } else if(user.getLoginOption() == user.passenger){
+            connection.sendCommand("api/travels/passenger?login=" + user.getLogin(), "GET", null, user.getIdToken(), latch);
+        }
         // Wait for a sendCommand task to end
         try {
             latch.await();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         setResponse(connection.getResponse());
@@ -133,19 +135,35 @@ public class HttpCommands {
         return connection.getHttpResponseCode();
     }
 
-    public String findMatchingTravels(String dataToSend){
+    public int findTravels(String dataToSend) {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
-        //TODO: Waiting for a server side to have functionality to return matching travels for a passanger travel
-        // connection.someCommandWhichWillReturnMatchingTravels
-        // Wait for a task to end
+        connection.sendCommand("api/travels/find", "POST", dataToSend, user.getIdToken(), latch);
+        // Wait for a sendCommand task to end
         try {
             latch.await();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        setResponse(connection.getResponse());
 
-        return connection.getResponse();
+        return connection.getHttpResponseCode();
+    }
+
+    public int signUpForTravel(String travelId) {
+        Connection connection = new Connection();
+        CountDownLatch latch = new CountDownLatch(1);
+        // TODO: Implement for server signing up for travel
+        connection.sendCommand("api/travels/signUp?travelId="+ travelId + "&userLogin=" +user.getLogin(), "POST", null, user.getIdToken(), latch);
+        // Wait for a sendCommand task to end
+        try {
+            latch.await();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setResponse(connection.getResponse());
+
+        return connection.getHttpResponseCode();
     }
 }

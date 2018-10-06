@@ -14,9 +14,14 @@ import podwozka.podwozka.entity.HttpCommands;
 public class User {
     private String login;
     private String idToken;
+    private String loginOption;
 
-    public User(String login){
+    public String driver = "Driver";
+    public String passenger = "Passenger";
+
+    public User(String login, String loginOption){
         this.login = login;
+        this.loginOption = loginOption;
     }
 
     public User(){}
@@ -31,6 +36,10 @@ public class User {
 
     public String getIdToken(){
         return this.idToken;
+    }
+
+    public String getLoginOption(){
+        return this.loginOption;
     }
 
     public int logInUser(String login, String password)

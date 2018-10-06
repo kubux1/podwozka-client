@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,13 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import podwozka.podwozka.Passenger.entity.PassangerTravel;
+import podwozka.podwozka.Passenger.PassangerRecyclerItemClickListener;
 import podwozka.podwozka.R;
+import podwozka.podwozka.PopUpWindows;
+import android.support.v7.app.AlertDialog;
+import android.content.DialogInterface;
 
-
-public class BrowseTravelsActivity extends AppCompatActivity {
+public class PassengerBrowseTravels extends AppCompatActivity {
     private List<PassangerTravel> travelList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private BrowseTravelsActivityAdapter mAdapter;
+    private PassengerBrowseTravelsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +36,7 @@ public class BrowseTravelsActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        mAdapter = new BrowseTravelsActivityAdapter(travelList);
+        mAdapter = new PassengerBrowseTravelsAdapter(travelList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -65,11 +69,48 @@ public class BrowseTravelsActivity extends AppCompatActivity {
                         "}\n" +
                         "}";
         prepareTravelData(travelsFound);
+
+        recyclerView.addOnItemTouchListener(
+                new PassangerRecyclerItemClickListener(PassengerBrowseTravels.this, recyclerView ,new PassangerRecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        final PassangerTravel travel = mAdapter.returnTravel(position);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(PassengerBrowseTravels.this);
+
+                        builder.setMessage("Czy napewno chcesz zapisać się na tę podróż?");
+
+                        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                dialog.dismiss();
+                            }
+                        });
+
+                        builder.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int which) {
+                                int httpResponse = travel.signUpForTravel(travel.getTravelId());
+                                if(httpResponse == 200){
+                                }
+                                dialog.dismiss();
+                            }
+                        });
+
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // For future use
+                    }
+                })
+        );
     }
 
     @Override
     public void onBackPressed() {
-        Intent nextScreen = new Intent(BrowseTravelsActivity.this, PassangerMainActivity.class);
+        Intent nextScreen = new Intent(PassengerBrowseTravels.this, PassangerMain.class);
         startActivity(nextScreen);
         finish();
     }

@@ -12,7 +12,7 @@ import java.util.List;
 import podwozka.podwozka.Passenger.entity.PassangerTravel;
 import podwozka.podwozka.R;
 
-public class BrowseTravelsActivityAdapter extends RecyclerView.Adapter<BrowseTravelsActivityAdapter.MyViewHolder> {
+public class PassengerBrowseTravelsAdapter extends RecyclerView.Adapter<PassengerBrowseTravelsAdapter.MyViewHolder> {
 
     private List<PassangerTravel> travelsList;
 
@@ -28,7 +28,7 @@ public class BrowseTravelsActivityAdapter extends RecyclerView.Adapter<BrowseTra
     }
 
 
-    public BrowseTravelsActivityAdapter(List<PassangerTravel> travelsList) {
+    public PassengerBrowseTravelsAdapter(List<PassangerTravel> travelsList) {
         this.travelsList = travelsList;
     }
 
@@ -54,5 +54,9 @@ public class BrowseTravelsActivityAdapter extends RecyclerView.Adapter<BrowseTra
     @Override
     public int getItemCount() {
         return travelsList.size();
+    }
+
+    public PassangerTravel returnTravel (int position){
+        return travelsList.get(position);
     }
 }

@@ -20,9 +20,10 @@
         </activity>
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".RegisterActivity"></activity>
-        <activity android:name=".Passenger.PassangerMainActivity"></activity>
-        <activity android:name=".Passenger.PassengerNewTravelActivity"></activity>
-        <activity android:name=".Passenger.BrowseTravelsActivity"></activity>
+        <activity android:name=".Passenger.PassangerMain"></activity>
+        <activity android:name=".Passenger.PassengerFindTravels"></activity>
+        <activity android:name=".Passenger.PassengerBrowseTravels"></activity>
+        <activity android:name=".Passenger.PassengerTravelsLog"></activity>
         <activity android:name=".Driver.DriverMainActivity"></activity>
         <activity android:name=".Driver.DriverNewTravelActivity"></activity>
         <activity android:name=".Driver.DriverCarInfoActivity"></activity>
