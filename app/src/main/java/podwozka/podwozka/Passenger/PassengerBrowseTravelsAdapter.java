@@ -45,7 +45,7 @@ public class PassengerBrowseTravelsAdapter extends RecyclerView.Adapter<Passenge
         PassangerTravel travel = travelsList.get(position);
         String title = travel.getStartPlace() + " - " + travel.getEndPlace();
         holder.title.setText(title);
-        String startDatetime = "Czas odjazdu: " + travel.getStartDatetime();
+        String startDatetime = "Czas odjazdu: " + travel.getStartDateTime();
         holder.date.setText(startDatetime);
         String freeSpace = "Wolne miejsca: " + travel.getPassengersCount();
         holder.freeSpace.setText(freeSpace);
