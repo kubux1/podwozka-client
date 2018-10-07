@@ -35,8 +35,7 @@ public class PassengerFindTravels extends AppCompatActivity {
             public void onClick(View arg0) {
                 boolean noErrors = true;
                 PopUpWindows alertWindow = new PopUpWindows();
-                //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), PassengerFindTravels.class);
+                Intent nextScreen = new Intent(getApplicationContext(), PassengerBrowseTravels.class);
 
                 EditText startTravelPlace = (EditText) findViewById(R.id.startTravelPlace);
                 String startTravelPlaceMessage = startTravelPlace.getText().toString();
@@ -71,40 +70,10 @@ public class PassengerFindTravels extends AppCompatActivity {
                 }
                 if (noErrors == true) {
                     PassangerTravel passengerTravel = new PassangerTravel(null, startTravelPlaceMessage, endTravelPlaceMessage, "2016-03-16T13:00", howManyPeopleToPickUpMessage);
-                    // Not working yet, waiting for testing with server
-                    // TODO: Uncomment when App will be integrated with a Server
                     travelsFound = passengerTravel.findMatchingTravels(passengerTravel);
-
-                    // Expected response
-                    travelsFound =
-                            "{\n" +
-                                    "  \"_embedded\" : {\n" +
-                                    "    \"travels\" : [ {\n" +
-                                    "      \"login\" : \"bartek\",\n" +
-                                    "      \"firstName\" : \"Maciej\",\n" +
-                                    "      \"lastName\" : \"Topola\",\n" +
-                                    "      \"passengersCount\" : \"2\",\n" +
-                                    "      \"maxPassengers\" : \"3\",\n" +
-                                    "      \"startDatetime\" : \"2016-03-16 12:56\",\n" +
-                                    "      \"startPlace\" : \"Gdynia, 10 Lutego\",\n" +
-                                    "      \"endPlace\" : \"Gdańsk, Wrzeszcz\"\n" +
-                                    "    },\n" +
-                                    "\t{\n" +
-                                    "      \"login\" : \"bartek\",\n" +
-                                    "      \"firstName\" : \"Maciej\",\n" +
-                                    "      \"lastName\" : \"Topola\",\n" +
-                                    "      \"passengersCount\" : \"2\",\n" +
-                                    "      \"maxPassengers\" : \"3\",\n" +
-                                    "      \"startDatetime\" : \"2016-03-16 12:56\",\n" +
-                                    "      \"startPlace\" : \"Gdynia, 10 Lutego\",\n" +
-                                    "      \"endPlace\" : \"Gdańsk, Matarnia\"\n" +
-                                    "    } ]\n" +
-                                    "}\n" +
-                                    "}";
 
                     nextScreen.putExtra("TRAVELS", travelsFound);
                     startActivity(nextScreen);
-
                 }
             }
         });
@@ -112,8 +81,6 @@ public class PassengerFindTravels extends AppCompatActivity {
         reversePlacesButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                //Starting a new Intent
-
                 EditText startTravelPlace = (EditText) findViewById(R.id.startTravelPlace);
                 String startTravelPlaceMessage = startTravelPlace.getText().toString();
 

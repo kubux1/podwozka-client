@@ -119,9 +119,9 @@ public class HttpCommands {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
-        if(user.getLoginOption() == user.driver) {
+        if(user.getLoginOption().equals(user.driver)) {
             connection.sendCommand("api/travels?login=" + user.getLogin(), "GET", null, user.getIdToken(), latch);
-        } else if(user.getLoginOption() == user.passenger){
+        } else if(user.getLoginOption().equals(user.passenger)){
             connection.sendCommand("api/travels/passenger?login=" + user.getLogin(), "GET", null, user.getIdToken(), latch);
         }
         // Wait for a sendCommand task to end
@@ -155,7 +155,9 @@ public class HttpCommands {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
         // TODO: Implement for server signing up for travel
-        connection.sendCommand("api/travels/signUp?travelId="+ travelId + "&userLogin=" +user.getLogin(), "POST", null, user.getIdToken(), latch);
+        connection.sendCommand("api/travels/signUp?login=" + user.getLogin() +
+                        "&travelId=" + Long.parseLong(travelId) , "POST",
+                null, user.getIdToken(), latch);
         // Wait for a sendCommand task to end
         try {
             latch.await();

@@ -8,26 +8,21 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.List;
 
-import podwozka.podwozka.Driver.DriverBrowseTravelsActivityAdapter;
 import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.R;
-
-import static podwozka.podwozka.LoginActivity.user;
 
 public class DriverBrowseTravels extends AppCompatActivity {
     private List<DriverTravel> travelList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private DriverBrowseTravelsActivityAdapter mAdapter;
+    private DriverBrowseTravelsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +47,13 @@ public class DriverBrowseTravels extends AppCompatActivity {
                 })
         );
 
-        mAdapter = new DriverBrowseTravelsActivityAdapter(travelList);
+        mAdapter = new DriverBrowseTravelsAdapter(travelList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        travelsFound = new DriverTravel().getAllUserTravlesFromServer(user.getLogin(), user.getIdToken());
+        travelsFound = new DriverTravel().getAllUserTravles();
         prepareTravelData(travelsFound);
     }
 
@@ -69,24 +64,22 @@ public class DriverBrowseTravels extends AppCompatActivity {
         finish();
     }
 
-    private void prepareTravelData(String travelsJSON) {
+    private void prepareTravelData (String travelsJSON) {
         JSONParser parser = new JSONParser();
         try {
-           Object travelsObjects = parser.parse(travelsJSON);
-            JSONObject jsonObject = (JSONObject) travelsObjects;
-            JSONArray entityList = (JSONArray) ((JSONObject) jsonObject.get("_embedded")).get("travels");
+            JSONArray travelsObjects = (JSONArray)parser.parse(travelsJSON);
 
-            for (Object obj : entityList) {
+            for (Object obj : travelsObjects) {
                 JSONObject jsonObj = (JSONObject) obj;
                 travelList.add(new DriverTravel(
-                        (String) jsonObj.get("login"),
-                        (String) jsonObj.get("firstName"),
-                        (String) jsonObj.get("lastName"),
-                        (String) jsonObj.get("passengersCount"),
-                        (String) jsonObj.get("maxPassengers"),
-                        (String) jsonObj.get("startDatetime"),
-                        (String) jsonObj.get("startPlace"),
-                        (String) jsonObj.get("endPlace")));
+                        (Long)jsonObj.get("id"),
+                        (String)jsonObj.get("login"),
+                        (String)jsonObj.get("firstName"),
+                        (String)jsonObj.get("lastName"),
+                        (String)jsonObj.get("startDatetime"),
+                        (String)jsonObj.get("startPlace"),
+                        (String)jsonObj.get("endPlace"),
+                        (Long)jsonObj.get("passengersCount")));
             }
         } catch (Exception e) {
             e.printStackTrace();

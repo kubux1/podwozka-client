@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                         loginOptionMessage = "Driver";
                         nextScreen = new Intent(getApplicationContext(), DriverMainActivity.class);
                     } else if (passangerRadioButton.isChecked()) {
-                        loginOptionMessage = "Passanger";
+                        loginOptionMessage = "Passenger";
                         nextScreen = new Intent(getApplicationContext(), PassangerMain.class);
                     } else {
                         alertWindow.showAlertWindow(LoginActivity.this, null, "Proszę wybrać profil logowania");

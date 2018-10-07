@@ -59,22 +59,6 @@ public class PassangerTravel implements Parcelable {
         this.endPlace = endPlace;
     }
 
-    public PassangerTravel(String login, String firstName, String lastName, String passengersCount, String maxPassengers, String startDatetime, String startPlace, String endPlace) {
-        if (login == null) {
-            this.login = LoginActivity.user.getLogin();
-        }
-        else {
-            this.login = login;
-        }
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.maxPassengers = maxPassengers;
-        this.passengersCount = passengersCount;
-        this.startDatetime = startDatetime;
-        this.startPlace = startPlace;
-        this.endPlace = endPlace;
-    }
-
 	public PassangerTravel(Parcel in) {
         String[] data = new String[7];
 
@@ -90,24 +74,6 @@ public class PassangerTravel implements Parcelable {
     }
 
     public PassangerTravel(){}
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{
-                this.firstName,
-                this.startPlace,
-                this.endPlace
-        });
-    }
-
-    public static final Creator CREATOR = new Creator() {
-        public PassangerTravel createFromParcel(Parcel in) {
-            return new PassangerTravel(in);
-        }
-
-        public PassangerTravel[] newArray(int size) {
-            return new PassangerTravel[size];
-        }
-    };
 	
     public String getLogin() {
         return login;
@@ -153,9 +119,28 @@ public class PassangerTravel implements Parcelable {
 
     public void setTravelId (int travelId) { this.travelId = travelId; }
 	
-	    public int describeContents() {
+    public int describeContents() {
         return 0;
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[]{
+                this.firstName,
+                this.startPlace,
+                this.endPlace
+        });
+    }
+
+    public static final Creator CREATOR = new Creator() {
+        public PassangerTravel createFromParcel(Parcel in) {
+            return new PassangerTravel(in);
+        }
+
+        public PassangerTravel[] newArray(int size) {
+            return new PassangerTravel[size];
+        }
+    };
 	
     public int getAllUserTravles() {
         HttpCommands httpCommand = new HttpCommands();
@@ -183,13 +168,6 @@ public class PassangerTravel implements Parcelable {
             e.printStackTrace();
         }
         return httpCommand.getResponse();
-    }
-
-    public int signUpForTravel(int travelId) {
-        HttpCommands httpCommand = new HttpCommands();
-
-        httpCommand.signUpForTravel(Integer.toString(travelId));
-        return httpCommand.getHttpResponseCode();
     }
 
     private ArrayList<PassangerTravel> getTravelsJSONParser(String travelsJSON) {

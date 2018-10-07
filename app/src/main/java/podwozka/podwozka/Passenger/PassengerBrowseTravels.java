@@ -15,17 +15,17 @@ import org.json.simple.parser.JSONParser;
 import java.util.ArrayList;
 import java.util.List;
 
-import podwozka.podwozka.Passenger.entity.PassangerTravel;
-import podwozka.podwozka.Passenger.PassangerRecyclerItemClickListener;
+import podwozka.podwozka.Driver.DriverBrowseTravelsAdapter;
+import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.R;
-import podwozka.podwozka.PopUpWindows;
+
 import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 
 public class PassengerBrowseTravels extends AppCompatActivity {
-    private List<PassangerTravel> travelList = new ArrayList<>();
+    private List<DriverTravel> travelList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private PassengerBrowseTravelsAdapter mAdapter;
+    private DriverBrowseTravelsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,44 +36,19 @@ public class PassengerBrowseTravels extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        mAdapter = new PassengerBrowseTravelsAdapter(travelList);
+        mAdapter = new DriverBrowseTravelsAdapter(travelList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
         travelsFound = getIntent().getStringExtra("TRAVELS");
-        travelsFound =
-                "{\n" +
-                        "  \"_embedded\" : {\n" +
-                        "    \"travels\" : [ {\n" +
-                        "      \"login\" : \"bartek\",\n" +
-                        "      \"firstName\" : \"Maciej\",\n" +
-                        "      \"lastName\" : \"Topola\",\n" +
-                        "      \"passengersCount\" : \"2\",\n" +
-                        "      \"maxPassengers\" : \"3\",\n" +
-                        "      \"startDatetime\" : \"2016-03-16 12:56\",\n" +
-                        "      \"startPlace\" : \"Gdynia, 10 Lutego\",\n" +
-                        "      \"endPlace\" : \"Gdańsk, Wrzeszcz\"\n" +
-                        "    },\n" +
-                        "\t{\n" +
-                        "      \"login\" : \"bartek\",\n" +
-                        "      \"firstName\" : \"Maciej\",\n" +
-                        "      \"lastName\" : \"Topola\",\n" +
-                        "      \"passengersCount\" : \"2\",\n" +
-                        "      \"maxPassengers\" : \"3\",\n" +
-                        "      \"startDatetime\" : \"2016-03-16 12:56\",\n" +
-                        "      \"startPlace\" : \"Gdynia, 10 Lutego\",\n" +
-                        "      \"endPlace\" : \"Gdańsk, Matarnia\"\n" +
-                        "    } ]\n" +
-                        "}\n" +
-                        "}";
         prepareTravelData(travelsFound);
 
         recyclerView.addOnItemTouchListener(
                 new PassangerRecyclerItemClickListener(PassengerBrowseTravels.this, recyclerView ,new PassangerRecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        final PassangerTravel travel = mAdapter.returnTravel(position);
+                        final DriverTravel travel = mAdapter.returnTravel(position);
                         AlertDialog.Builder builder = new AlertDialog.Builder(PassengerBrowseTravels.this);
 
                         builder.setMessage("Czy napewno chcesz zapisać się na tę podróż?");
@@ -118,21 +93,19 @@ public class PassengerBrowseTravels extends AppCompatActivity {
     private void prepareTravelData (String travelsJSON) {
         JSONParser parser = new JSONParser();
         try {
-            Object travelsObjects = parser.parse(travelsJSON);
-            JSONObject jsonObject = (JSONObject) travelsObjects;
-            JSONArray entityList = (JSONArray)((JSONObject) jsonObject.get("_embedded")).get("travels");
+            JSONArray travelsObjects = (JSONArray)parser.parse(travelsJSON);
 
-            for (Object obj : entityList) {
+            for (Object obj : travelsObjects) {
                 JSONObject jsonObj = (JSONObject) obj;
-                travelList.add(new PassangerTravel(
+                travelList.add(new DriverTravel(
+                        (Long)jsonObj.get("id"),
                         (String)jsonObj.get("login"),
                         (String)jsonObj.get("firstName"),
                         (String)jsonObj.get("lastName"),
-                        (String)jsonObj.get("passengersCount"),
-                        (String)jsonObj.get("maxPassengers"),
                         (String)jsonObj.get("startDatetime"),
                         (String)jsonObj.get("startPlace"),
-                        (String)jsonObj.get("endPlace")));
+                        (String)jsonObj.get("endPlace"),
+                        (Long)jsonObj.get("passengersCount")));
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -177,8 +177,7 @@ public class DriverNewTravelActivity extends AppCompatActivity {
                 }
                 if(noErrors == true) {
                 DriverTravel newTravel = new DriverTravel("user", startTravelPlaceMessage, endTravelPlaceMessage, (pickUpDateMessage+"T"+pickUpTimeMessage), maxPassengersMessage);
-                    //alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, "Podróż dodana");
-                    httpResponse = newTravel.postNewTravel(newTravel, user.getIdToken());
+                    httpResponse = newTravel.postNewTravel(newTravel);
                     if(httpResponse == 201) {
                         startActivity(nextScreen);
                     }

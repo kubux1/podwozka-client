@@ -13,17 +13,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import podwozka.podwozka.Passenger.entity.PassangerTravel;
+import podwozka.podwozka.Driver.DriverBrowseTravelsAdapter;
+import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.R;
-import java.util.Calendar;
 
 public class PassengerTravelsLog extends AppCompatActivity {
-    private List<PassangerTravel> travelList = new ArrayList<>();
+    private List<DriverTravel> travelList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private PassengerBrowseTravelsAdapter mAdapter;
+    private DriverBrowseTravelsAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,48 +30,22 @@ public class PassengerTravelsLog extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        mAdapter = new PassengerBrowseTravelsAdapter(travelList);
+        mAdapter = new DriverBrowseTravelsAdapter(travelList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
         // TODO: Implement after server side is ready
-        //travelsFound = new PassangerTravel().getAllUserTravles();
+        final String travelsFound = new DriverTravel().getAllUserTravles();
 
-        final String travelsFound =
-                "{\n" +
-                        "  \"_embedded\" : {\n" +
-                        "    \"travels\" : [ {\n" +
-                        "      \"login\" : \"bartek\",\n" +
-                        "      \"firstName\" : \"Maciej\",\n" +
-                        "      \"lastName\" : \"Topola\",\n" +
-                        "      \"passengersCount\" : \"2\",\n" +
-                        "      \"maxPassengers\" : \"3\",\n" +
-                        "      \"startDatetime\" : \"2016-03-16 12:56\",\n" +
-                        "      \"startPlace\" : \"Gdynia, 10 Lutego\",\n" +
-                        "      \"endPlace\" : \"Gdańsk, Wrzeszcz\"\n" +
-                        "    },\n" +
-                        "\t{\n" +
-                        "      \"login\" : \"bartek\",\n" +
-                        "      \"firstName\" : \"Maciej\",\n" +
-                        "      \"lastName\" : \"Topola\",\n" +
-                        "      \"passengersCount\" : \"2\",\n" +
-                        "      \"maxPassengers\" : \"3\",\n" +
-                        "      \"startDatetime\" : \"2016-03-16 12:56\",\n" +
-                        "      \"startPlace\" : \"Gdynia, 10 Lutego\",\n" +
-                        "      \"endPlace\" : \"Gdańsk, Matarnia\"\n" +
-                        "    } ]\n" +
-                        "}\n" +
-                        "}";
-
-        prepareTravelData(travelsFound, "past");
+        prepareTravelData(travelsFound);
 
         Button currentTravelsOption = (Button) findViewById(R.id.currentTravels);
         currentTravelsOption.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                prepareTravelData(travelsFound, "current");
+                prepareTravelData(travelsFound);
             }
         });
 
@@ -80,31 +53,25 @@ public class PassengerTravelsLog extends AppCompatActivity {
         pastTravelsOption.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                prepareTravelData(travelsFound, "past");
+                prepareTravelData(travelsFound);
             }
         });
     }
-    private void prepareTravelData (String travelsJSON, String order) {
+    private void prepareTravelData (String travelsJSON) {
         JSONParser parser = new JSONParser();
-        Date currentTime = Calendar.getInstance().getTime();
         try {
-            Object travelsObjects = parser.parse(travelsJSON);
-            JSONObject jsonObject = (JSONObject) travelsObjects;
-            JSONArray entityList = (JSONArray)((JSONObject) jsonObject.get("_embedded")).get("travels");
+            JSONArray travelsObjects = (JSONArray)parser.parse(travelsJSON);
 
-            for (Object obj : entityList) {
+            for (Object obj : travelsObjects) {
                 JSONObject jsonObj = (JSONObject) obj;
-                if (order == "past" && ((Date) jsonObj.get("startDatetime")).before(currentTime)) {
-                    travelList.add(new PassangerTravel(
-                            (String) jsonObj.get("login"),
-                            (String) jsonObj.get("firstName"),
-                            (String) jsonObj.get("lastName"),
-                            (String) jsonObj.get("passengersCount"),
-                            (String) jsonObj.get("maxPassengers"),
-                            (String) jsonObj.get("startDatetime"),
-                            (String) jsonObj.get("startPlace"),
-                            (String) jsonObj.get("endPlace")));
-                }
+                travelList.add(new DriverTravel(
+                        (String)jsonObj.get("login"),
+                        (String)jsonObj.get("firstName"),
+                        (String)jsonObj.get("lastName"),
+                        (String)jsonObj.get("startDatetime"),
+                        (String)jsonObj.get("startPlace"),
+                        (String)jsonObj.get("endPlace"),
+                        (Long)jsonObj.get("passengersCount")));
             }
         } catch (Exception e) {
             e.printStackTrace();
