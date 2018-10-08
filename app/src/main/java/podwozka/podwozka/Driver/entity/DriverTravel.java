@@ -12,6 +12,7 @@
 
     import java.io.InputStream;
     import java.lang.reflect.Field;
+    import java.time.Instant;
     import java.util.ArrayList;
     import java.util.List;
     import java.util.Scanner;
@@ -20,15 +21,15 @@
     import podwozka.podwozka.entity.HttpCommands;
 
     public class DriverTravel implements Parcelable {
+        private String travelId;
         private String login;
+        private String startPlace;
+        private String endPlace;
         private String firstName;
         private String lastName;
-    private String passengersCount;
-    private String maxPassengers;
-    private String startDatetime;
-    private String startPlace;
-    private String endPlace;
-    private String travelId;
+        private String passengersCount;
+        private String maxPassengers;
+        private String startDatetime;
 
 
     public DriverTravel(String login, String firstName, String lastName, String passengersCount,
@@ -43,6 +44,27 @@
         this.endPlace = endPlace;
     }
 
+    public DriverTravel(String login, String firstName, String lastName, String startDatetime, String startPlace, String endPlace, Long passengersCount) {
+        this.login = login;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.passengersCount = passengersCount.toString();
+        this.startDatetime = startDatetime;
+        this.startPlace = startPlace;
+        this.endPlace = endPlace;
+    }
+
+    public DriverTravel(Long travelId, String login, String firstName, String lastName, String startDatetime, String startPlace, String endPlace, Long passengersCount) {
+        this.travelId = travelId.toString();
+        this.login = login;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.passengersCount = passengersCount.toString();
+        this.startDatetime = startDatetime;
+        this.startPlace = startPlace;
+        this.endPlace = endPlace;
+    }
+
     public DriverTravel(String login, String startPlace, String endPlace, String startDatetime, String maxPassengers) {
         this.login = login;
         this.maxPassengers = maxPassengers;
@@ -50,6 +72,7 @@
         this.startPlace = startPlace;
         this.endPlace = endPlace;
     }
+
     public DriverTravel(String travelId, String login, String startPlace, String endPlace, String startDatetime, String maxPassengers) {
         this.travelId = travelId;
         this.login = login;
@@ -73,30 +96,6 @@
 
     public DriverTravel(){}
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.travelId);
-        dest.writeString(this.login);
-        dest.writeString(this.firstName);
-        dest.writeString(this.lastName);
-        dest.writeString(this.passengersCount);
-        dest.writeString(this.maxPassengers);
-        dest.writeString(this.startDatetime);
-        dest.writeString(this.startPlace);
-        dest.writeString(this.endPlace);
-    }
-
-
-    public static final Creator CREATOR = new Creator() {
-        public DriverTravel createFromParcel(Parcel in) {
-            return new DriverTravel(in);
-        }
-
-        public DriverTravel[] newArray(int size) {
-            return new DriverTravel[size];
-        }
-    };
-	
     public String getLogin() {
         return login;
     }
@@ -147,20 +146,41 @@
 
     public String getTravelId () { return travelId; }
 
-    public void setTravelId (String travelId) { this.travelId = travelId; }
-
     public int describeContents() {
         return 0;
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.travelId);
+        dest.writeString(this.login);
+        dest.writeString(this.firstName);
+        dest.writeString(this.lastName);
+        dest.writeString(this.passengersCount);
+        dest.writeString(this.maxPassengers);
+        dest.writeString(this.startDatetime);
+        dest.writeString(this.startPlace);
+        dest.writeString(this.endPlace);
+    }
+
+    public static final Creator CREATOR = new Creator() {
+        public DriverTravel createFromParcel(Parcel in) {
+            return new DriverTravel(in);
+        }
+
+        public DriverTravel[] newArray(int size) {
+            return new DriverTravel[size];
+        }
+    };
 	
-    public String getAllUserTravlesFromServer(final String login, final String idToken) {
+    public String getAllUserTravles() {
         HttpCommands httpCommand = new HttpCommands();
 
         httpCommand.getAllUserTravles();
         return httpCommand.getResponse();
     }
 
-    public int postNewTravel (DriverTravel newTravel, String userIdToken)
+    public int postNewTravel (DriverTravel newTravel)
     {
         int httpResponse = -1;
         HttpCommands httpCommand = new HttpCommands();
@@ -214,32 +234,11 @@
         return httpResponse;
     }
 
-    public ArrayList<DriverTravel> getTravelsJSONParser(String travelsJSON) {
-        ArrayList<DriverTravel> travels = new ArrayList<DriverTravel>();
-        JSONParser parser = new JSONParser();
+    public int signUpForTravel(String travelId) {
+        HttpCommands httpCommand = new HttpCommands();
 
-        try {
-            Object travelsObjects = parser.parse(travelsJSON);
-            JSONObject jsonObject = (JSONObject) travelsObjects;
-            JSONArray entityList = (JSONArray) jsonObject.get("entity");
-
-            for (Object obj : entityList) {
-                JSONObject jsonObj = (JSONObject) obj;
-                travels.add(new DriverTravel(
-                        (String)jsonObj.get("login"),
-                        (String)jsonObj.get("firstName"),
-                        (String)jsonObj.get("lastName"),
-                        (String)jsonObj.get("passengersCount"),
-                        (String)jsonObj.get("maxPassengers"),
-                        (String)jsonObj.get("startDatetime"),
-                        (String)jsonObj.get("startPlace"),
-                        (String)jsonObj.get("endPlace")
-                ));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return travels;
+        httpCommand.signUpForTravel(travelId);
+        return httpCommand.getHttpResponseCode();
     }
 
     public String convcerTravelsForRecyclerFormat(ArrayList<DriverTravel> travels ){

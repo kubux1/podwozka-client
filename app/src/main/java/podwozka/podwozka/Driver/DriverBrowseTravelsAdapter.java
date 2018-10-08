@@ -13,7 +13,7 @@ import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.R;
 
 
-public class DriverBrowseTravelsActivityAdapter extends RecyclerView.Adapter<DriverBrowseTravelsActivityAdapter.MyViewHolder> {
+public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrowseTravelsAdapter.MyViewHolder> {
 
     private List<DriverTravel> travelsList;
 
@@ -29,7 +29,7 @@ public class DriverBrowseTravelsActivityAdapter extends RecyclerView.Adapter<Dri
     }
 
 
-    public DriverBrowseTravelsActivityAdapter(List<DriverTravel> travelsList) {
+    public DriverBrowseTravelsAdapter(List<DriverTravel> travelsList) {
         this.travelsList = travelsList;
     }
 

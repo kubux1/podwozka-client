@@ -12,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-public class PassangerMainActivity extends AppCompatActivity {
+public class PassangerMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class PassangerMainActivity extends AppCompatActivity {
 
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), PassengerNewTravelActivity.class);
+                Intent nextScreen = new Intent(getApplicationContext(), PassengerFindTravels.class);
                 startActivity(nextScreen);
             }
         });
@@ -34,7 +34,7 @@ public class PassangerMainActivity extends AppCompatActivity {
 
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), BrowseTravelsActivity.class);
+                Intent nextScreen = new Intent(getApplicationContext(), PassengerTravelsLog.class);
                 startActivity(nextScreen);
             }
         });
@@ -62,14 +62,14 @@ public class PassangerMainActivity extends AppCompatActivity {
     }
 
     public void logOut(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(PassangerMainActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(PassangerMain.this);
 
         builder.setMessage("Czy napewno chcesz sie wylogowac?");
 
         builder.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                Intent nextScreen = new Intent(PassangerMainActivity.this, MainActivity.class);
+                Intent nextScreen = new Intent(PassangerMain.this, MainActivity.class);
                 startActivity(nextScreen);
                 finish();
                 dialog.dismiss();

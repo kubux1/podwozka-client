@@ -19,7 +19,7 @@ import podwozka.podwozka.Passenger.entity.PassangerTravel;
 import settings.ConnectionSettings;
 
 
-public class PassengerNewTravelActivity extends AppCompatActivity {
+public class PassengerFindTravels extends AppCompatActivity {
     String travelsFound;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +35,7 @@ public class PassengerNewTravelActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 boolean noErrors = true;
                 PopUpWindows alertWindow = new PopUpWindows();
-                //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), BrowseTravelsActivity.class);
+                Intent nextScreen = new Intent(getApplicationContext(), PassengerBrowseTravels.class);
 
                 EditText startTravelPlace = (EditText) findViewById(R.id.startTravelPlace);
                 String startTravelPlaceMessage = startTravelPlace.getText().toString();
@@ -51,60 +50,30 @@ public class PassengerNewTravelActivity extends AppCompatActivity {
                 String howManyPeopleToPickUpMessage = howManyPeopleToPickUp.getText().toString();
 
                 if (startTravelPlaceMessage.isEmpty()) {
-                    alertWindow.showAlertWindow(PassengerNewTravelActivity.this, null, "Proszę podać adres początkowy");
+                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, "Proszę podać adres początkowy");
                     noErrors = false;
                 } else if (endTravelPlaceMessage.isEmpty()) {
-                    alertWindow.showAlertWindow(PassengerNewTravelActivity.this, null, "Proszę podać adres końcowy");
+                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, "Proszę podać adres końcowy");
                     noErrors = false;
                 } else if (pickUpTimeMessage.isEmpty()) {
-                    alertWindow.showAlertWindow(PassengerNewTravelActivity.this, null, "Proszę podać planowaną godzinę odebrania");
+                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, "Proszę podać planowaną godzinę odebrania");
                     noErrors = false;
                 } else if (howManyPeopleToPickUpMessage.isEmpty()) {
-                    alertWindow.showAlertWindow(PassengerNewTravelActivity.this, null, "Proszę podać dodatkową liczbę pasażerów jaka będzie z Tobą");
+                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, "Proszę podać dodatkową liczbę pasażerów jaka będzie z Tobą");
                     noErrors = false;
                 } else if (!pickUpTimeMessage.matches("[0-9]+")) {
-                    alertWindow.showAlertWindow(PassengerNewTravelActivity.this, null, "Proszę podać tylko liczby w polu Godzina odjazdu");
+                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, "Proszę podać tylko liczby w polu Godzina odjazdu");
                     noErrors = false;
                 } else if (!howManyPeopleToPickUpMessage.matches("[0-9]+")) {
-                    alertWindow.showAlertWindow(PassengerNewTravelActivity.this, null, "Proszę podać tylko liczby w polu Liczba Dodatkowych Pasażerów");
+                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, "Proszę podać tylko liczby w polu Liczba Dodatkowych Pasażerów");
                     noErrors = false;
                 }
                 if (noErrors == true) {
-                    PassangerTravel passengerTravel = new PassangerTravel(null, startTravelPlaceMessage, endTravelPlaceMessage, pickUpTimeMessage, howManyPeopleToPickUpMessage);
-                    // Not working yet, waiting for testing with server
-                    // TODO: Uncomment when App will be integrated with a Server
-                    //travelsFound = passengerTravel.findMatchingTravels(passengerTravel);
-
-                    // Expected response
-                    travelsFound =
-                            "{\n" +
-                                    "  \"_embedded\" : {\n" +
-                                    "    \"travels\" : [ {\n" +
-                                    "      \"login\" : \"bartek\",\n" +
-                                    "      \"firstName\" : \"Maciej\",\n" +
-                                    "      \"lastName\" : \"Topola\",\n" +
-                                    "      \"passengersCount\" : \"2\",\n" +
-                                    "      \"maxPassengers\" : \"3\",\n" +
-                                    "      \"startDatetime\" : \"2016-03-16 12:56\",\n" +
-                                    "      \"startPlace\" : \"Gdynia, 10 Lutego\",\n" +
-                                    "      \"endPlace\" : \"Gdańsk, Wrzeszcz\"\n" +
-                                    "    },\n" +
-                                    "\t{\n" +
-                                    "      \"login\" : \"bartek\",\n" +
-                                    "      \"firstName\" : \"Maciej\",\n" +
-                                    "      \"lastName\" : \"Topola\",\n" +
-                                    "      \"passengersCount\" : \"2\",\n" +
-                                    "      \"maxPassengers\" : \"3\",\n" +
-                                    "      \"startDatetime\" : \"2016-03-16 12:56\",\n" +
-                                    "      \"startPlace\" : \"Gdynia, 10 Lutego\",\n" +
-                                    "      \"endPlace\" : \"Gdańsk, Matarnia\"\n" +
-                                    "    } ]\n" +
-                                    "}\n" +
-                                    "}";
+                    PassangerTravel passengerTravel = new PassangerTravel(null, startTravelPlaceMessage, endTravelPlaceMessage, "2016-03-16T13:00", howManyPeopleToPickUpMessage);
+                    travelsFound = passengerTravel.findMatchingTravels(passengerTravel);
 
                     nextScreen.putExtra("TRAVELS", travelsFound);
                     startActivity(nextScreen);
-
                 }
             }
         });
@@ -112,8 +81,6 @@ public class PassengerNewTravelActivity extends AppCompatActivity {
         reversePlacesButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                //Starting a new Intent
-
                 EditText startTravelPlace = (EditText) findViewById(R.id.startTravelPlace);
                 String startTravelPlaceMessage = startTravelPlace.getText().toString();
 
@@ -129,7 +96,7 @@ public class PassengerNewTravelActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent nextScreen = new Intent(PassengerNewTravelActivity.this, PassangerMainActivity.class);
+        Intent nextScreen = new Intent(PassengerFindTravels.this, PassangerMain.class);
         startActivity(nextScreen);
         finish();
     }

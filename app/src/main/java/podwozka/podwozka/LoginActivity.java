@@ -1,7 +1,7 @@
 package podwozka.podwozka;
 
 import podwozka.podwozka.Driver.DriverMainActivity;
-import podwozka.podwozka.Passenger.PassangerMainActivity;
+import podwozka.podwozka.Passenger.PassangerMain;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -58,15 +58,15 @@ public class LoginActivity extends AppCompatActivity {
                         loginOptionMessage = "Driver";
                         nextScreen = new Intent(getApplicationContext(), DriverMainActivity.class);
                     } else if (passangerRadioButton.isChecked()) {
-                        loginOptionMessage = "Passanger";
-                        nextScreen = new Intent(getApplicationContext(), PassangerMainActivity.class);
+                        loginOptionMessage = "Passenger";
+                        nextScreen = new Intent(getApplicationContext(), PassangerMain.class);
                     } else {
                         alertWindow.showAlertWindow(LoginActivity.this, null, "Proszę wybrać profil logowania");
                         errorsCount += 1;
                     }
                 }
                 if (errorsCount == 0) {
-                    user = new User(loginMessage);
+                    user = new User(loginMessage, loginOptionMessage);
                     httpResponseCode = user.logInUser(loginMessage, passwordMessage);
                     if (httpResponseCode == 200) {
                         nextScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
