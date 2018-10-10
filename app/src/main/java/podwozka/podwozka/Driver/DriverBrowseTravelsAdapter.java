@@ -48,8 +48,19 @@ public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrows
         holder.title.setText(title);
         String startDatetime = "Czas odjazdu: " + travel.getStartDatetime();
         holder.date.setText(startDatetime);
-        String freeSpace = "Wolne miejsca: " + travel.getPassengersCount();
-        holder.freeSpace.setText(freeSpace);
+        int freeSpace = 0;
+        try{
+            freeSpace = Integer.parseInt(travel.getMaxPassengers()) -
+                    Integer.parseInt(travel.getPassengersCount());
+        } catch (NumberFormatException e)
+        {
+            e.printStackTrace();
+        }
+
+
+
+        String freeSpaceMessage = "Wolne miejsca: " + freeSpace;
+        holder.freeSpace.setText(freeSpaceMessage);
     }
 
     @Override
