@@ -72,14 +72,16 @@ public class DriverBrowseTravels extends AppCompatActivity {
             for (Object obj : travelsObjects) {
                 JSONObject jsonObj = (JSONObject) obj;
                 travelList.add(new DriverTravel(
-                        (String)jsonObj.get("id"),
+                        String.valueOf(jsonObj.get("id")),
                         (String)jsonObj.get("login"),
                         (String)jsonObj.get("firstName"),
                         (String)jsonObj.get("lastName"),
-                        (String)jsonObj.get("startDatetime"),
+                        String.valueOf(jsonObj.get("passengersCount")),
+                        String.valueOf(jsonObj.get("maxPassenger")),
+                        (String)jsonObj.get("pickUpDatetime"),
                         (String)jsonObj.get("startPlace"),
-                        (String)jsonObj.get("endPlace"),
-                        (String)jsonObj.get("passengersCount")));
+                        (String)jsonObj.get("endPlace")
+                        ));
             }
         } catch (Exception e) {
             e.printStackTrace();

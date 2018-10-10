@@ -32,7 +32,7 @@
         private String startDatetime;
 
 
-    public DriverTravel(String login, String firstName, String lastName, String passengersCount,
+    public DriverTravel(String travelId, String login, String firstName, String lastName, String passengersCount,
                         String maxPassengers, String startDatetime, String startPlace, String endPlace) {
         this.login = login;
         this.firstName = firstName;
