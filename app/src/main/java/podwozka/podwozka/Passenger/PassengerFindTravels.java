@@ -1,41 +1,105 @@
 package podwozka.podwozka.Passenger;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Scanner;
-
+import android.widget.TextView;
+import android.widget.TimePicker;
+import java.util.Calendar;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import podwozka.podwozka.Passenger.entity.PassangerTravel;
-import settings.ConnectionSettings;
 
 
 public class PassengerFindTravels extends AppCompatActivity {
+    private static TextView pickedTime;
+    private static TextView pickedDate;
+
+    // Date dialog
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            pickedDate.setText(new StringBuilder().append(day).append("-")
+                    .append(month).append("-").append(year));
+        }
+    }
+
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+
+    // Time dialog
+    public static class TimePickerFragment extends DialogFragment
+            implements TimePickerDialog.OnTimeSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current time as the default values for the picker
+            final Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+
+            // Create a new instance of TimePickerDialog and return it
+            return new TimePickerDialog(getActivity(), this, hour, minute,
+                    DateFormat.is24HourFormat(getActivity()));
+        }
+
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            pickedTime.setText(new StringBuilder().append(hourOfDay).append(":")
+                    .append(minute));
+
+        }
+    }
+
+    public void showTimePickerDialog(View v) {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
     String travelsFound;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_passanger_new_travel);
-
+        setContentView(R.layout.activity_driver_new_travel);
         Button btnNextScreen = (Button) findViewById(R.id.submitNewTravelButton);
         Button reversePlacesButton = (Button) findViewById(R.id.reverseTravelPlaces);
+        pickedDate = (TextView) findViewById(R.id.pickedDate);
+        pickedTime = (TextView) findViewById(R.id.pickedTime);
 
-        btnNextScreen.setText("Zatwierdź");
 
         btnNextScreen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                boolean noErrors = true;
                 PopUpWindows alertWindow = new PopUpWindows();
-                Intent nextScreen = new Intent(getApplicationContext(), PassengerBrowseTravels.class);
+                boolean noErrors = true;
+                int httpResponse;
+
+                //Starting a new Intent
+                Intent nextScreen = new Intent(getApplicationContext(), PassengerFindTravels.class);
 
                 EditText startTravelPlace = (EditText) findViewById(R.id.startTravelPlace);
                 String startTravelPlaceMessage = startTravelPlace.getText().toString();
@@ -43,44 +107,38 @@ public class PassengerFindTravels extends AppCompatActivity {
                 EditText endTravelPlace = (EditText) findViewById(R.id.endTravelPlace);
                 String endTravelPlaceMessage = endTravelPlace.getText().toString();
 
-                EditText pickUpTime = (EditText) findViewById(R.id.pickUpTime);
+                TextView pickUpDate = (TextView) findViewById(R.id.pickedDate);
+                String pickUpDateMessage = pickUpDate.getText().toString();
+
+                TextView pickUpTime = (TextView) findViewById(R.id.pickUpTime);
                 String pickUpTimeMessage = pickUpTime.getText().toString();
 
-                EditText howManyPeopleToPickUp = (EditText) findViewById(R.id.howManyPeopleToPickUp);
-                String howManyPeopleToPickUpMessage = howManyPeopleToPickUp.getText().toString();
-
-                if (startTravelPlaceMessage.isEmpty()) {
+                if (startTravelPlaceMessage.isEmpty())
+                {
                     alertWindow.showAlertWindow(PassengerFindTravels.this, null, getResources().getString(R.string.start_place_empty));
                     noErrors = false;
-                } else if (endTravelPlaceMessage.isEmpty()) {
+                }
+                else if (endTravelPlaceMessage.isEmpty())
+                {
                     alertWindow.showAlertWindow(PassengerFindTravels.this, null, getResources().getString(R.string.end_place_empty));
                     noErrors = false;
-                } else if (pickUpTimeMessage.isEmpty()) {
-                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, "Proszę podać planowaną godzinę odebrania");
-                    noErrors = false;
-                } else if (howManyPeopleToPickUpMessage.isEmpty()) {
-                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, "Proszę podać dodatkową liczbę pasażerów jaka będzie z Tobą");
-                    noErrors = false;
-                } else if (!pickUpTimeMessage.matches("[0-9]+")) {
-                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, "Proszę podać tylko liczby w polu Godzina odjazdu");
-                    noErrors = false;
-                } else if (!howManyPeopleToPickUpMessage.matches("[0-9]+")) {
-                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, "Proszę podać tylko liczby w polu Liczba Dodatkowych Pasażerów");
-                    noErrors = false;
                 }
-                if (noErrors == true) {
-                    PassangerTravel passengerTravel = new PassangerTravel(null, startTravelPlaceMessage, endTravelPlaceMessage, "2016-03-16T13:00", howManyPeopleToPickUpMessage);
+
+                if(noErrors == true) {
+                    PassangerTravel passengerTravel = new PassangerTravel(null, startTravelPlaceMessage, endTravelPlaceMessage, "2016-03-16T13:00", null);
                     travelsFound = passengerTravel.findMatchingTravels(passengerTravel);
 
                     nextScreen.putExtra("TRAVELS", travelsFound);
                     startActivity(nextScreen);
                 }
+
             }
         });
 
         reversePlacesButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
+                //Starting a new Inten
                 EditText startTravelPlace = (EditText) findViewById(R.id.startTravelPlace);
                 String startTravelPlaceMessage = startTravelPlace.getText().toString();
 
@@ -92,6 +150,7 @@ public class PassengerFindTravels extends AppCompatActivity {
 
             }
         });
+
     }
 
     @Override

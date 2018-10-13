@@ -10,7 +10,7 @@ import android.widget.EditText;
 import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.R;
 
-public class DriverEditTravelInfoActivity extends AppCompatActivity {
+public class DriverEditTravelInfo extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class DriverEditTravelInfoActivity extends AppCompatActivity {
                         pickUpTime.getText().toString(),
                         maxPassengers.getText().toString()));
                 if(httpResponse == 200){
-                    Intent nextScreen = new Intent(DriverEditTravelInfoActivity.this, DriverBrowseTravels.class);
+                    Intent nextScreen = new Intent(DriverEditTravelInfo.this, DriverBrowseTravels.class);
                     startActivity(nextScreen);
                 }
             }
@@ -54,7 +54,7 @@ public class DriverEditTravelInfoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent nextScreen = new Intent(DriverEditTravelInfoActivity.this, DriverTravelEditorActivity.class);
+        Intent nextScreen = new Intent(DriverEditTravelInfo.this, DriverTravelEditor.class);
         startActivity(nextScreen);
         finish();
     }

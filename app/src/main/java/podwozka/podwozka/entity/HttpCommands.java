@@ -11,8 +11,6 @@ public class HttpCommands {
     public HttpCommands() {
     }
 
-    ;
-
     public int getHttpResponseCode() {
         return this.httpResponseCode;
     }

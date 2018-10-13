@@ -1,6 +1,6 @@
 package podwozka.podwozka;
 
-import podwozka.podwozka.Driver.DriverMainActivity;
+import podwozka.podwozka.Driver.DriverMain;
 import podwozka.podwozka.Passenger.PassangerMain;
 
 import android.content.Intent;
@@ -11,14 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Scanner;
-
-import podwozka.podwozka.entity.HttpCommands;
 import podwozka.podwozka.entity.User;
-import settings.ConnectionSettings;
 
 public class LoginActivity extends AppCompatActivity {
     public static User user;
@@ -56,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     if (driverRadioButton.isChecked()) {
                         loginOptionMessage = "Driver";
-                        nextScreen = new Intent(getApplicationContext(), DriverMainActivity.class);
+                        nextScreen = new Intent(getApplicationContext(), DriverMain.class);
                     } else if (passangerRadioButton.isChecked()) {
                         loginOptionMessage = "Passenger";
                         nextScreen = new Intent(getApplicationContext(), PassangerMain.class);

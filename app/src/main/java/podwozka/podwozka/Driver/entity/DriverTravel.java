@@ -5,7 +5,7 @@
     import org.apache.http.NameValuePair;
     import java.util.ArrayList;
     import java.util.List;
-    import podwozka.podwozka.Driver.DriverMainActivity;
+    import podwozka.podwozka.Driver.DriverMain;
     import podwozka.podwozka.entity.HttpCommands;
 
     public class DriverTravel implements Parcelable {
@@ -230,7 +230,7 @@
     }
 
     public String convcerTravelsForRecyclerFormat(ArrayList<DriverTravel> travels ){
-        int x = DriverMainActivity.driverTravels.size();
+        int x = DriverMain.driverTravels.size();
         DriverTravel travel;
         travel = travels.get(0);
         String travelsConverted =

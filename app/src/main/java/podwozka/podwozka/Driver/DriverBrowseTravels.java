@@ -35,7 +35,7 @@ public class DriverBrowseTravels extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(
                 new DriverRecyclerItemClickListener(DriverBrowseTravels.this, recyclerView ,new DriverRecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        Intent nextScreen = new Intent(DriverBrowseTravels.this, DriverTravelEditorActivity.class);
+                        Intent nextScreen = new Intent(DriverBrowseTravels.this, DriverTravelEditor.class);
                         DriverTravel travel = mAdapter.returnTravel(position);
                         nextScreen.putExtra("TRAVEL", (Parcelable)travel);
                         startActivity(nextScreen);
@@ -59,7 +59,7 @@ public class DriverBrowseTravels extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent nextScreen = new Intent(DriverBrowseTravels.this, DriverMainActivity.class);
+        Intent nextScreen = new Intent(DriverBrowseTravels.this, DriverMain.class);
         startActivity(nextScreen);
         finish();
     }
