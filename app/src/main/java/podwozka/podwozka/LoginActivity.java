@@ -48,10 +48,10 @@ public class LoginActivity extends AppCompatActivity {
                 RadioButton passangerRadioButton = (RadioButton) findViewById(R.id.passangerRadioButton);
 
                 if (loginMessage.isEmpty()) {
-                    alertWindow.showAlertWindow(LoginActivity.this, null, "Proszę podać login");
+                    alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.login_empty));
                     errorsCount += 1;
                 } else if (passwordMessage.isEmpty()) {
-                    alertWindow.showAlertWindow(LoginActivity.this, null, "Proszę podać hasło");
+                    alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.password_empty));
                     errorsCount += 1;
                 } else {
                     if (driverRadioButton.isChecked()) {
@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                         loginOptionMessage = "Passenger";
                         nextScreen = new Intent(getApplicationContext(), PassangerMain.class);
                     } else {
-                        alertWindow.showAlertWindow(LoginActivity.this, null, "Proszę wybrać profil logowania");
+                        alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.account_type_empty));
                         errorsCount += 1;
                     }
                 }
@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(nextScreen);
                         finish(); // call this to finish the current activity
                     } else {
-                        alertWindow.showAlertWindow(LoginActivity.this, null, "Takie konto nie istnieje");
+                        alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.account_not_existing));
                     }
                 }
             }

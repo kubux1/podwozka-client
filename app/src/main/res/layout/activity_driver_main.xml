@@ -20,7 +20,7 @@
             android:id="@+id/newTravelButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Zaplanuj podróż"
+            android:text="@string/plan_trip"
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="277dp" />
 
@@ -28,7 +28,7 @@
             android:id="@+id/travelsHistoryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Twoje podróże"
+            android:text="@string/trip_history"
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="277dp" />
 
@@ -36,7 +36,7 @@
             android:id="@+id/accountInformationButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Twoje konto"
+            android:text="@string/user_account_info"
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="277dp" />
 
@@ -44,7 +44,7 @@
             android:id="@+id/logOutButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Wyloguj się"
+            android:text="@string/login_out"
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="277dp" />
 

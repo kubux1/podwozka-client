@@ -20,7 +20,7 @@
             android:id="@+id/editTravel"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:text="Edytuj podróż"
+            android:text="@string/edit_travel"
             tools:layout_editor_absoluteX="58dp"
             tools:layout_editor_absoluteY="24dp" />
 
@@ -28,7 +28,7 @@
             android:id="@+id/passangersInfo"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:text="Oczekujący pasażerowie"
+            android:text="@string/signed_up_passengers"
             tools:layout_editor_absoluteX="58dp"
             tools:layout_editor_absoluteY="24dp" />
 
@@ -36,7 +36,7 @@
             android:id="@+id/cancelTravel"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:text="Anuluj podróż"
+            android:text="@string/cancel_travel"
             tools:layout_editor_absoluteX="58dp"
             tools:layout_editor_absoluteY="24dp" />
     </LinearLayout>

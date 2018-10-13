@@ -2,21 +2,9 @@
 
     import android.os.Parcel;
     import android.os.Parcelable;
-
     import org.apache.http.NameValuePair;
-    import org.apache.http.message.BasicNameValuePair;
-    import org.json.JSONException;
-    import org.json.simple.JSONArray;
-    import org.json.simple.JSONObject;
-    import org.json.simple.parser.JSONParser;
-
-    import java.io.InputStream;
-    import java.lang.reflect.Field;
-    import java.time.Instant;
     import java.util.ArrayList;
     import java.util.List;
-    import java.util.Scanner;
-
     import podwozka.podwozka.Driver.DriverMainActivity;
     import podwozka.podwozka.entity.HttpCommands;
 

@@ -37,15 +37,15 @@ public class DriverTravelEditorActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(DriverTravelEditorActivity.this);
 
-                builder.setMessage("Czy napewno chcesz anulować podróż?");
+                builder.setMessage(getResources().getString(R.string.cancel_trip_confirmation));
 
-                builder.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
                         int httpResponse = travel.deleteTravel(travel.getTravelId());
                         if(httpResponse == 200){
                             PopUpWindows successWindow = new PopUpWindows();
-                            successWindow.showAlertWindow(DriverTravelEditorActivity.this, null, "Podróż usunięta");
+                            successWindow.showAlertWindow(DriverTravelEditorActivity.this, null, getResources().getString(R.string.travel_canceled));
                             Intent nextScreen = new Intent(DriverTravelEditorActivity.this, DriverBrowseTravels.class);
                             startActivity(nextScreen);
                             finish();
@@ -54,7 +54,7 @@ public class DriverTravelEditorActivity extends AppCompatActivity {
                     }
                 });
 
-                builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

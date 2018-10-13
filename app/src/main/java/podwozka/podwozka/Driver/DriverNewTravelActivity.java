@@ -2,125 +2,111 @@ package podwozka.podwozka.Driver;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Calendar;
-import java.util.Scanner;
 
 import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
-import settings.ConnectionSettings;
-
-import static podwozka.podwozka.LoginActivity.user;
 
 
 public class DriverNewTravelActivity extends AppCompatActivity {
 
-    private DatePicker datePicker;
-    private Calendar calendar;
-    private TextView dateView, timeView;
-    private int year, month, day;
-    private String format = "";
-    private TimePicker timePicker1;
+    private static TextView pickedTime;
+    private static TextView pickedDate;
 
-    @SuppressWarnings("deprecation")
-    public void setDate(View view) {
-        showDialog(999);
-        Toast.makeText(getApplicationContext(), "ca",
-                Toast.LENGTH_SHORT)
-                .show();
-    }
+    // Date dialog
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        // TODO Auto-generated method stub
-        if (id == 999) {
-            return new DatePickerDialog(this,
-                    myDateListener, year, month, day);
-        }
-        return null;
-    }
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
 
-    private DatePickerDialog.OnDateSetListener myDateListener = new
-            DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker arg0,
-                                      int arg1, int arg2, int arg3) {
-                    // TODO Auto-generated method stub
-                    // arg1 = year
-                    // arg2 = month
-                    // arg3 = day
-                    showDate(arg1, arg2+1, arg3);
-                }
-            };
-
-    private void showDate(int year, int month, int day) {
-        dateView.setText(new StringBuilder().append(day).append("/")
-                .append(month).append("/").append(year));
-    }
-
-    public void setTime(View view) {
-        int hour = timePicker1.getCurrentHour();
-        int min = timePicker1.getCurrentMinute();
-        showTime(hour, min);
-    }
-
-    public void showTime(int hour, int min) {
-        if (hour == 0) {
-            hour += 12;
-            format = "AM";
-        } else if (hour == 12) {
-            format = "PM";
-        } else if (hour > 12) {
-            hour -= 12;
-            format = "PM";
-        } else {
-            format = "AM";
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, year, month, day);
         }
 
-        timeView.setText(new StringBuilder().append(hour).append(" : ").append(min)
-                .append(" ").append(format));
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            pickedDate.setText(new StringBuilder().append(day).append("-")
+                    .append(month).append("-").append(year));
+        }
+    }
+
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+
+    // Time dialog
+    public static class TimePickerFragment extends DialogFragment
+            implements TimePickerDialog.OnTimeSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current time as the default values for the picker
+            final Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+
+            // Create a new instance of TimePickerDialog and return it
+            return new TimePickerDialog(getActivity(), this, hour, minute,
+                    DateFormat.is24HourFormat(getActivity()));
+        }
+
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            pickedTime.setText(new StringBuilder().append(hourOfDay).append(":")
+                    .append(minute));
+
+        }
+    }
+
+    public void showTimePickerDialog(View v) {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_new_travel);
-/*
-        dateView = (TextView) findViewById(R.id.textView3);
-        calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
-
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-        showDate(year, month+1, day);
-
-
-        timePicker1 = (TimePicker) findViewById(R.id.timePicker1);
-        timeView = (TextView) findViewById(R.id.textView10);
-        calendar = Calendar.getInstance();
-
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int min = calendar.get(Calendar.MINUTE);
-        showTime(hour, min);
-*/
         Button btnNextScreen = (Button) findViewById(R.id.submitNewTravelButton);
         Button reversePlacesButton = (Button) findViewById(R.id.reverseTravelPlaces);
+        pickedDate = (TextView) findViewById(R.id.pickedDate);
+        pickedTime = (TextView) findViewById(R.id.pickedTime);
+        final NumberPicker np = (NumberPicker) findViewById(R.id.passengerCount);
 
-        btnNextScreen.setText("Zatwierdź");
+        //Set the minimum value of NumberPicker
+        np.setMinValue(0);
+        //Specify the maximum value/number of NumberPicker
+        np.setMaxValue(10);
+
+        //Set a value change listener for NumberPicker
+        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+                //Display the newly selected number from picker
+            }
+        });
 
         btnNextScreen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -137,46 +123,25 @@ public class DriverNewTravelActivity extends AppCompatActivity {
                 EditText endTravelPlace = (EditText) findViewById(R.id.endTravelPlace);
                 String endTravelPlaceMessage = endTravelPlace.getText().toString();
 
-                EditText pickUpTime = (EditText) findViewById(R.id.pickUpTime);
-                String pickUpTimeMessage = pickUpTime.getText().toString();
-
-                EditText pickUpDate = (EditText) findViewById(R.id.pickUpDate);
+                TextView pickUpDate = (TextView) findViewById(R.id.pickedDate);
                 String pickUpDateMessage = pickUpDate.getText().toString();
 
-                EditText maxPassengers = (EditText) findViewById(R.id.maxPassengers);
-                String maxPassengersMessage = maxPassengers.getText().toString();
+                TextView pickUpTime = (TextView) findViewById(R.id.pickUpTime);
+                String pickUpTimeMessage = pickUpTime.getText().toString();
 
                 if (startTravelPlaceMessage.isEmpty())
                 {
-                    alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, "Proszę podać adres początkowy");
+                    alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, getResources().getString(R.string.start_place_empty));
                     noErrors = false;
                 }
                 else if (endTravelPlaceMessage.isEmpty())
                 {
-                    alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, "Proszę podać adres końcowy");
+                    alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, getResources().getString(R.string.end_place_empty));
                     noErrors = false;
                 }
-                else if (pickUpTimeMessage.isEmpty())
-                {
-                    alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, "Proszę podać godzinę wyjazdu");
-                    noErrors = false;
-                }
-                else if (maxPassengersMessage.isEmpty())
-                {
-                    alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, "Proszę podać maksymalną liczbę pasażerów jaką możesz zabrać");
-                    noErrors = false;
-                }
-                else if (pickUpDateMessage.isEmpty())
-                {
-                    alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, "Proszę podać datę wyjazdu");
-                    noErrors = false;
-                }
-                else if(!maxPassengersMessage.matches("[0-9]+")) {
-                    alertWindow.showAlertWindow(DriverNewTravelActivity.this, null, "Proszę podać tylko liczby w polu Maksymalna Liczba Pasażerów");
-                    noErrors = false;
-                }
+
                 if(noErrors == true) {
-                DriverTravel newTravel = new DriverTravel("user", startTravelPlaceMessage, endTravelPlaceMessage, (pickUpDateMessage+"T"+pickUpTimeMessage), maxPassengersMessage);
+                DriverTravel newTravel = new DriverTravel("user", startTravelPlaceMessage, endTravelPlaceMessage, (pickUpDateMessage+"T"+pickUpTimeMessage), Integer.toString(np.getValue()));
                     httpResponse = newTravel.postNewTravel(newTravel);
                     if(httpResponse == 201) {
                         startActivity(nextScreen);

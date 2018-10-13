@@ -1,5 +1,6 @@
 package podwozka.podwozka.Driver;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import podwozka.podwozka.R;
 public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrowseTravelsAdapter.MyViewHolder> {
 
     private List<DriverTravel> travelsList;
+    public Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, date, freeSpace;
@@ -29,8 +31,9 @@ public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrows
     }
 
 
-    public DriverBrowseTravelsAdapter(List<DriverTravel> travelsList) {
+    public DriverBrowseTravelsAdapter(List<DriverTravel> travelsList, Context context) {
         this.travelsList = travelsList;
+        this.context = context;
     }
 
     @Override
@@ -46,7 +49,7 @@ public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrows
         DriverTravel travel = travelsList.get(position);
         String title = travel.getStartPlace() + " - " + travel.getEndPlace();
         holder.title.setText(title);
-        String startDatetime = "Czas odjazdu: " + travel.getStartDatetime();
+        String startDatetime = this.context.getResources().getString(R.string.start_place)+ ": " + travel.getStartDatetime();
         holder.date.setText(startDatetime);
         int freeSpace = 0;
         try{
@@ -59,7 +62,7 @@ public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrows
 
 
 
-        String freeSpaceMessage = "Wolne miejsca: " + freeSpace;
+        String freeSpaceMessage = this.context.getResources().getString(R.string.free_seats) + ": " + freeSpace;
         holder.freeSpace.setText(freeSpaceMessage);
     }
 

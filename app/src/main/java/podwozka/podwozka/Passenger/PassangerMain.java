@@ -64,9 +64,9 @@ public class PassangerMain extends AppCompatActivity {
     public void logOut(){
         AlertDialog.Builder builder = new AlertDialog.Builder(PassangerMain.this);
 
-        builder.setMessage("Czy napewno chcesz sie wylogowac?");
+        builder.setMessage(getResources().getString(R.string.log_out_confirmation));
 
-        builder.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
                 Intent nextScreen = new Intent(PassangerMain.this, MainActivity.class);
@@ -76,7 +76,7 @@ public class PassangerMain extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {

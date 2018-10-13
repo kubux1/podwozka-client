@@ -47,7 +47,7 @@ public class DriverBrowseTravels extends AppCompatActivity {
                 })
         );
 
-        mAdapter = new DriverBrowseTravelsAdapter(travelList);
+        mAdapter = new DriverBrowseTravelsAdapter(travelList, getApplicationContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

@@ -19,7 +19,7 @@
             android:layout_width="334dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Skąd chcesz jechać?"
+            android:hint="@string/start_place"
             android:inputType="textPersonName"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="251dp" />
@@ -29,7 +29,7 @@
             android:layout_width="335dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Dokąd chcesz pojechać?"
+            android:hint="@string/end_place"
             android:inputType="textPersonName" />
 
         <EditText

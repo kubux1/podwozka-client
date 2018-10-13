@@ -50,10 +50,10 @@ public class PassengerFindTravels extends AppCompatActivity {
                 String howManyPeopleToPickUpMessage = howManyPeopleToPickUp.getText().toString();
 
                 if (startTravelPlaceMessage.isEmpty()) {
-                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, "Proszę podać adres początkowy");
+                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, getResources().getString(R.string.start_place_empty));
                     noErrors = false;
                 } else if (endTravelPlaceMessage.isEmpty()) {
-                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, "Proszę podać adres końcowy");
+                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, getResources().getString(R.string.end_place_empty));
                     noErrors = false;
                 } else if (pickUpTimeMessage.isEmpty()) {
                     alertWindow.showAlertWindow(PassengerFindTravels.this, null, "Proszę podać planowaną godzinę odebrania");

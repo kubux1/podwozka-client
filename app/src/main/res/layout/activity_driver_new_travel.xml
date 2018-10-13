@@ -4,7 +4,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".Passenger.NewTravelActivity">
+tools:context=".Driver.DriverNewTravelActivity">
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -13,22 +13,12 @@ tools:context=".Passenger.NewTravelActivity">
     tools:layout_editor_absoluteX="98dp"
     tools:layout_editor_absoluteY="0dp">
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
-        android:onClick="setDate"
-        android:text="@string/date_button_set" />
-
     <EditText
         android:id="@+id/startTravelPlace"
         android:layout_width="334dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Skąd chcesz jechać?"
+        android:hint="@string/start_place"
         android:inputType="textPersonName"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="251dp" />
@@ -38,48 +28,70 @@ tools:context=".Passenger.NewTravelActivity">
         android:layout_width="335dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Dokąd chcesz pojechać?"
+        android:hint="@string/end_place"
         android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/pickUpDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Kiedy chcesz wyjechać?"
-        android:inputType="textPersonName" />
-
-    <EditText
-        android:id="@+id/pickUpTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="O której chcesz wyjechać?"
-        android:text="@string/date_selected"
-        android:inputType="textPersonName" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/pickedDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:text="@string/time_selected"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:ems="10"
+        android:text="@string/start_date" />
 
-    <EditText
-        android:id="@+id/maxPassengers"
+    <Button
+        android:id="@+id/setDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="showDatePickerDialog"
+        android:text="@string/set_date" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/pickedTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Ile możesz zabrać maksymalnie pasażerów?"
+        android:text="@string/start_time"
         android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/setTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="showTimePickerDialog"
+        android:text="@string/set_time" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:ems="10"
+        android:text="@string/passengers_max"/>
+
+    <NumberPicker
+        android:id="@+id/passengerCount"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp" />
 
     <Button
         android:id="@+id/submitNewTravelButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/submit_trip"
         tools:layout_editor_absoluteX="161dp"
         tools:layout_editor_absoluteY="277dp" />
 
