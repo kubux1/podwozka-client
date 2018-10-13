@@ -13,11 +13,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button loginButton = (Button) findViewById(R.id.loginButton);
-        loginButton.setText("Logowanie");
+        Button loginButton = findViewById(R.id.loginButton);
 
-        Button registerButton = (Button) findViewById(R.id.registerButton);
-        registerButton.setText("Rejestracja");
+        Button registerButton = findViewById(R.id.registerButton);
+
+        Button travelButton = findViewById(R.id.travelButton);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -33,6 +33,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 //Starting a new Intent
                 Intent nextScreen = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(nextScreen);
+            }
+        });
+
+        travelButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                //Starting a new Intent
+                Intent nextScreen = new Intent(getApplicationContext(), PickPlace.class);
                 startActivity(nextScreen);
             }
         });

@@ -20,7 +20,7 @@
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:text="@loginButton"
+            android:text="@string/login_button"
             tools:layout_editor_absoluteX="58dp"
             tools:layout_editor_absoluteY="24dp" />
 
@@ -28,7 +28,15 @@
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:text="@registerButton"
+            android:text="@string/register_button"
+            tools:layout_editor_absoluteX="58dp"
+            tools:layout_editor_absoluteY="24dp" />
+
+        <Button
+            android:id="@+id/travelButton"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:text="@string/map"
             tools:layout_editor_absoluteX="58dp"
             tools:layout_editor_absoluteY="24dp" />
     </LinearLayout>
