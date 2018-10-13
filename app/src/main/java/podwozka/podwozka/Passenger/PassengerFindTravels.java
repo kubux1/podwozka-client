@@ -18,11 +18,13 @@ import java.util.Calendar;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import podwozka.podwozka.Passenger.entity.PassangerTravel;
+import static podwozka.podwozka.LoginActivity.user;
 
 
 public class PassengerFindTravels extends AppCompatActivity {
     private static TextView pickedTime;
     private static TextView pickedDate;
+    private static String date;
 
     // Date dialog
     public static class DatePickerFragment extends DialogFragment
@@ -42,6 +44,18 @@ public class PassengerFindTravels extends AppCompatActivity {
 
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
+            String monthInString = Integer.toString(month);
+            String dayInString = Integer.toString(day);
+
+            // Make sure there will be alawys two letters for month and day
+            if(month < 10)
+                monthInString = "0" + monthInString;
+            if (day < 10)
+                dayInString = "0" + dayInString;
+            // Date in YYYY-MM-DD format only accepted by server
+            date = Integer.toString(year) + "-" + monthInString + "-" + dayInString;
+
+            // Date in DD-MM-YYYY format which is more convenient for a user
             pickedDate.setText(new StringBuilder().append(day).append("-")
                     .append(month).append("-").append(year));
         }
@@ -85,7 +99,7 @@ public class PassengerFindTravels extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver_new_travel);
+        setContentView(R.layout.activity_passanger_new_travel);
         Button btnNextScreen = (Button) findViewById(R.id.submitNewTravelButton);
         Button reversePlacesButton = (Button) findViewById(R.id.reverseTravelPlaces);
         pickedDate = (TextView) findViewById(R.id.pickedDate);
@@ -96,22 +110,12 @@ public class PassengerFindTravels extends AppCompatActivity {
             public void onClick(View arg0) {
                 PopUpWindows alertWindow = new PopUpWindows();
                 boolean noErrors = true;
-                int httpResponse;
-
-                //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), PassengerFindTravels.class);
 
                 EditText startTravelPlace = (EditText) findViewById(R.id.startTravelPlace);
                 String startTravelPlaceMessage = startTravelPlace.getText().toString();
 
                 EditText endTravelPlace = (EditText) findViewById(R.id.endTravelPlace);
                 String endTravelPlaceMessage = endTravelPlace.getText().toString();
-
-                TextView pickUpDate = (TextView) findViewById(R.id.pickedDate);
-                String pickUpDateMessage = pickUpDate.getText().toString();
-
-                TextView pickUpTime = (TextView) findViewById(R.id.pickUpTime);
-                String pickUpTimeMessage = pickUpTime.getText().toString();
 
                 if (startTravelPlaceMessage.isEmpty())
                 {
@@ -125,9 +129,13 @@ public class PassengerFindTravels extends AppCompatActivity {
                 }
 
                 if(noErrors == true) {
-                    PassangerTravel passengerTravel = new PassangerTravel(null, startTravelPlaceMessage, endTravelPlaceMessage, "2016-03-16T13:00", null);
+                    PassangerTravel passengerTravel = new PassangerTravel(user.getLogin(),
+                            startTravelPlaceMessage,
+                            endTravelPlaceMessage,
+                            (date+"T"+pickedTime.getText().toString()),
+                            null);
                     travelsFound = passengerTravel.findMatchingTravels(passengerTravel);
-
+                    Intent nextScreen = new Intent(getApplicationContext(), PassengerBrowseTravels.class);
                     nextScreen.putExtra("TRAVELS", travelsFound);
                     startActivity(nextScreen);
                 }

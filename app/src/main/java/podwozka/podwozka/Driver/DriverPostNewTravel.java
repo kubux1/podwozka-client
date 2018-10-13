@@ -48,8 +48,17 @@ public class DriverPostNewTravel extends AppCompatActivity {
 
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            // Date in YYYY-MM-DD format which will be sent to server
-            date = Integer.toString(year) + "-" + Integer.toString(month) + "-" + Integer.toString(day);
+            String monthInString = Integer.toString(month);
+            String dayInString = Integer.toString(day);
+
+            // Make sure there will be alawys two letters for month and day
+            if(month < 10)
+                monthInString = "0" + monthInString;
+            if (day < 10)
+                dayInString = "0" + dayInString;
+            // Date in YYYY-MM-DD format only accepted by server
+            date = Integer.toString(year) + "-" + monthInString + "-" + dayInString;
+
             // Date in DD-MM-YYYY format which is more convenient for a user
             pickedDate.setText(new StringBuilder().append(day).append("-")
                     .append(month).append("-").append(year));
