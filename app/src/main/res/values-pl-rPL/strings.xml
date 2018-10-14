@@ -44,4 +44,12 @@
     <string name="login_in">Zaloguj się</string>
     <string name="passenger">Pasażer</string>
     <string name="driver">Kierowca</string>
+    <string name="surname_empty">Prosze podać nazwisko</string>
+    <string name="name_empty">Proszę podać imię</string>
+    <string name="user_surname">Nazwisko</string>
+    <string name="user_name">Imię</string>
+    <string name="passwords_diffrent">Podane hasła są różne</string>
+    <string name="password_retype_empty">Proszę podać powtórzone hasło</string>
+    <string name="user_password_check">Powtórzone hasło</string>
+    <string name="signed_up_passengers">Zapisani pasażerowie</string>
 </resources>
