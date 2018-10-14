@@ -100,10 +100,10 @@ public class PassengerFindTravels extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passanger_new_travel);
-        Button btnNextScreen = (Button) findViewById(R.id.submitNewTravelButton);
-        Button reversePlacesButton = (Button) findViewById(R.id.reverseTravelPlaces);
-        pickedDate = (TextView) findViewById(R.id.pickedDate);
-        pickedTime = (TextView) findViewById(R.id.pickedTime);
+        Button btnNextScreen = findViewById(R.id.submitNewTravelButton);
+        Button reversePlacesButton = findViewById(R.id.reverseTravelPlaces);
+        pickedDate = findViewById(R.id.pickedDate);
+        pickedTime = findViewById(R.id.pickedTime);
 
 
         btnNextScreen.setOnClickListener(new View.OnClickListener() {
@@ -111,10 +111,10 @@ public class PassengerFindTravels extends AppCompatActivity {
                 PopUpWindows alertWindow = new PopUpWindows();
                 boolean noErrors = true;
 
-                EditText startTravelPlace = (EditText) findViewById(R.id.startTravelPlace);
+                EditText startTravelPlace = findViewById(R.id.startTravelPlace);
                 String startTravelPlaceMessage = startTravelPlace.getText().toString();
 
-                EditText endTravelPlace = (EditText) findViewById(R.id.endTravelPlace);
+                EditText endTravelPlace = findViewById(R.id.endTravelPlace);
                 String endTravelPlaceMessage = endTravelPlace.getText().toString();
 
                 if (startTravelPlaceMessage.isEmpty())
@@ -147,10 +147,10 @@ public class PassengerFindTravels extends AppCompatActivity {
 
             public void onClick(View arg0) {
                 //Starting a new Inten
-                EditText startTravelPlace = (EditText) findViewById(R.id.startTravelPlace);
+                EditText startTravelPlace = findViewById(R.id.startTravelPlace);
                 String startTravelPlaceMessage = startTravelPlace.getText().toString();
 
-                EditText endTravelPlace = (EditText) findViewById(R.id.endTravelPlace);
+                EditText endTravelPlace = findViewById(R.id.endTravelPlace);
                 String endTravelPlaceMessage = endTravelPlace.getText().toString();
 
                 startTravelPlace.setText(endTravelPlaceMessage);

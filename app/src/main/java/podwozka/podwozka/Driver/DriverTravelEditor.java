@@ -20,9 +20,9 @@ public class DriverTravelEditor extends AppCompatActivity {
         setContentView(R.layout.activity_driver_travel_editor);
 
         Intent i = getIntent();
-        final DriverTravel travel = (DriverTravel) i.getParcelableExtra("TRAVEL");
+        final DriverTravel travel = i.getParcelableExtra("TRAVEL");
 
-        Button editTravel = (Button) findViewById(R.id.editTravel);
+        Button editTravel = findViewById(R.id.editTravel);
         editTravel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 //Starting a new Intent
@@ -32,7 +32,7 @@ public class DriverTravelEditor extends AppCompatActivity {
             }
         });
 
-        Button cancelTravel = (Button) findViewById(R.id.cancelTravel);
+        Button cancelTravel = findViewById(R.id.cancelTravel);
         cancelTravel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(DriverTravelEditor.this);

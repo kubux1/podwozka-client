@@ -16,7 +16,12 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 
 import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.PopUpWindows;
@@ -51,17 +56,17 @@ public class DriverPostNewTravel extends AppCompatActivity {
             String monthInString = Integer.toString(month);
             String dayInString = Integer.toString(day);
 
-            // Make sure there will be alawys two letters for month and day
             if(month < 10)
                 monthInString = "0" + monthInString;
             if (day < 10)
                 dayInString = "0" + dayInString;
-            // Date in YYYY-MM-DD format only accepted by server
-            date = Integer.toString(year) + "-" + monthInString + "-" + dayInString;
 
             // Date in DD-MM-YYYY format which is more convenient for a user
-            pickedDate.setText(new StringBuilder().append(day).append("-")
-                    .append(month).append("-").append(year));
+            pickedDate.setText(new StringBuilder().append(dayInString).append("-")
+                    .append(monthInString).append("-").append(Integer.toString(year)));
+
+            // Date in YYYY-MM-DD format only accepted by server
+            date = Integer.toString(year) + "-" + monthInString + "-" + dayInString;
         }
     }
 
@@ -104,11 +109,11 @@ public class DriverPostNewTravel extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_new_travel);
 
-        Button btnNextScreen = (Button) findViewById(R.id.submitNewTravelButton);
-        Button reversePlacesButton = (Button) findViewById(R.id.reverseTravelPlaces);
-        pickedDate = (TextView) findViewById(R.id.pickedDate);
-        pickedTime = (TextView) findViewById(R.id.pickedTime);
-        final NumberPicker np = (NumberPicker) findViewById(R.id.passengerCount);
+        Button btnNextScreen = findViewById(R.id.submitNewTravelButton);
+        Button reversePlacesButton = findViewById(R.id.reverseTravelPlaces);
+        pickedDate =  findViewById(R.id.pickedDate);
+        pickedTime = findViewById(R.id.pickedTime);
+        final NumberPicker np = findViewById(R.id.passengerCount);
 
         np.setMinValue(0);
         np.setMaxValue(10);
@@ -119,10 +124,10 @@ public class DriverPostNewTravel extends AppCompatActivity {
                 boolean noErrors = true;
                 int httpResponse;
 
-                EditText startTravelPlace = (EditText) findViewById(R.id.startTravelPlace);
+                EditText startTravelPlace = findViewById(R.id.startTravelPlace);
                 String startTravelPlaceMessage = startTravelPlace.getText().toString();
 
-                EditText endTravelPlace = (EditText) findViewById(R.id.endTravelPlace);
+                EditText endTravelPlace = findViewById(R.id.endTravelPlace);
                 String endTravelPlaceMessage = endTravelPlace.getText().toString();
 
 
@@ -138,7 +143,12 @@ public class DriverPostNewTravel extends AppCompatActivity {
                 }
 
                 if(noErrors == true) {
-                DriverTravel newTravel = new DriverTravel(user.getLogin(), startTravelPlaceMessage, endTravelPlaceMessage, (date+"T"+pickedTime.getText().toString()), Integer.toString(np.getValue()));
+                DriverTravel newTravel = new DriverTravel(user.getLogin(),
+                        startTravelPlaceMessage,
+                        endTravelPlaceMessage,
+                        (date+"T"+pickedTime.getText().toString()),
+                        Integer.toString(np.getValue()));
+
                     httpResponse = newTravel.postNewTravel(newTravel);
                     if(httpResponse == 201) {
                         Intent nextScreen = new Intent(getApplicationContext(), DriverPostNewTravel.class);
@@ -153,10 +163,10 @@ public class DriverPostNewTravel extends AppCompatActivity {
 
             public void onClick(View arg0) {
                 //Starting a new Inten
-                EditText startTravelPlace = (EditText) findViewById(R.id.startTravelPlace);
+                EditText startTravelPlace = findViewById(R.id.startTravelPlace);
                 String startTravelPlaceMessage = startTravelPlace.getText().toString();
 
-                EditText endTravelPlace = (EditText) findViewById(R.id.endTravelPlace);
+                EditText endTravelPlace = findViewById(R.id.endTravelPlace);
                 String endTravelPlaceMessage = endTravelPlace.getText().toString();
 
                 startTravelPlace.setText(endTravelPlaceMessage);

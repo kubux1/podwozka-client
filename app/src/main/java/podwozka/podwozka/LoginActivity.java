@@ -31,14 +31,14 @@ public class LoginActivity extends AppCompatActivity {
                 int errorsCount = 0;
                 int httpResponseCode;
 
-                EditText login = (EditText) findViewById(R.id.loginField);
+                EditText login = findViewById(R.id.loginField);
                 String loginMessage = login.getText().toString();
 
-                EditText password = (EditText) findViewById(R.id.passwordField);
+                EditText password = findViewById(R.id.passwordField);
                 String passwordMessage = password.getText().toString();
 
-                RadioButton driverRadioButton = (RadioButton) findViewById(R.id.driverRadioButton);
-                RadioButton passangerRadioButton = (RadioButton) findViewById(R.id.passangerRadioButton);
+                RadioButton driverRadioButton = findViewById(R.id.driverRadioButton);
+                RadioButton passangerRadioButton = findViewById(R.id.passangerRadioButton);
 
                 if (loginMessage.isEmpty()) {
                     alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.login_empty));

@@ -47,13 +47,13 @@ public class RegisterActivity extends AppCompatActivity {
                 //Starting a new Intent
                 Intent nextScreen = new Intent(getApplicationContext(), MainActivity.class);
 
-                EditText login = (EditText) findViewById(R.id.loginField);
+                EditText login = findViewById(R.id.loginField);
                 String loginMessage = login.getText().toString();
 
-                EditText password = (EditText) findViewById(R.id.passwordField);
+                EditText password = findViewById(R.id.passwordField);
                 String passwordMessage = password.getText().toString();
 
-                EditText emailAddress = (EditText) findViewById(R.id.emailAddressField);
+                EditText emailAddress = findViewById(R.id.emailAddressField);
                 String emailAddressMessage = emailAddress.getText().toString();
 
                 if (emailAddressMessage.isEmpty())
