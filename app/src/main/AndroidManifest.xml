@@ -30,12 +30,12 @@
         <activity android:name=".Passenger.PassengerFindTravels"></activity>
         <activity android:name=".Passenger.PassengerBrowseTravels"></activity>
         <activity android:name=".Passenger.PassengerTravelsLog"></activity>
-        <activity android:name=".Driver.DriverMainActivity"></activity>
-        <activity android:name=".Driver.DriverNewTravelActivity"></activity>
-        <activity android:name=".Driver.DriverCarInfoActivity"></activity>
+        <activity android:name=".Driver.DriverMain"></activity>
+        <activity android:name=".Driver.DriverPostNewTravel"></activity>
+        <activity android:name=".Driver.DriverCarInfo"></activity>
         <activity android:name=".Driver.DriverBrowseTravels"></activity>
-        <activity android:name=".Driver.DriverTravelEditorActivity"></activity>
-        <activity android:name=".Driver.DriverEditTravelInfoActivity"></activity>
+        <activity android:name=".Driver.DriverTravelEditor"></activity>
+        <activity android:name=".Driver.DriverEditTravelInfo"></activity>
         <activity android:name=".PickPlace"></activity>
     </application>
 

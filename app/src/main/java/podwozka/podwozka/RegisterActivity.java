@@ -47,26 +47,26 @@ public class RegisterActivity extends AppCompatActivity {
                 //Starting a new Intent
                 Intent nextScreen = new Intent(getApplicationContext(), MainActivity.class);
 
-                EditText login = (EditText) findViewById(R.id.loginField);
+                EditText login = findViewById(R.id.loginField);
                 String loginMessage = login.getText().toString();
 
-                EditText password = (EditText) findViewById(R.id.passwordField);
+                EditText password = findViewById(R.id.passwordField);
                 String passwordMessage = password.getText().toString();
 
-                EditText emailAddress = (EditText) findViewById(R.id.emailAddressField);
+                EditText emailAddress = findViewById(R.id.emailAddressField);
                 String emailAddressMessage = emailAddress.getText().toString();
 
                 if (emailAddressMessage.isEmpty())
                 {
-                    alertWindow.showAlertWindow(RegisterActivity.this, null, "Proszę podać adres email");
+                    alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.email_empty));
                 }
                 else if (loginMessage.isEmpty())
                 {
-                    alertWindow.showAlertWindow(RegisterActivity.this, null, "Proszę podać login");
+                    alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.login_empty));
                 }
                 else if (passwordMessage.isEmpty())
                 {
-                    alertWindow.showAlertWindow(RegisterActivity.this, null, "Proszę podać hasło");
+                    alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.password_empty));
                 }
                 else
                 {
@@ -77,14 +77,14 @@ public class RegisterActivity extends AppCompatActivity {
                         user = new User();
                         httpResponseCode = user.registerUser(loginMessage, passwordMessage, emailAddressMessage);
                         if(httpResponseCode == 201) {
-                            alertWindow.showAlertWindow(RegisterActivity.this, null, "Udało zarejestrować się konto");
+                            alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.registration_successful));
                             startActivity(nextScreen);
                         } else if (httpResponseCode == 400){
-                            alertWindow.showAlertWindow(RegisterActivity.this, null, "Konto z podanym adresem email lub login już istnieje");
+                            alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.email_already_exists));
                         }
                     } else
                     {
-                        alertWindow.showAlertWindow(RegisterActivity.this, null, "Proszę podać istniejący adres email");
+                        alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.email_not_valid));
                     }
                 }
             }

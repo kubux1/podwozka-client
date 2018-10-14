@@ -10,7 +10,7 @@ import android.widget.EditText;
 import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.R;
 
-public class DriverEditTravelInfoActivity extends AppCompatActivity {
+public class DriverEditTravelInfo extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,22 +18,22 @@ public class DriverEditTravelInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_driver_edit_travel_info);
 
         Intent i = getIntent();
-        final DriverTravel travel = (DriverTravel) i.getParcelableExtra("TRAVEL");
+        final DriverTravel travel = i.getParcelableExtra("TRAVEL");
 
 
-        final EditText startPlace = (EditText) findViewById(R.id.startTravelPlace);
+        final EditText startPlace = findViewById(R.id.startTravelPlace);
         startPlace.setText(travel.getStartPlace());
 
-        final EditText endPlace = (EditText) findViewById(R.id.endTravelPlace);
+        final EditText endPlace = findViewById(R.id.endTravelPlace);
         endPlace.setText(travel.getEndPlace());
 
-        final EditText pickUpTime = (EditText) findViewById(R.id.pickUpTime);
+        final EditText pickUpTime = findViewById(R.id.pickUpTime);
         pickUpTime.setText(travel.getStartDatetime());
 
-        final EditText maxPassengers = (EditText) findViewById(R.id.maxPassengers);
+        final EditText maxPassengers = findViewById(R.id.maxPassengers);
         maxPassengers.setText(travel.getMaxPassengers());
 
-        Button saveChanges = (Button) findViewById(R.id.saveChanges);
+        Button saveChanges = findViewById(R.id.saveChanges);
         saveChanges.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
@@ -45,7 +45,7 @@ public class DriverEditTravelInfoActivity extends AppCompatActivity {
                         pickUpTime.getText().toString(),
                         maxPassengers.getText().toString()));
                 if(httpResponse == 200){
-                    Intent nextScreen = new Intent(DriverEditTravelInfoActivity.this, DriverBrowseTravels.class);
+                    Intent nextScreen = new Intent(DriverEditTravelInfo.this, DriverBrowseTravels.class);
                     startActivity(nextScreen);
                 }
             }
@@ -54,7 +54,7 @@ public class DriverEditTravelInfoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent nextScreen = new Intent(DriverEditTravelInfoActivity.this, DriverTravelEditorActivity.class);
+        Intent nextScreen = new Intent(DriverEditTravelInfo.this, DriverTravelEditor.class);
         startActivity(nextScreen);
         finish();
     }

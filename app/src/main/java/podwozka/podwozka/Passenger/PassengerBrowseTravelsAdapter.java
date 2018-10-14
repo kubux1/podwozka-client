@@ -21,9 +21,9 @@ public class PassengerBrowseTravelsAdapter extends RecyclerView.Adapter<Passenge
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.name);
-            date = (TextView) view.findViewById(R.id.startTime);
-            freeSpace = (TextView) view.findViewById(R.id.freeSpace);
+            title = view.findViewById(R.id.name);
+            date = view.findViewById(R.id.startTime);
+            freeSpace = view.findViewById(R.id.freeSpace);
         }
     }
 

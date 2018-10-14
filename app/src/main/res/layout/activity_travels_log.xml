@@ -13,13 +13,13 @@
         android:id="@+id/currentTravels"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nadchodzące" />
+        android:text="@string/coming_trips" />
 
     <Button
         android:id="@+id/pastTravels"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Przeszłe" />
+        android:text="@string/past_trips" />
     </LinearLayout>
 
     <TextView

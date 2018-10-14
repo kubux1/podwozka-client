@@ -20,7 +20,7 @@
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:text="@string/login_button"
+            android:text="@string/login"
             tools:layout_editor_absoluteX="58dp"
             tools:layout_editor_absoluteY="24dp" />
 
@@ -28,7 +28,7 @@
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:text="@string/register_button"
+            android:text="@string/register"
             tools:layout_editor_absoluteX="58dp"
             tools:layout_editor_absoluteY="24dp" />
 
@@ -39,6 +39,15 @@
             android:text="@string/map"
             tools:layout_editor_absoluteX="58dp"
             tools:layout_editor_absoluteY="24dp" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guidline" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

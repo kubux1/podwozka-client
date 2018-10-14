@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Podwozka</string>
+    <string name="login">Logowanie</string>
+    <string name="register">Rejestracja</string>
+    <string name="map">Mapa</string>
+    <string name="registration_successful">Rejestracja udana</string>
+    <string name="free_seats">Wolne miejsca</string>
+    <string name="account_type_empty">Proszę wybrać typ konta</string>
+    <string name="account_not_existing">Konto z podanym loginem nie istnieje</string>
+    <string name="email_already_exists">Konto z podanym adresem e-mail już istnieje</string>
+    <string name="email_not_valid">Proszę podać poprawny adres e-mail</string>
+    <string name="email_empty">Prosze podać adres e-mail</string>
+    <string name="password_empty">Proszę podać hasło</string>
+    <string name="login_empty">Proszę podać login</string>
+    <string name="past_trips">Przeszłe</string>
+    <string name="coming_trips">Nadchodzące</string>
+    <string name="edit_travel">Edytuj</string>
+    <string name="cancel_travel">Anuluj</string>
+    <string name="sign_up_for_trip_confirmation">Napewno chcesz się zapisać na tę podróż</string>
+    <string name="travel_canceled">Podróż anulowana</string>
+    <string name="user_email">E-mail</string>
+    <string name="user_password">Hasło</string>
+    <string name="user_login">Login</string>
+    <string name="end_place_empty">Proszę podać adres końcowy</string>
+    <string name="start_place_empty">Proszę podać adres początkowy</string>
+    <string name="no">Nie</string>
+    <string name="yes">Tak</string>
+    <string name="cancel_trip_confirmation">Napewno chcesz anulować podróż?</string>
+    <string name="log_out_confirmation">Napewno chcesz sie wylogować?</string>
+    <string name="set_time">Ustaw czas</string>
+    <string name="set_date">Ustaw datę</string>
+    <string name="submit_trip">Zatwierdź podróż</string>
+    <string name="passengers_max">Ilu pasażerów chcesz wziąć?</string>
+    <string name="start_time">Czas odjazdu</string>
+    <string name="start_date">Data odjazdu</string>
+    <string name="end_place">Adres końcowy</string>
+    <string name="start_place">Adres początkowy</string>
+    <string name="user_account_info">Twoje konto</string>
+    <string name="trip_history">Twoja historia</string>
+    <string name="plan_trip">Zaplanuj podróż</string>
+    <string name="register_button">Rejestracja</string>
+    <string name="login_out">Wyloguj się</string>
+    <string name="login_in">Zaloguj się</string>
+    <string name="passenger">Pasażer</string>
+    <string name="driver">Kierowca</string>
+</resources>

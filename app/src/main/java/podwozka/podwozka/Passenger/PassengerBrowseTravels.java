@@ -34,9 +34,9 @@ public class PassengerBrowseTravels extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_travels_list);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
 
-        mAdapter = new DriverBrowseTravelsAdapter(travelList);
+        mAdapter = new DriverBrowseTravelsAdapter(travelList, getApplicationContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -51,9 +51,9 @@ public class PassengerBrowseTravels extends AppCompatActivity {
                         final DriverTravel travel = mAdapter.returnTravel(position);
                         AlertDialog.Builder builder = new AlertDialog.Builder(PassengerBrowseTravels.this);
 
-                        builder.setMessage("Czy napewno chcesz zapisać się na tę podróż?");
+                        builder.setMessage(getResources().getString(R.string.sign_up_for_trip_confirmation));
 
-                        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+                        builder.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -62,7 +62,7 @@ public class PassengerBrowseTravels extends AppCompatActivity {
                             }
                         });
 
-                        builder.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
+                        builder.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int which) {
                                 int httpResponse = travel.signUpForTravel(travel.getTravelId());

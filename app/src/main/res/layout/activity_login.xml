@@ -18,7 +18,7 @@
             android:layout_width="334dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Login"
+            android:hint="@string/user_login"
             android:inputType="textPersonName"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="251dp" />
@@ -28,7 +28,7 @@
             android:layout_width="334dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Hasło"
+            android:hint="@string/user_password"
             android:inputType="textPassword"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="251dp" />
@@ -52,13 +52,13 @@
                     android:id="@+id/passangerRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pasażer" />
+                    android:text="@string/passenger" />
 
                 <RadioButton
                     android:id="@+id/driverRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Kierowca" />
+                    android:text="@string/driver" />
 
             </RadioGroup>
         </LinearLayout>
@@ -72,7 +72,7 @@
                     android:id="@+id/loginButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Zaloguj się"
+                    android:text="@string/login_in"
                     tools:layout_editor_absoluteX="161dp"
                     tools:layout_editor_absoluteY="277dp" />
 

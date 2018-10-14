@@ -1,6 +1,6 @@
 package podwozka.podwozka;
 
-import podwozka.podwozka.Driver.DriverMainActivity;
+import podwozka.podwozka.Driver.DriverMain;
 import podwozka.podwozka.Passenger.PassangerMain;
 
 import android.content.Intent;
@@ -11,14 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Scanner;
-
-import podwozka.podwozka.entity.HttpCommands;
 import podwozka.podwozka.entity.User;
-import settings.ConnectionSettings;
 
 public class LoginActivity extends AppCompatActivity {
     public static User user;
@@ -38,30 +31,30 @@ public class LoginActivity extends AppCompatActivity {
                 int errorsCount = 0;
                 int httpResponseCode;
 
-                EditText login = (EditText) findViewById(R.id.loginField);
+                EditText login = findViewById(R.id.loginField);
                 String loginMessage = login.getText().toString();
 
-                EditText password = (EditText) findViewById(R.id.passwordField);
+                EditText password = findViewById(R.id.passwordField);
                 String passwordMessage = password.getText().toString();
 
-                RadioButton driverRadioButton = (RadioButton) findViewById(R.id.driverRadioButton);
-                RadioButton passangerRadioButton = (RadioButton) findViewById(R.id.passangerRadioButton);
+                RadioButton driverRadioButton = findViewById(R.id.driverRadioButton);
+                RadioButton passangerRadioButton = findViewById(R.id.passangerRadioButton);
 
                 if (loginMessage.isEmpty()) {
-                    alertWindow.showAlertWindow(LoginActivity.this, null, "Proszę podać login");
+                    alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.login_empty));
                     errorsCount += 1;
                 } else if (passwordMessage.isEmpty()) {
-                    alertWindow.showAlertWindow(LoginActivity.this, null, "Proszę podać hasło");
+                    alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.password_empty));
                     errorsCount += 1;
                 } else {
                     if (driverRadioButton.isChecked()) {
                         loginOptionMessage = "Driver";
-                        nextScreen = new Intent(getApplicationContext(), DriverMainActivity.class);
+                        nextScreen = new Intent(getApplicationContext(), DriverMain.class);
                     } else if (passangerRadioButton.isChecked()) {
                         loginOptionMessage = "Passenger";
                         nextScreen = new Intent(getApplicationContext(), PassangerMain.class);
                     } else {
-                        alertWindow.showAlertWindow(LoginActivity.this, null, "Proszę wybrać profil logowania");
+                        alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.account_type_empty));
                         errorsCount += 1;
                     }
                 }
@@ -73,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(nextScreen);
                         finish(); // call this to finish the current activity
                     } else {
-                        alertWindow.showAlertWindow(LoginActivity.this, null, "Takie konto nie istnieje");
+                        alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.account_not_existing));
                     }
                 }
             }

@@ -13,7 +13,7 @@ import android.content.DialogInterface;
 
 import java.util.ArrayList;
 
-public class DriverMainActivity extends AppCompatActivity {
+public class DriverMain extends AppCompatActivity {
     public static ArrayList<DriverTravel> driverTravels = new ArrayList<DriverTravel>();
 
     @Override
@@ -26,7 +26,7 @@ public class DriverMainActivity extends AppCompatActivity {
 
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), DriverNewTravelActivity.class);
+                Intent nextScreen = new Intent(getApplicationContext(), DriverPostNewTravel.class);
                 startActivity(nextScreen);
             }
         });
@@ -64,22 +64,22 @@ public class DriverMainActivity extends AppCompatActivity {
     }
 
     public void logOut(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(DriverMainActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(DriverMain.this);
 
-        builder.setMessage("Czy napewno chcesz sie wylogowac?");
+        builder.setMessage(getResources().getString(R.string.log_out_confirmation));
 
-        builder.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
                 // Do nothing but close the dialog
-                Intent nextScreen = new Intent(DriverMainActivity.this, MainActivity.class);
+                Intent nextScreen = new Intent(DriverMain.this, MainActivity.class);
                 startActivity(nextScreen);
                 finish();
                 dialog.dismiss();
             }
         });
 
-        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
