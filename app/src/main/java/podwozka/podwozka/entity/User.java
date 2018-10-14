@@ -53,7 +53,7 @@ public class User {
         return httpResponseCode;
     }
 
-    public int registerUser(String login, String password, String email)
+    public int registerUser(String name, String surname, String login, String password, String email)
     {
         JSONObject jsonObject = new JSONObject();
         int httpResponseCode = 0;
@@ -62,14 +62,11 @@ public class User {
         // Convert register data into Json
         try {
             jsonObject.put("id", jsonObject.NULL);
+            jsonObject.put("firstName", name);
+            jsonObject.put("lastName", surname);
             jsonObject.put("login", login);
             jsonObject.put("password", password);
             jsonObject.put("email", email);
-
-            // TODO: Implement
-            jsonObject.put("firstName", "testName");
-            jsonObject.put("lastName", "testSurname");
-
             httpResponseCode =  httpCommand.sendRegisterData(jsonObject.toString());
         } catch (Exception e){
             e.printStackTrace();

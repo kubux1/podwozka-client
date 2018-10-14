@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:gravity="center">
     <Button
-        android:id="@+id/currentTravels"
+        android:id="@+id/comingTravels"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/coming_trips" />
@@ -32,9 +32,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="372dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="113dp"
+        android:layout_marginTop="77dp"
         android:scrollbars="vertical" />
 </RelativeLayout>

@@ -47,16 +47,33 @@ public class RegisterActivity extends AppCompatActivity {
                 //Starting a new Intent
                 Intent nextScreen = new Intent(getApplicationContext(), MainActivity.class);
 
+                EditText name = findViewById(R.id.nameField);
+                String nameMessage = name.getText().toString();
+
+                EditText surname = findViewById(R.id.surnameField);
+                String surnameMessage = surname.getText().toString();
+
                 EditText login = findViewById(R.id.loginField);
                 String loginMessage = login.getText().toString();
 
                 EditText password = findViewById(R.id.passwordField);
                 String passwordMessage = password.getText().toString();
 
+                EditText passwordRetype = findViewById(R.id.passwordRetypeField);
+                String passwordRetypeMessage = passwordRetype.getText().toString();
+
                 EditText emailAddress = findViewById(R.id.emailAddressField);
                 String emailAddressMessage = emailAddress.getText().toString();
 
-                if (emailAddressMessage.isEmpty())
+                if (nameMessage.isEmpty())
+                {
+                    alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.name_empty));
+                }
+                else if (surnameMessage.isEmpty())
+                {
+                    alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.surname_empty));
+                }
+                else if (emailAddressMessage.isEmpty())
                 {
                     alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.email_empty));
                 }
@@ -68,6 +85,14 @@ public class RegisterActivity extends AppCompatActivity {
                 {
                     alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.password_empty));
                 }
+                else if (passwordRetypeMessage.isEmpty())
+                {
+                    alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.password_retype_empty));
+                }
+                else if (!passwordMessage.equals(passwordRetypeMessage))
+                {
+                    alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.passwords_diffrent));
+                }
                 else
                 {
                     boolean emailValidation = isValidEmail(emailAddressMessage);
@@ -75,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
                     if (emailValidation == true)
                     {
                         user = new User();
-                        httpResponseCode = user.registerUser(loginMessage, passwordMessage, emailAddressMessage);
+                        httpResponseCode = user.registerUser(nameMessage, surnameMessage, loginMessage, passwordMessage, emailAddressMessage);
                         if(httpResponseCode == 201) {
                             alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.registration_successful));
                             startActivity(nextScreen);

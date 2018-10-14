@@ -24,12 +24,11 @@ public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrows
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.name);
-            date = (TextView) view.findViewById(R.id.startTime);
-            freeSpace = (TextView) view.findViewById(R.id.freeSpace);
+            title = view.findViewById(R.id.name);
+            date = view.findViewById(R.id.startTime);
+            freeSpace = view.findViewById(R.id.freeSpace);
         }
     }
-
 
     public DriverBrowseTravelsAdapter(List<DriverTravel> travelsList, Context context) {
         this.travelsList = travelsList;
@@ -60,8 +59,6 @@ public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrows
             e.printStackTrace();
         }
 
-
-
         String freeSpaceMessage = this.context.getResources().getString(R.string.free_seats) + ": " + freeSpace;
         holder.freeSpace.setText(freeSpaceMessage);
     }
@@ -74,16 +71,4 @@ public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrows
     public DriverTravel returnTravel (int position){
         return travelsList.get(position);
     }
-
-    public void deleteTravel (int travelId){
-        int x = 0;
-        for (Iterator<DriverTravel> iter = travelsList.listIterator(); iter.hasNext(); ) {
-            DriverTravel travel = iter.next();
-            if (x == travelId) {
-                iter.remove();
-            }
-            x++;
-        }
-    }
-
 }

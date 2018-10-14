@@ -58,12 +58,19 @@
     <string name="account_not_existing">Account with such login does not exist</string>
     <string name="account_type_empty">Please choose account type</string>
     <string name="free_seats">Free seats</string>
+    <string name="password_retype_empty">Please retype password </string>
+    <string name="passwords_diffrent">Passwords are diffrent</string>
+    <string name="name_empty">Please type your name </string>
+    <string name="surname_empty">Please type your surname </string>
 
     <!--Other fields-->
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="user_name">Name</string>
+    <string name="user_surname">Surname</string>
     <string name="user_login">Login</string>
     <string name="user_password">Password</string>
+    <string name="user_password_check">Retype password</string>
     <string name="user_email">Email</string>
 
 </resources>
