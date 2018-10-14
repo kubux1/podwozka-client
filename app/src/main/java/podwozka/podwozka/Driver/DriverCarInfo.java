@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import podwozka.podwozka.R;
 
-public class DriverCarInfoActivity extends AppCompatActivity {
+public class DriverCarInfo extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

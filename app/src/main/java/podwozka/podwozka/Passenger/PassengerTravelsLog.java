@@ -28,9 +28,9 @@ public class PassengerTravelsLog extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travels_log);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
 
-        mAdapter = new DriverBrowseTravelsAdapter(travelList);
+        mAdapter = new DriverBrowseTravelsAdapter(travelList, getApplicationContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -41,7 +41,7 @@ public class PassengerTravelsLog extends AppCompatActivity {
 
         prepareTravelData(travelsFound);
 
-        Button currentTravelsOption = (Button) findViewById(R.id.currentTravels);
+        Button currentTravelsOption = findViewById(R.id.currentTravels);
         currentTravelsOption.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
@@ -49,7 +49,7 @@ public class PassengerTravelsLog extends AppCompatActivity {
             }
         });
 
-        Button pastTravelsOption = (Button) findViewById(R.id.pastTravels);
+        Button pastTravelsOption = findViewById(R.id.pastTravels);
         pastTravelsOption.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {

@@ -11,4 +11,58 @@
     <string name="time_save">Save</string>
     <string name="time_selected"></string>
     <string name="time_current">The Time is:</string>
+
+    <!--Accounts types-->
+    <string name="driver">Driver</string>
+    <string name="passenger">Passenger</string>
+
+    <!--Buttons names-->
+    <string name="login_in">Log in</string>
+    <string name="login_out">Log out</string>
+    <string name="register_button">Register</string>
+    <string name="plan_trip">Plan trip</string>
+    <string name="trip_history">Your trip history</string>
+    <string name="user_account_info">Account info</string>
+    <string name="cancel_travel">Cancel trip</string>
+    <string name="edit_travel">Edit travel</string>
+    <string name="signed_up_passengers">Signed up passengers</string>
+    <string name="coming_trips">Coming</string>
+    <string name="past_trips">Past</string>
+
+    <!--Trip fields-->
+    <string name="start_place">Start place address</string>
+    <string name="end_place">End place address</string>
+    <string name="start_date">Start date</string>
+    <string name="start_time">Start time</string>
+    <string name="passengers_max">How many passengers can you take?</string>
+    <string name="submit_trip">Submit</string>
+    <string name="set_date">Set date</string>
+    <string name="set_time">Set time</string>
+
+    <!--Messages-->
+    <string name="log_out_confirmation">Are you sure you want to log out?</string>
+    <string name="cancel_trip_confirmation">Are you sure you want cancel a trip?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="start_place_empty">Please type start place</string>
+    <string name="end_place_empty">Please type end place</string>
+    <string name="login_empty">Please type login</string>
+    <string name="password_empty">Please type password</string>
+    <string name="email_empty">Please type email</string>
+    <string name="travel_canceled">Travel canceled</string>
+    <string name="sign_up_for_trip_confirmation">Are you sure you want to sign up for this travel?</string>
+    <string name="email_not_valid">Email not valid</string>
+    <string name="email_already_exists">Account with that email already exists</string>
+    <string name="registration_successful">Registration successful</string>
+    <string name="account_not_existing">Account with such login does not exist</string>
+    <string name="account_type_empty">Please choose account type</string>
+    <string name="free_seats">Free seats</string>
+
+    <!--Other fields-->
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="user_login">Login</string>
+    <string name="user_password">Password</string>
+    <string name="user_email">Email</string>
+
 </resources>

@@ -1,12 +1,7 @@
 package podwozka.podwozka.entity;
 
-import org.apache.http.NameValuePair;
 import org.json.JSONObject;
-
-import java.io.InputStream;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
-
 import static podwozka.podwozka.LoginActivity.user;
 
 public class HttpCommands {
@@ -15,8 +10,6 @@ public class HttpCommands {
 
     public HttpCommands() {
     }
-
-    ;
 
     public int getHttpResponseCode() {
         return this.httpResponseCode;

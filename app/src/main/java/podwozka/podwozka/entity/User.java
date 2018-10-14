@@ -1,15 +1,6 @@
 package podwozka.podwozka.entity;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import podwozka.podwozka.entity.HttpCommands;
 
 public class User {
     private String login;

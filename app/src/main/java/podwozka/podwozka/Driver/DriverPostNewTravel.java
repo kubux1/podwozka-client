@@ -1,4 +1,4 @@
-package podwozka.podwozka.Passenger;
+package podwozka.podwozka.Driver;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -12,16 +12,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
+
+import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
-import podwozka.podwozka.Passenger.entity.PassangerTravel;
 import static podwozka.podwozka.LoginActivity.user;
 
 
-public class PassengerFindTravels extends AppCompatActivity {
+public class DriverPostNewTravel extends AppCompatActivity {
+
     private static TextView pickedTime;
     private static TextView pickedDate;
     private static String date;
@@ -47,17 +56,17 @@ public class PassengerFindTravels extends AppCompatActivity {
             String monthInString = Integer.toString(month);
             String dayInString = Integer.toString(day);
 
-            // Make sure there will be alawys two letters for month and day
             if(month < 10)
                 monthInString = "0" + monthInString;
             if (day < 10)
                 dayInString = "0" + dayInString;
-            // Date in YYYY-MM-DD format only accepted by server
-            date = Integer.toString(year) + "-" + monthInString + "-" + dayInString;
 
             // Date in DD-MM-YYYY format which is more convenient for a user
-            pickedDate.setText(new StringBuilder().append(day).append("-")
-                    .append(month).append("-").append(year));
+            pickedDate.setText(new StringBuilder().append(dayInString).append("-")
+                    .append(monthInString).append("-").append(Integer.toString(year)));
+
+            // Date in YYYY-MM-DD format only accepted by server
+            date = Integer.toString(year) + "-" + monthInString + "-" + dayInString;
         }
     }
 
@@ -95,21 +104,25 @@ public class PassengerFindTravels extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
-    String travelsFound;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_passanger_new_travel);
+        setContentView(R.layout.activity_driver_new_travel);
+
         Button btnNextScreen = findViewById(R.id.submitNewTravelButton);
         Button reversePlacesButton = findViewById(R.id.reverseTravelPlaces);
-        pickedDate = findViewById(R.id.pickedDate);
+        pickedDate =  findViewById(R.id.pickedDate);
         pickedTime = findViewById(R.id.pickedTime);
+        final NumberPicker np = findViewById(R.id.passengerCount);
 
+        np.setMinValue(0);
+        np.setMaxValue(10);
 
         btnNextScreen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 PopUpWindows alertWindow = new PopUpWindows();
                 boolean noErrors = true;
+                int httpResponse;
 
                 EditText startTravelPlace = findViewById(R.id.startTravelPlace);
                 String startTravelPlaceMessage = startTravelPlace.getText().toString();
@@ -117,27 +130,30 @@ public class PassengerFindTravels extends AppCompatActivity {
                 EditText endTravelPlace = findViewById(R.id.endTravelPlace);
                 String endTravelPlaceMessage = endTravelPlace.getText().toString();
 
+
                 if (startTravelPlaceMessage.isEmpty())
                 {
-                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, getResources().getString(R.string.start_place_empty));
+                    alertWindow.showAlertWindow(DriverPostNewTravel.this, null, getResources().getString(R.string.start_place_empty));
                     noErrors = false;
                 }
                 else if (endTravelPlaceMessage.isEmpty())
                 {
-                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, getResources().getString(R.string.end_place_empty));
+                    alertWindow.showAlertWindow(DriverPostNewTravel.this, null, getResources().getString(R.string.end_place_empty));
                     noErrors = false;
                 }
 
                 if(noErrors == true) {
-                    PassangerTravel passengerTravel = new PassangerTravel(user.getLogin(),
-                            startTravelPlaceMessage,
-                            endTravelPlaceMessage,
-                            (date+"T"+pickedTime.getText().toString()),
-                            null);
-                    travelsFound = passengerTravel.findMatchingTravels(passengerTravel);
-                    Intent nextScreen = new Intent(getApplicationContext(), PassengerBrowseTravels.class);
-                    nextScreen.putExtra("TRAVELS", travelsFound);
-                    startActivity(nextScreen);
+                DriverTravel newTravel = new DriverTravel(user.getLogin(),
+                        startTravelPlaceMessage,
+                        endTravelPlaceMessage,
+                        (date+"T"+pickedTime.getText().toString()),
+                        Integer.toString(np.getValue()));
+
+                    httpResponse = newTravel.postNewTravel(newTravel);
+                    if(httpResponse == 201) {
+                        Intent nextScreen = new Intent(getApplicationContext(), DriverPostNewTravel.class);
+                        startActivity(nextScreen);
+                    }
                 }
 
             }
@@ -163,7 +179,7 @@ public class PassengerFindTravels extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent nextScreen = new Intent(PassengerFindTravels.this, PassangerMain.class);
+        Intent nextScreen = new Intent(DriverPostNewTravel.this, DriverMain.class);
         startActivity(nextScreen);
         finish();
     }
