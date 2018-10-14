@@ -1,29 +1,33 @@
 package podwozka.podwozka;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
+import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 
+import podwozka.podwozka.Maps.MapUtil;
+
+// This activity will be used in the future e.g. for showing all passengers on the map
 public class PickPlace extends FragmentActivity implements OnMapReadyCallback {
-
-    private static final float DEFAULT_ZOOM = 10;
-
-    private static final LatLng GDANSK = new LatLng(54.3612063,18.5499454);
 
     private GoogleMap mMap;
 
     private LocationManager locationManager;
+
+    private PlacePicker.IntentBuilder builder;
+
+    private static final int PLACE_PICKER_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +38,20 @@ public class PickPlace extends FragmentActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        builder = new PlacePicker.IntentBuilder();
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        moveCameraToDefaultLocation();
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(DEFAULT_ZOOM));
+        MapUtil.setUpDefaultCamera(this.getApplicationContext(), mMap, locationManager);
+
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesNotAvailableException
+                | GooglePlayServicesRepairableException ex) {
+            Log.e(this.getLocalClassName(), "Place Picker cannot use GooglePlayServices", ex);
+        }
     }
 
     @Override
@@ -48,17 +59,14 @@ public class PickPlace extends FragmentActivity implements OnMapReadyCallback {
         finish();
     }
 
-    protected void moveCameraToDefaultLocation() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: ask for permission
-            // @see https://developer.android.com/training/permissions/requesting
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(GDANSK));
-        } else {
-            Location location = locationManager.getLastKnownLocation(
-                    LocationManager.NETWORK_PROVIDER);
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(this, data);
+                String toastMsg = String.format("%s: %s", R.string.toast_place, place.getName());
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+            }
         }
     }
+
 }

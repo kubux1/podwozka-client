@@ -44,4 +44,13 @@
     <string name="login_in">Zaloguj się</string>
     <string name="passenger">Pasażer</string>
     <string name="driver">Kierowca</string>
+    <string name="pick_start_place">Wybierz miejsce startowe</string>
+    <string name="pick_end_place">Wybierz miejsce końcowe</string>
+
+    <!-- Messages -->
+        <!-- Errors -->
+    <string name="err_create_fail">Nie udało się utworzyć!</string>
+
+    <!-- Maps -->
+    <string name="toast_place">Miejsce</string>
 </resources>
