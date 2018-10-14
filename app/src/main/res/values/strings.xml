@@ -28,6 +28,7 @@
     <string name="signed_up_passengers">Signed up passengers</string>
     <string name="coming_trips">Coming</string>
     <string name="past_trips">Past</string>
+    <string name="map">Map</string>
 
     <!--Trip fields-->
     <string name="start_place">Start place address</string>

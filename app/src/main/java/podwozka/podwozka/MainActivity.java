@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button loginButton = findViewById(R.id.loginButton);
         Button registerButton = findViewById(R.id.registerButton);
+        Button travelButton = findViewById(R.id.travelButton);
         List<String> langList = new ArrayList<String>();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 //Starting a new Intent
                 Intent nextScreen = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(nextScreen);
+            }
+        });
+
+        travelButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                //Starting a new Intent
+                Intent nextScreen = new Intent(getApplicationContext(), PickPlace.class);
                 startActivity(nextScreen);
             }
         });

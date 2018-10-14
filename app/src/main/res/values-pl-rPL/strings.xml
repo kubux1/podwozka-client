@@ -3,6 +3,7 @@
     <string name="app_name">Podwozka</string>
     <string name="login">Logowanie</string>
     <string name="register">Rejestracja</string>
+    <string name="map">Mapa</string>
     <string name="registration_successful">Rejestracja udana</string>
     <string name="free_seats">Wolne miejsca</string>
     <string name="account_type_empty">Proszę wybrać typ konta</string>

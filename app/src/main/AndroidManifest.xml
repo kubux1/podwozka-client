@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="podwozka.podwozka">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -11,6 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +36,7 @@
         <activity android:name=".Driver.DriverBrowseTravels"></activity>
         <activity android:name=".Driver.DriverTravelEditor"></activity>
         <activity android:name=".Driver.DriverEditTravelInfo"></activity>
-
+        <activity android:name=".PickPlace"></activity>
     </application>
 
 </manifest>
