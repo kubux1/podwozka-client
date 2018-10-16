@@ -22,6 +22,7 @@
 
     public DriverTravel(String travelId, String login, String firstName, String lastName, String passengersCount,
                         String maxPassengers, String startDatetime, String startPlace, String endPlace) {
+        this.travelId=travelId;
         this.login = login;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -229,47 +230,13 @@
         return httpCommand.getHttpResponseCode();
     }
 
-    public String convcerTravelsForRecyclerFormat(ArrayList<DriverTravel> travels ){
-        int x = DriverMain.driverTravels.size();
-        DriverTravel travel;
-        travel = travels.get(0);
-        String travelsConverted =
-                "{\n" +
-                        "  \"_embedded\" : {\n" +
-                        "    \"travels\" : [ {\n" +
-                        "      \"login\" : \"bartek\",\n" +
-                        "      \"firstName\" : \"Maciej\",\n" +
-                        "      \"lastName\" : \"Topola\",\n" +
-                        "      \"passengersCount\" : \"2\",\n" +
-                        "      \"maxPassengers\" : \""+travel.getMaxPassengers()+"\",\n" +
-                        "      \"startDatetime\" : \""+travel.getStartDatetime()+"\",\n" +
-                        "      \"startPlace\" : \""+travel.getStartPlace()+"\",\n" +
-                        "      \"endPlace\" : \""+travel.getEndPlace()+"\"\n" +
-                        "    },\n";
-        x-=1;
-        int y = 1;
-        while (x > 0){
-            travel = travels.get(y);
-            travelsConverted +=
-                    "\t{\n" +
-                            "      \"login\" : \"bartek\",\n" +
-                            "      \"firstName\" : \"Maciej\",\n" +
-                            "      \"lastName\" : \"Topola\",\n" +
-                            "      \"passengersCount\" : \"2\",\n" +
-                            "      \"maxPassengers\" : \""+travel.getMaxPassengers()+"\",\n" +
-                            "      \"startDatetime\" : \""+travel.getStartDatetime()+"\",\n" +
-                            "      \"startPlace\" : \""+travel.getStartPlace()+"\",\n" +
-                            "      \"endPlace\" : \""+travel.getEndPlace()+"\"\n" +
-                            "    },\n";
-            x--;
-            y++;
-        }
-        travelsConverted+=
-                "    ]\n" +
-                "}\n" +
-                "}";
+    public String findMatchingPassengerTravels(DriverTravel driverTravel)
+    {
+        HttpCommands httpCommand = new HttpCommands();
 
-        return travelsConverted;
+        httpCommand.findMatchingPassengerTravels(Long.parseLong(driverTravel.travelId));
+
+        return httpCommand.getResponse();
     }
 }
 

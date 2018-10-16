@@ -144,6 +144,22 @@ public class HttpCommands {
         return connection.getHttpResponseCode();
     }
 
+    public int findMatchingPassengerTravels(Long driverTravelId) {
+        Connection connection = new Connection();
+        CountDownLatch latch = new CountDownLatch(1);
+
+        connection.sendCommand("api/passenger/travels?login=" + user.getLogin() + "&driverTravelId=" + driverTravelId, "GET", null, user.getIdToken(), latch);
+        // Wait for a sendCommand task to end
+        try {
+            latch.await();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setResponse(connection.getResponse());
+
+        return connection.getHttpResponseCode();
+    }
+
     public int signUpForTravel(String travelId) {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
