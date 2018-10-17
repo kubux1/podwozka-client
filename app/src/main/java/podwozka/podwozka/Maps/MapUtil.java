@@ -15,6 +15,7 @@ public final class MapUtil {
 
     private static final float DEFAULT_ZOOM = 10;
 
+    // Coordinates for Gdansk are used as a default location
     private static final LatLng GDANSK = new LatLng(54.3612063,18.5499454);
 
     public static void setUpDefaultCamera(Context context, GoogleMap mMap,

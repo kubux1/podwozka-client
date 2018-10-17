@@ -133,10 +133,7 @@ public class DriverPostNewTravel extends AppCompatActivity {
         Button pickEndPlaceButton = findViewById(R.id.pickEndPlace);
 
         startPlaceView = findViewById(R.id.startPlaceView);
-        startPlaceView.setText("");
-
         endPlaceView = findViewById(R.id.endPlaceView);
-        endPlaceView.setText("");
 
         pickedDate =  findViewById(R.id.pickedDate);
         pickedTime = findViewById(R.id.pickedTime);

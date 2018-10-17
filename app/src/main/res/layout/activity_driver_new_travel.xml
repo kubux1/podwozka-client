@@ -16,8 +16,7 @@ tools:context=".Driver.DriverPostNewTravel">
         <TextView
             android:id="@+id/startPlaceView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/pickStartPlace"
@@ -28,8 +27,7 @@ tools:context=".Driver.DriverPostNewTravel">
         <TextView
             android:id="@+id/endPlaceView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/pickEndPlace"
