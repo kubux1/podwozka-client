@@ -2,7 +2,6 @@ package podwozka.podwozka.Driver;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import org.json.simple.parser.JSONParser;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +28,8 @@ public class DriverBrowseTravels extends AppCompatActivity {
     private List<DriverTravel> travelList = new ArrayList<>();
     private RecyclerView recyclerView;
     private DriverBrowseTravelsAdapter mAdapter;
+    final static String coming = "coming";
+    final static String past = "past";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +103,7 @@ public class DriverBrowseTravels extends AppCompatActivity {
             for (Object obj : travelsObjects) {
                 JSONObject jsonObj = (JSONObject) obj;
                 selectedDate = dateFormat.parse((String) jsonObj.get("pickUpDatetime"));
-                if (time.equals("coming") & currentDate.before(selectedDate)) {
+                if (time.equals(coming) & currentDate.before(selectedDate)) {
                     travelList.add(new DriverTravel(
                             String.valueOf(jsonObj.get("id")),
                             (String) jsonObj.get("login"),
@@ -116,7 +116,7 @@ public class DriverBrowseTravels extends AppCompatActivity {
                             (String) jsonObj.get("endPlace")
                     ));
                 }
-                else if (time.equals("past") & currentDate.after(selectedDate)) {
+                else if (time.equals(past) & currentDate.after(selectedDate)) {
                     travelList.add(new DriverTravel(
                             String.valueOf(jsonObj.get("id")),
                             (String) jsonObj.get("login"),

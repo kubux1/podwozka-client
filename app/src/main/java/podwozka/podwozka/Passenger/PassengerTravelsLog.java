@@ -27,6 +27,9 @@ public class PassengerTravelsLog extends AppCompatActivity {
     private List<DriverTravel> travelList = new ArrayList<>();
     private RecyclerView recyclerView;
     private DriverBrowseTravelsAdapter mAdapter;
+    final static String coming = "coming";
+    final static String past = "past";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +81,7 @@ public class PassengerTravelsLog extends AppCompatActivity {
             for (Object obj : travelsObjects) {
                 JSONObject jsonObj = (JSONObject) obj;
                 selectedDate = dateFormat.parse((String) jsonObj.get("pickUpDatetime"));
-                if (time.equals("coming") & currentDate.before(selectedDate)) {
+                if (time.equals(coming) & currentDate.before(selectedDate)) {
                     travelList.add(new DriverTravel(
                             String.valueOf(jsonObj.get("id")),
                             (String) jsonObj.get("login"),
@@ -91,7 +94,7 @@ public class PassengerTravelsLog extends AppCompatActivity {
                             (String) jsonObj.get("endPlace")
                     ));
                 }
-                else if (time.equals("past") & currentDate.after(selectedDate)) {
+                else if (time.equals(past) & currentDate.after(selectedDate)) {
                     travelList.add(new DriverTravel(
                             String.valueOf(jsonObj.get("id")),
                             (String) jsonObj.get("login"),
