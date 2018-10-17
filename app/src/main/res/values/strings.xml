@@ -29,6 +29,8 @@
     <string name="coming_trips">Coming</string>
     <string name="past_trips">Past</string>
     <string name="map">Map</string>
+    <string name="pick_start_place">Pick a start place</string>
+    <string name="pick_end_place">Pick an end place</string>
 
     <!--Trip fields-->
     <string name="start_place">Start place address</string>
@@ -58,6 +60,8 @@
     <string name="account_not_existing">Account with such login does not exist</string>
     <string name="account_type_empty">Please choose account type</string>
     <string name="free_seats">Free seats</string>
+        <!-- Errors -->
+    <string name="err_create_fail">Creation attempt failed!</string>
 
     <!--Other fields-->
     <string name="login">Login</string>
@@ -66,4 +70,6 @@
     <string name="user_password">Password</string>
     <string name="user_email">Email</string>
 
+    <!-- Maps -->
+    <string name="toast_place">Place</string>
 </resources>
