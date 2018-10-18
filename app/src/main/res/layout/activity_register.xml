@@ -14,6 +14,24 @@
         tools:layout_editor_absoluteY="0dp">
 
         <EditText
+            android:id="@+id/nameField"
+            android:layout_width="334dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/user_name"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="251dp" />
+
+        <EditText
+            android:id="@+id/surnameField"
+            android:layout_width="334dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/user_surname"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="251dp" />
+
+        <EditText
             android:id="@+id/emailAddressField"
             android:layout_width="334dp"
             android:layout_height="wrap_content"
@@ -39,6 +57,16 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/user_password"
+            android:inputType="textPassword"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="251dp" />
+
+        <EditText
+            android:id="@+id/passwordRetypeField"
+            android:layout_width="334dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/user_password_check"
             android:inputType="textPassword"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="251dp" />
