@@ -103,7 +103,7 @@ public class DriverBrowseTravels extends AppCompatActivity {
             for (Object obj : travelsObjects) {
                 JSONObject jsonObj = (JSONObject) obj;
                 selectedDate = dateFormat.parse((String) jsonObj.get("pickUpDatetime"));
-                if (time.equals(coming) & currentDate.before(selectedDate)) {
+                if (time.equals(COMING) & currentDate.before(selectedDate)) {
                     travelList.add(new DriverTravel(
                             String.valueOf(jsonObj.get("id")),
                             (String) jsonObj.get("login"),
@@ -116,7 +116,7 @@ public class DriverBrowseTravels extends AppCompatActivity {
                             (String) jsonObj.get("endPlace")
                     ));
                 }
-                else if (time.equals(past) & currentDate.after(selectedDate)) {
+                else if (time.equals(PAST) & currentDate.after(selectedDate)) {
                     travelList.add(new DriverTravel(
                             String.valueOf(jsonObj.get("id")),
                             (String) jsonObj.get("login"),
