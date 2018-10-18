@@ -28,8 +28,8 @@ public class DriverBrowseTravels extends AppCompatActivity {
     private List<DriverTravel> travelList = new ArrayList<>();
     private RecyclerView recyclerView;
     private DriverBrowseTravelsAdapter mAdapter;
-    final static String coming = "coming";
-    final static String past = "past";
+    private final static String COMING = "coming";
+    private final static String PAST = "past";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class DriverBrowseTravels extends AppCompatActivity {
             public void onClick(View arg0) {
                 comingTravels.setBackgroundColor(Color.GRAY);
                 pastTravels.setBackgroundColor(0);
-                prepareTravelData(travelsFound, "coming");
+                prepareTravelData(travelsFound, COMING);
             }
         });
 
@@ -77,7 +77,7 @@ public class DriverBrowseTravels extends AppCompatActivity {
             public void onClick(View arg0) {
                 pastTravels.setBackgroundColor(Color.GRAY);
                 comingTravels.setBackgroundColor(0);
-                prepareTravelData(travelsFound, "past");
+                prepareTravelData(travelsFound, PAST);
             }
         });
     }
