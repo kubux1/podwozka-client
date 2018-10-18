@@ -52,4 +52,14 @@
     <string name="password_retype_empty">Proszę podać powtórzone hasło</string>
     <string name="user_password_check">Powtórzone hasło</string>
     <string name="signed_up_passengers">Zapisani pasażerowie</string>
+
+    <string name="pick_start_place">Wybierz miejsce startowe</string>
+    <string name="pick_end_place">Wybierz miejsce końcowe</string>
+
+    <!-- Messages -->
+        <!-- Errors -->
+    <string name="err_create_fail">Nie udało się utworzyć!</string>
+
+    <!-- Maps -->
+    <string name="toast_place">Miejsce</string>
 </resources>

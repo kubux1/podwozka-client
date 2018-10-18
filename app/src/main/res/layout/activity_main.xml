@@ -32,14 +32,6 @@
             tools:layout_editor_absoluteX="58dp"
             tools:layout_editor_absoluteY="24dp" />
 
-        <Button
-            android:id="@+id/travelButton"
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:text="@string/map"
-            tools:layout_editor_absoluteX="58dp"
-            tools:layout_editor_absoluteY="24dp" />
-
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
