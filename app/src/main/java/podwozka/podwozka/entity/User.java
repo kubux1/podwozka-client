@@ -6,6 +6,7 @@ public class User {
     private String login;
     private String idToken;
     private String loginOption;
+    private String name;
 
     public String driver = "Driver";
     public String passenger = "Passenger";
@@ -31,6 +32,10 @@ public class User {
 
     public String getLoginOption(){
         return this.loginOption;
+    }
+
+    public String getName (){
+        return this.name;
     }
 
     public int logInUser(String login, String password)
@@ -68,6 +73,20 @@ public class User {
             jsonObject.put("password", password);
             jsonObject.put("email", email);
             httpResponseCode =  httpCommand.sendRegisterData(jsonObject.toString());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return httpResponseCode;
+    }
+
+    public int getUserName(String login)
+    {
+        HttpCommands httpCommand = new HttpCommands();
+        int httpResponseCode = 0;
+
+        try {
+            httpResponseCode =  httpCommand.getUserName(login);
+            //TODO: Add response
         } catch (Exception e){
             e.printStackTrace();
         }

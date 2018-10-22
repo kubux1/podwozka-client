@@ -1,16 +1,5 @@
 <resources>
     <string name="app_name">Podwozka</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="date_label_set">Press the button to set the date</string>
-    <string name="date_button_set">Set Date</string>
-    <string name="date_view_set">The Date is: </string>
-    <string name="date_selected"></string>
-    <string name="time_picker_example">Time Picker Example</string>
-    <string name="time_pick">Pick the time and press save button</string>
-    <string name="time_save">Save</string>
-    <string name="time_selected"></string>
-    <string name="time_current">The Time is:</string>
 
     <!--Accounts types-->
     <string name="driver">Driver</string>
@@ -29,6 +18,8 @@
     <string name="coming_trips">Coming</string>
     <string name="past_trips">Past</string>
     <string name="map">Map</string>
+    <string name="save_car_data">Save</string>
+    <string name="car_info">Car info</string>
 
     <!--Trip fields-->
     <string name="start_place">Start place address</string>
@@ -61,7 +52,8 @@
     <string name="password_retype_empty">Please retype password </string>
     <string name="passwords_diffrent">Passwords are diffrent</string>
     <string name="name_empty">Please type your name </string>
-    <string name="surname_empty">Please type your surname </string>
+    <string name="surname_empty">Please type your surname</string>
+    <string name="field_empty">Please type</string>
 
     <!--Other fields-->
     <string name="login">Login</string>
@@ -72,5 +64,20 @@
     <string name="user_password">Password</string>
     <string name="user_password_check">Retype password</string>
     <string name="user_email">Email</string>
+
+    <!--Car fields-->
+    <string name="brand">Brand</string>
+    <string name="model">Model</string>
+    <string name="color">Color</string>
+    <string name="production_year">Production year</string>
+    <string name="registration_number">Registration number</string>
+    <string name="max_passengers_capacity">How many passengers can you take</string>
+
+    <string name="brand_field">brand</string>
+    <string name="model_field">model</string>
+    <string name="color_field">color</string>
+    <string name="production_year_field">productionYear</string>
+    <string name="registration_number_field">registrationNumber</string>
+    <string name="max_passengers_capacity_field">maxPassangersCapacity</string>
 
 </resources>

@@ -52,4 +52,11 @@
     <string name="password_retype_empty">Proszę podać powtórzone hasło</string>
     <string name="user_password_check">Powtórzone hasło</string>
     <string name="signed_up_passengers">Zapisani pasażerowie</string>
+    <string name="color">Kolor</string>
+    <string name="save_car_data">Zapisz</string>
+    <string name="registration_number">Numer rejestracyjny</string>
+    <string name="max_passengers_capacity">Ilu pasażerów zmieścisz?</string>
+    <string name="production_year">Rok produkcji</string>
+    <string name="model">Model</string>
+    <string name="brand">Marka</string>
 </resources>

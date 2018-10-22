@@ -94,7 +94,7 @@ public class HttpCommands {
         return connection.getHttpResponseCode();
     }
 
-    public int deleteTravel(String travelId) {
+    public int deleteTravel(Long travelId) {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -144,12 +144,61 @@ public class HttpCommands {
         return connection.getHttpResponseCode();
     }
 
-    public int signUpForTravel(String travelId) {
+    public int signUpForTravel(Long travelId) {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
         // TODO: Implement for server signing up for travel
         connection.sendCommand("api/travels/signUp?login=" + user.getLogin() +
-                        "&travelId=" + Long.parseLong(travelId) , "POST",
+                        "&travelId=" + travelId, "POST",
+                null, user.getIdToken(), latch);
+        // Wait for a sendCommand task to end
+        try {
+            latch.await();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setResponse(connection.getResponse());
+
+        return connection.getHttpResponseCode();
+    }
+
+    public int getUserName(String login) {
+        Connection connection = new Connection();
+        CountDownLatch latch = new CountDownLatch(1);
+
+        connection.sendCommand("api/users/name?login="+login, "GET",
+                null, user.getIdToken(), latch);
+        // Wait for a sendCommand task to end
+        try {
+            latch.await();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setResponse(connection.getResponse());
+
+        return connection.getHttpResponseCode();
+    }
+
+    public int addNewCar(String dataToSend) {
+        Connection connection = new Connection();
+        CountDownLatch latch = new CountDownLatch(1);
+
+        connection.sendCommand("api/cars", "POST",
+                dataToSend, user.getIdToken(), latch);
+        // Wait for a sendCommand task to end
+        try {
+            latch.await();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return connection.getHttpResponseCode();
+    }
+
+    public int getCar(String driverLogin) {
+        Connection connection = new Connection();
+        CountDownLatch latch = new CountDownLatch(1);
+        // TODO: Implement for server signing up for travel
+        connection.sendCommand("api/cars?driverLogin=" + driverLogin, "GET",
                 null, user.getIdToken(), latch);
         // Wait for a sendCommand task to end
         try {

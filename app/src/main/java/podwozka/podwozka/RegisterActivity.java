@@ -1,27 +1,14 @@
 package podwozka.podwozka;
 
 import android.content.Intent;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import android.text.TextUtils;
-import android.widget.RadioButton;
-
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Scanner;
-
 import podwozka.podwozka.entity.User;
-import settings.ConnectionSettings;
-
-
 
 public class RegisterActivity extends AppCompatActivity {
     public static User user;
@@ -115,5 +102,12 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent nextScreen = new Intent(RegisterActivity.this, MainActivity.class);
+        startActivity(nextScreen);
+        finish();
     }
 }

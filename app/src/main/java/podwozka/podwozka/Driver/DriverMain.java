@@ -19,7 +19,7 @@ public class DriverMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_passanger_main);
+        setContentView(R.layout.activity_driver_main);
 
         Button newTravelButton = findViewById(R.id.newTravelButton);
         newTravelButton.setOnClickListener(new View.OnClickListener() {
@@ -36,16 +36,18 @@ public class DriverMain extends AppCompatActivity {
 
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), DriverBrowseTravels.class);
+                Intent nextScreen = new Intent(getApplicationContext(), DriverTravelsLog.class);
                 startActivity(nextScreen);
             }
         });
 
-        Button accountInfo = findViewById(R.id.accountInformationButton);
-        accountInfo.setOnClickListener(new View.OnClickListener() {
+        Button carInfo = findViewById(R.id.carInformationButton);
+        carInfo.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                //TODO: Implement functionality
+                //Starting a new Intent
+                Intent nextScreen = new Intent(getApplicationContext(), DriverCarInfo.class);
+                startActivity(nextScreen);
             }
         });
 
