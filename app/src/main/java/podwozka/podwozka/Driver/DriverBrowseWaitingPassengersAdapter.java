@@ -26,8 +26,8 @@ public class DriverBrowseWaitingPassengersAdapter extends RecyclerView.Adapter<D
 
         public MyViewHolder(View view) {
             super(view);
-            name = (TextView) view.findViewById(R.id.name);
-            ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
+            name = view.findViewById(R.id.name);
+            ratingBar = view.findViewById(R.id.ratingBar);
             ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
                 @Override

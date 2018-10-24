@@ -13,8 +13,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
+
 
 import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.Passenger.entity.PassangerTravel;
@@ -25,7 +30,7 @@ public class DriverBrowseWaitingPassengers extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TextView route, date;
     private DriverBrowseWaitingPassengersAdapter mAdapter;
-    private DriverTravel travel;
+    private static DriverTravel travel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +39,9 @@ public class DriverBrowseWaitingPassengers extends AppCompatActivity {
 
         Intent i = getIntent();
         travel = i.getParcelableExtra("TRAVEL");
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        date = (TextView) findViewById(R.id.date);
-        route = (TextView) findViewById(R.id.route);
+        recyclerView = findViewById(R.id.recycler_view);
+        date = findViewById(R.id.date);
+        route = findViewById(R.id.route);
 
         mAdapter = new DriverBrowseWaitingPassengersAdapter(travelList, getApplicationContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -50,7 +55,7 @@ public class DriverBrowseWaitingPassengers extends AppCompatActivity {
         String routeString = travel.getStartPlace() + " - " + travel.getEndPlace();
         route.setText(routeString);
 
-        String dateString = travel.getStartDatetime().replace("T", " ");
+        String dateString = changeDateFormat(travel.getStartDatetime());
         date.setText(dateString);
     }
 
@@ -85,5 +90,19 @@ public class DriverBrowseWaitingPassengers extends AppCompatActivity {
         }
 
         mAdapter.notifyDataSetChanged();
+    }
+
+    private String changeDateFormat(String strDate){
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Date date = dateFormat.parse(strDate);
+
+            dateFormat = new SimpleDateFormat("yyyy-M-dd hh:mm:ss");
+            return dateFormat.format(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return strDate;
     }
 }
