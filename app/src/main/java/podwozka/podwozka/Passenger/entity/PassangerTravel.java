@@ -10,7 +10,7 @@ import podwozka.podwozka.entity.HttpCommands;
 import podwozka.podwozka.LoginActivity;
 
 public class PassangerTravel implements Parcelable {
-    private String travelId;
+    private Long travelId;
     private String login;
     private String startPlace;
     private String endPlace;
@@ -18,8 +18,10 @@ public class PassangerTravel implements Parcelable {
     private String lastName;
     private String passengersCount;
     private String startDateTime;
+    private Long driverTravelId;
 
-    public PassangerTravel(String login, String startPlace, String endPlace, String startDateTime, String passengersCount) {
+    public PassangerTravel(Long travelId, String login, String startPlace, String endPlace, String startDateTime, String passengersCount, Long driverTravelId) {
+        this.travelId = travelId;
         if (login == null) {
             this.login = LoginActivity.user.getLogin();
         }
@@ -30,9 +32,11 @@ public class PassangerTravel implements Parcelable {
         this.startDateTime = startDateTime;
         this.startPlace = startPlace;
         this.endPlace = endPlace;
+        this.driverTravelId = driverTravelId;
     }
 
-    public PassangerTravel(String login, String firstName, String lastName, String startPlace, String endPlace, String startDateTime, String passengersCount) {
+    public PassangerTravel(Long travelId, String login, String firstName, String lastName, String startPlace, String endPlace, String startDateTime, String passengersCount, Long driverTravelId) {
+        this.travelId = travelId;
         if (login == null) {
             this.login = LoginActivity.user.getLogin();
         }
@@ -45,6 +49,7 @@ public class PassangerTravel implements Parcelable {
         this.startDateTime = startDateTime;
         this.startPlace = startPlace;
         this.endPlace = endPlace;
+        this.driverTravelId = driverTravelId;
     }
 
 	public PassangerTravel(Parcel in) {
@@ -103,9 +108,9 @@ public class PassangerTravel implements Parcelable {
         this.endPlace = endPlace;
     }
 
-    public String getTravelId () { return travelId; }
+    public Long getTravelId () { return travelId; }
 
-    public void setTravelId (String travelId) { this.travelId = travelId; }
+    public void setTravelId (Long travelId) { this.travelId = travelId; }
 	
     public int describeContents() {
         return 0;
@@ -130,11 +135,11 @@ public class PassangerTravel implements Parcelable {
         }
     };
 	
-    public int getAllUserTravles() {
+    public String getAllUserTravles() {
         HttpCommands httpCommand = new HttpCommands();
 
         httpCommand.getAllUserTravles();
-        return httpCommand.getHttpResponseCode();
+        return httpCommand.getResponse();
     }
 
     public String findMatchingTravels(PassangerTravel passengerTravel){
@@ -170,13 +175,15 @@ public class PassangerTravel implements Parcelable {
             for (Object obj : entityList) {
                 JSONObject jsonObj = (JSONObject) obj;
                 travels.add(new PassangerTravel(
+                        (Long)jsonObj.get("id"),
                         (String)jsonObj.get("driverLogin"),
                         (String)jsonObj.get("firstName"),
                         (String)jsonObj.get("lastName"),
                         (String)jsonObj.get("startPlace"),
                         (String)jsonObj.get("endPlace"),
                         (String)jsonObj.get("startDateTime"),
-                        (String)jsonObj.get("passengersCount")
+                        (String)jsonObj.get("passengersCount"),
+                        (Long)jsonObj.get("driverId")
                 ));
             }
         } catch (Exception e) {

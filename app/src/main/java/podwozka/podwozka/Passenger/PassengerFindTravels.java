@@ -129,10 +129,11 @@ public class PassengerFindTravels extends AppCompatActivity {
                 }
 
                 if(noErrors == true) {
-                    PassangerTravel passengerTravel = new PassangerTravel(user.getLogin(),
+                    PassangerTravel passengerTravel = new PassangerTravel(null, user.getLogin(),
                             startTravelPlaceMessage,
                             endTravelPlaceMessage,
                             (date+"T"+pickedTime.getText().toString()),
+                            null,
                             null);
                     travelsFound = passengerTravel.findMatchingTravels(passengerTravel);
                     Intent nextScreen = new Intent(getApplicationContext(), PassengerBrowseTravels.class);

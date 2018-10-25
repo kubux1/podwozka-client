@@ -217,4 +217,13 @@
         httpCommand.signUpForTravel(travelId);
         return httpCommand.getHttpResponseCode();
     }
+
+    public String findMatchingPassengerTravels(DriverTravel driverTravel)
+    {
+        HttpCommands httpCommand = new HttpCommands();
+
+        httpCommand.findMatchingPassengerTravels(Long.parseLong(driverTravel.travelId));
+
+        return httpCommand.getResponse();
+    }
 }
