@@ -20,7 +20,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button loginButton = (Button) findViewById(R.id.loginButton);
+        Button loginButton = findViewById(R.id.loginButton);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             PopUpWindows alertWindow = new PopUpWindows();

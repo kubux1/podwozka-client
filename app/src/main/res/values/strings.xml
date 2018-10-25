@@ -54,6 +54,8 @@
     <string name="name_empty">Please type your name </string>
     <string name="surname_empty">Please type your surname</string>
     <string name="field_empty">Please type</string>
+    <string name="car_not_added">Please add a car before planning a trip</string>
+    <string name="unknown_error">Unknown error</string>
 
     <!--Other fields-->
     <string name="login">Login</string>
@@ -78,6 +80,9 @@
     <string name="color_field">color</string>
     <string name="production_year_field">productionYear</string>
     <string name="registration_number_field">registrationNumber</string>
-    <string name="max_passengers_capacity_field">maxPassangersCapacity</string>
+    <string name="max_passengers_capacity_field">maxPassengersCapacity</string>
+
+    <!--Success messages-->
+    <string name="car_added">Car added</string>
 
 </resources>

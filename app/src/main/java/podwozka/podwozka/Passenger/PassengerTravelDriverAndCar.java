@@ -22,7 +22,7 @@ public class PassengerTravelDriverAndCar extends AppCompatActivity {
         HttpCommands httpCommand = new HttpCommands();
         int httpResponseCode;
         Intent i = getIntent();
-        String driverLogin = i.getParcelableExtra("DRIVER_LOGIN");
+        String driverLogin = i.getStringExtra("DRIVER_LOGIN");
 
         TextView driverName = findViewById(R.id.driverName);
         TextView driverCarBrand = findViewById(R.id.driverCarBrand);
@@ -32,10 +32,11 @@ public class PassengerTravelDriverAndCar extends AppCompatActivity {
         //TODO: Add error responses handling from server
         httpResponseCode = httpCommand.getUserName(driverLogin);
         if (httpResponseCode == HttpURLConnection.HTTP_OK) {
-            driverName.setText(httpCommand.getResponse());
+            String name = new User().JSONToUser(httpCommand.getResponse());
+            driverName.setText(name);
         }
 
-        httpResponseCode = httpCommand.getCar(driverLogin);
+        httpResponseCode = httpCommand.getCarLimited();
         if (httpResponseCode == HttpURLConnection.HTTP_OK) {
             Car driverCar = new Car().JSONToCar(httpCommand.getResponse());
             driverCarBrand.setText(driverCar.getBrand());

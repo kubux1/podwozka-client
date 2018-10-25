@@ -1,6 +1,7 @@
 package podwozka.podwozka.entity;
 
 import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 public class User {
     private String login;
@@ -38,6 +39,19 @@ public class User {
         return this.name;
     }
 
+    public String JSONToUser(String userInJson){
+        User user = null;
+        JSONParser parser = new JSONParser();
+        String name = "";
+
+        try {
+            org.json.simple.JSONObject userInJsonObj = (org.json.simple.JSONObject)parser.parse(userInJson);
+            name = (String)userInJsonObj.get("firstName");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return name;
+    }
     public int logInUser(String login, String password)
     {
         int httpResponseCode = -1;

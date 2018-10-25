@@ -22,7 +22,6 @@ import java.util.List;
 
 import podwozka.podwozka.Driver.DriverBrowseTravelsAdapter;
 import podwozka.podwozka.Driver.DriverRecyclerItemClickListener;
-import podwozka.podwozka.Driver.DriverTravelEditor;
 import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.R;
 
@@ -51,7 +50,7 @@ public class PassengerTravelsLog extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(
                 new DriverRecyclerItemClickListener(PassengerTravelsLog.this, recyclerView ,new DriverRecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        Intent nextScreen = new Intent(PassengerTravelsLog.this, DriverTravelEditor.class);
+                        Intent nextScreen = new Intent(PassengerTravelsLog.this, PassengerTravelDriverAndCar.class);
                         String driverLogin = mAdapter.returnTravel(position).getDriverLogin();
                         nextScreen.putExtra("DRIVER_LOGIN", driverLogin);
                         startActivity(nextScreen);

@@ -24,7 +24,7 @@ public class Car {
     private final static String COLOR = "color";
     private final static String PRODUCTION_YEAR = "productionYear";
     private final static String REGISTRATION_NUMBER = "registrationNumber";
-    private final static String MAX_PASSENGERS_CAP= "maxPassangersCapacity";
+    private final static String MAX_PASSENGERS_CAP= "maxPassengersCapacity";
 
     public Car (){}
 
@@ -109,7 +109,7 @@ public class Car {
         JSONObject carInJsonObject = new JSONObject();
 
         try {
-            carInJsonObject.put("id", carInJsonObject.NULL);
+            carInJsonObject.put("id",carInJsonObject.NULL);
             carInJsonObject.put("driverLogin", car.getDriverLogin());
             carInJsonObject.put(MODEL, car.getModel());
             carInJsonObject.put(BRAND, car.getBrand());
@@ -128,7 +128,7 @@ public class Car {
         Car car = null;
 
         try {
-            JSONObject carInJsonObj = (JSONObject)parser.parse(carInJSON);
+            org.json.simple.JSONObject carInJsonObj = (org.json.simple.JSONObject)parser.parse(carInJSON);
             car = new Car(
                     (Long)carInJsonObj.get("id"),
                     (String)carInJsonObj.get("driverLogin"),
@@ -143,5 +143,32 @@ public class Car {
             e.printStackTrace();
         }
         return car;
+    }
+
+    // Car with restricted info
+    public Car JSONToCarRestricted (String carInJSON){
+        JSONParser parser = new JSONParser();
+        Car car = null;
+
+        try {
+            org.json.simple.JSONObject carInJsonObj = (org.json.simple.JSONObject)parser.parse(carInJSON);
+            car = new Car(
+                    -1,
+                    null,
+                    (String)carInJsonObj.get(MODEL),
+                    (String)carInJsonObj.get(BRAND),
+                    (String)carInJsonObj.get(COLOR),
+                    -1 ,
+                    -1,
+                    -1);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return car;
+    }
+
+    public String validateCarFields(Map<String, String> car){
+        String wrongField = null;
+        return wrongField;
     }
 }

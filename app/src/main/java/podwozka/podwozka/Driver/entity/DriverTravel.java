@@ -167,7 +167,7 @@
         try {
             // Automate this
             jsonObject.put("id", jsonObject.NULL);
-            jsonObject.put("login", newTravel.getDriverLogin());
+            jsonObject.put("driverLogin", newTravel.getDriverLogin());
             jsonObject.put("startPlace", newTravel.getStartPlace());
             jsonObject.put("endPlace", newTravel.getEndPlace());
             jsonObject.put("pickUpDatetime", newTravel.getStartDatetime());
