@@ -32,6 +32,16 @@ public class DriverTravelEditor extends AppCompatActivity {
             }
         });
 
+        Button waitingPassengersButton = (Button) findViewById(R.id.passangersInfo);
+        waitingPassengersButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                //Starting a new Intent
+                Intent nextScreen = new Intent(DriverTravelEditor.this, DriverBrowseWaitingPassengers.class);
+                nextScreen.putExtra("TRAVEL", (Parcelable)travel);
+                startActivity(nextScreen);
+            }
+        });
+
         Button cancelTravel = findViewById(R.id.cancelTravel);
         cancelTravel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {

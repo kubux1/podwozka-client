@@ -36,6 +36,7 @@
         <activity android:name=".Driver.DriverBrowseTravels"></activity>
         <activity android:name=".Driver.DriverTravelEditor"></activity>
         <activity android:name=".Driver.DriverEditTravelInfo"></activity>
+        <activity android:name=".Driver.DriverBrowseWaitingPassengers"></activity>
         <activity android:name=".PickPlace"></activity>
     </application>
 
