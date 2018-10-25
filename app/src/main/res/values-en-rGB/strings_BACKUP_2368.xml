@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Podwozka</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="map">Map</string>
+    <string name="pick_start_place">Pick a start place</string>
+    <string name="pick_end_place">Pick an end place</string>
+
+    <!-- Messages -->
+        <!-- Errors -->
+    <string name="err_create_fail">Creation attempt failed!</string>
+
+    <!-- Maps -->
+    <string name="toast_place">Place</string>
+</resources>

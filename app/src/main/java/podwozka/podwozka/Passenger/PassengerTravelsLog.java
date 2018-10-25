@@ -29,8 +29,8 @@ public class PassengerTravelsLog extends AppCompatActivity {
     private List<DriverTravel> travelList = new ArrayList<>();
     private RecyclerView recyclerView;
     private DriverBrowseTravelsAdapter mAdapter;
-    final static String coming = "coming";
-    final static String past = "past";
+    private final static String COMING = "coming";
+    private final static String PAST = "past";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class PassengerTravelsLog extends AppCompatActivity {
             public void onClick(View arg0) {
                 comingTravels.setBackgroundColor(Color.GRAY);
                 pastTravels.setBackgroundColor(0);
-                prepareTravelData(travelsFound, "coming");
+                prepareTravelData(travelsFound, COMING);
             }
         });
         pastTravels.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +80,7 @@ public class PassengerTravelsLog extends AppCompatActivity {
             public void onClick(View arg0) {
                 pastTravels.setBackgroundColor(Color.GRAY);
                 comingTravels.setBackgroundColor(0);
-                prepareTravelData(travelsFound, "past");
+                prepareTravelData(travelsFound, PAST);
             }
         });
     }
@@ -98,7 +98,7 @@ public class PassengerTravelsLog extends AppCompatActivity {
             for (Object obj : travelsObjects) {
                 JSONObject jsonObj = (JSONObject) obj;
                 selectedDate = dateFormat.parse((String) jsonObj.get("pickUpDatetime"));
-                if (time.equals(coming) & currentDate.before(selectedDate)) {
+                if (time.equals(COMING) & currentDate.before(selectedDate)) {
                     travelList.add(new DriverTravel(
                             (Long) jsonObj.get("id"),
                             (String) jsonObj.get("driverLogin"),
@@ -109,7 +109,7 @@ public class PassengerTravelsLog extends AppCompatActivity {
                             String.valueOf(jsonObj.get("maxPassenger"))
                     ));
                 }
-                else if (time.equals(past) & currentDate.after(selectedDate)) {
+                else if (time.equals(PAST) & currentDate.after(selectedDate)) {
                     travelList.add(new DriverTravel(
                             (Long) jsonObj.get("id"),
                             (String) jsonObj.get("driverLogin"),
