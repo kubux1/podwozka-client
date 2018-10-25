@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyLib {
+public class ScreenActivityLib {
 
     public ArrayList<EditText> getAllEditTextInActivity(LinearLayout layout) {
         ArrayList<EditText> EditTextList = new ArrayList<>();
