@@ -16,7 +16,7 @@ import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import podwozka.podwozka.entity.Car;
 import podwozka.podwozka.entity.HttpCommands;
-import podwozka.podwozka.entity.MyLib;
+import podwozka.podwozka.entity.ScreenActivityLib;
 
 public class DriverAddCar extends AppCompatActivity {
 
@@ -32,8 +32,8 @@ public class DriverAddCar extends AppCompatActivity {
         HttpCommands httpCommand = new HttpCommands();
         final NumberPicker np = findViewById(R.id.maxPassangersCapacity);
 
-        ArrayList<EditText> EditTextList = new MyLib().getAllEditTextInActivity(myLinearLayout);
-        Map<String, String> carFields = new MyLib().EditTextValuesToMap(EditTextList, false);
+        ArrayList<EditText> EditTextList = new ScreenActivityLib().getAllEditTextInActivity(myLinearLayout);
+        Map<String, String> carFields = new ScreenActivityLib().EditTextValuesToMap(EditTextList, false);
         // Add numberPicker field
         carFields.put(np.getTag().toString(),Integer.toString(np.getValue()));
         // Check if any field was empty
