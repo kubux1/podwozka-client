@@ -99,7 +99,7 @@ public class PassengerBrowseTravels extends AppCompatActivity {
                 JSONObject jsonObj = (JSONObject) obj;
                 travelList.add(new DriverTravel(
                         (Long)jsonObj.get("id"),
-                        (String)jsonObj.get("login"),
+                        (String)jsonObj.get("driverLogin"),
                         (String)jsonObj.get("firstName"),
                         (String)jsonObj.get("lastName"),
                         (String)jsonObj.get("startDatetime"),

@@ -56,7 +56,7 @@ public class DriverTravelEditor extends AppCompatActivity {
                         if(httpResponse == 200){
                             PopUpWindows successWindow = new PopUpWindows();
                             successWindow.showAlertWindow(DriverTravelEditor.this, null, getResources().getString(R.string.travel_canceled));
-                            Intent nextScreen = new Intent(DriverTravelEditor.this, DriverBrowseTravels.class);
+                            Intent nextScreen = new Intent(DriverTravelEditor.this, DriverTravelsLog.class);
                             startActivity(nextScreen);
                             finish();
                         }
@@ -81,7 +81,7 @@ public class DriverTravelEditor extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent nextScreen = new Intent(DriverTravelEditor.this, DriverBrowseTravels.class);
+        Intent nextScreen = new Intent(DriverTravelEditor.this, DriverTravelsLog.class);
         startActivity(nextScreen);
         finish();
     }

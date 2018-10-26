@@ -9,7 +9,7 @@
     import podwozka.podwozka.entity.HttpCommands;
 
     public class DriverTravel implements Parcelable {
-        private String travelId;
+        private Long travelId;
         private String login;
         private String startPlace;
         private String endPlace;
@@ -20,12 +20,10 @@
         private String startDatetime;
 
 
-    public DriverTravel(String travelId, String login, String firstName, String lastName, String passengersCount,
-                        String maxPassengers, String startDatetime, String startPlace, String endPlace) {
-        this.travelId=travelId;
+    public DriverTravel(Long travelId, String login, String startDatetime, String startPlace,
+                        String endPlace, String passengersCount, String maxPassengers) {
+        this.travelId = travelId;
         this.login = login;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.passengersCount = passengersCount;
         this.maxPassengers = maxPassengers;
         this.startDatetime = startDatetime;
@@ -33,18 +31,8 @@
         this.endPlace = endPlace;
     }
 
-    public DriverTravel(String login, String firstName, String lastName, String startDatetime, String startPlace, String endPlace, Long passengersCount) {
-        this.login = login;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.passengersCount = passengersCount.toString();
-        this.startDatetime = startDatetime;
-        this.startPlace = startPlace;
-        this.endPlace = endPlace;
-    }
-
     public DriverTravel(Long travelId, String login, String firstName, String lastName, String startDatetime, String startPlace, String endPlace, Long passengersCount) {
-        this.travelId = travelId.toString();
+        this.travelId = travelId;
         this.login = login;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -62,7 +50,7 @@
         this.endPlace = endPlace;
     }
 
-    public DriverTravel(String travelId, String login, String startPlace, String endPlace, String startDatetime, String maxPassengers) {
+    public DriverTravel(Long travelId, String login, String startPlace, String endPlace, String startDatetime, String maxPassengers) {
         this.travelId = travelId;
         this.login = login;
         this.maxPassengers = maxPassengers;
@@ -72,7 +60,7 @@
         }
 
 	public DriverTravel(Parcel in) {
-        this.travelId = in.readString();
+        this.travelId = in.readLong();
         this.login = in.readString();
         this.firstName = in.readString();
         this.lastName = in.readString();
@@ -85,7 +73,7 @@
 
     public DriverTravel(){}
 
-    public String getLogin() {
+    public String getDriverLogin() {
         return login;
     }
 
@@ -133,7 +121,7 @@
         this.maxPassengers = maxPassengers;
     }
 
-    public String getTravelId () { return travelId; }
+    public Long getTravelId () { return travelId; }
 
     public int describeContents() {
         return 0;
@@ -141,7 +129,7 @@
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.travelId);
+        dest.writeLong(this.travelId);
         dest.writeString(this.login);
         dest.writeString(this.firstName);
         dest.writeString(this.lastName);
@@ -179,7 +167,7 @@
         try {
             // Automate this
             jsonObject.put("id", jsonObject.NULL);
-            jsonObject.put("login", newTravel.getLogin());
+            jsonObject.put("driverLogin", newTravel.getDriverLogin());
             jsonObject.put("startPlace", newTravel.getStartPlace());
             jsonObject.put("endPlace", newTravel.getEndPlace());
             jsonObject.put("pickUpDatetime", newTravel.getStartDatetime());
@@ -201,11 +189,11 @@
         try {
             // Automate this
             jsonObject.put("id", editedTravel.getTravelId());
-            jsonObject.put("login", editedTravel.getLogin());
+            jsonObject.put("driverLogin", editedTravel.getDriverLogin());
             jsonObject.put("startPlace", editedTravel.getStartPlace());
             jsonObject.put("endPlace", editedTravel.getEndPlace());
             jsonObject.put("pickUpDatetime", editedTravel.getStartDatetime());
-            jsonObject.put("passengersCount", editedTravel.getMaxPassengers());
+            jsonObject.put("passengersCount", 1);
 
              httpCommand.editTravelInfo(jsonObject.toString());
         } catch (Exception e){
@@ -214,7 +202,7 @@
         return httpCommand.getHttpResponseCode();
     }
 
-    public int deleteTravel(String travelId){
+    public int deleteTravel(Long travelId){
         int httpResponse;
         List<NameValuePair> travel = new ArrayList<>(1);
         HttpCommands httpCommand = new HttpCommands();
@@ -223,7 +211,7 @@
         return httpResponse;
     }
 
-    public int signUpForTravel(String travelId) {
+    public int signUpForTravel(Long travelId) {
         HttpCommands httpCommand = new HttpCommands();
 
         httpCommand.signUpForTravel(travelId);
@@ -239,4 +227,3 @@
         return httpCommand.getResponse();
     }
 }
-

@@ -4,22 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Driver.CarInfoActivity">
+    tools:context=".Driver.DriverAddCar">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="98dp"
-        tools:layout_editor_absoluteY="0dp">
+        tools:layout_editor_absoluteY="0dp"
+        android:id="@+id/carInfoLayout">
 
         <EditText
             android:id="@+id/brand"
             android:layout_width="334dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Marka"
-            android:inputType="textPersonName"
+            android:hint="@string/brand"
+            android:tag="@string/brand_field"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="251dp" />
 
@@ -28,46 +29,56 @@
             android:layout_width="335dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Model"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/yearOfProduction"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Rok produkcji"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/registrationNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Numer rejestracyjny"
-            android:inputType="textPersonName" />
+            android:hint="@string/model"
+            android:tag="@string/model_field" />
 
         <EditText
             android:id="@+id/color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Kolor auta"
-            android:inputType="textPersonName" />
+            android:hint="@string/color"
+            android:tag="@string/color_field"/>
 
         <EditText
-            android:id="@+id/passangersCapacity"
+            android:id="@+id/productionYear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Ile pasażerów zmieścisz?"
-            android:inputType="textPersonName" />
+            android:hint="@string/production_year"
+            android:tag="@string/production_year_field"/>
+
+        <EditText
+            android:id="@+id/registrationNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/registration_number"
+            android:tag="@string/registration_number_field"/>
+
+        <TextView
+            android:id="@+id/maxPassangersCapacityText"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:ems="25"
+            android:textSize="17dp"
+            android:hint="@string/max_passengers_capacity" />
+
+        <NumberPicker
+            android:id="@+id/maxPassangersCapacity"
+            android:layout_width="wrap_content"
+            android:tag="@string/max_passengers_capacity_field"
+            android:defaultValue="0"
+            android:min="0"
+            android:max ="4"
+            android:layout_height="50dp" />
 
         <Button
             android:id="@+id/submitCarInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Zaktualizuj dane"
+            android:text="@string/save_car_data"
+            android:onClick="saveCarInfo"
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="277dp" />
 

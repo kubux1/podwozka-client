@@ -24,7 +24,7 @@ import java.util.List;
 import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.R;
 
-public class DriverBrowseTravels extends AppCompatActivity {
+public class DriverTravelsLog extends AppCompatActivity {
     private List<DriverTravel> travelList = new ArrayList<>();
     private RecyclerView recyclerView;
     private DriverBrowseTravelsAdapter mAdapter;
@@ -42,9 +42,9 @@ public class DriverBrowseTravels extends AppCompatActivity {
         final Button pastTravels = findViewById(R.id.pastTravels);
 
         recyclerView.addOnItemTouchListener(
-                new DriverRecyclerItemClickListener(DriverBrowseTravels.this, recyclerView ,new DriverRecyclerItemClickListener.OnItemClickListener() {
+                new DriverRecyclerItemClickListener(DriverTravelsLog.this, recyclerView ,new DriverRecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        Intent nextScreen = new Intent(DriverBrowseTravels.this, DriverTravelEditor.class);
+                        Intent nextScreen = new Intent(DriverTravelsLog.this, DriverTravelEditor.class);
                         DriverTravel travel = mAdapter.returnTravel(position);
                         nextScreen.putExtra("TRAVEL", (Parcelable)travel);
                         startActivity(nextScreen);
@@ -84,7 +84,7 @@ public class DriverBrowseTravels extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent nextScreen = new Intent(DriverBrowseTravels.this, DriverMain.class);
+        Intent nextScreen = new Intent(DriverTravelsLog.this, DriverMain.class);
         startActivity(nextScreen);
         finish();
     }
@@ -105,28 +105,24 @@ public class DriverBrowseTravels extends AppCompatActivity {
                 selectedDate = dateFormat.parse((String) jsonObj.get("pickUpDatetime"));
                 if (time.equals(COMING) & currentDate.before(selectedDate)) {
                     travelList.add(new DriverTravel(
-                            String.valueOf(jsonObj.get("id")),
-                            (String) jsonObj.get("login"),
-                            (String) jsonObj.get("firstName"),
-                            (String) jsonObj.get("lastName"),
-                            String.valueOf(jsonObj.get("passengersCount")),
-                            String.valueOf(jsonObj.get("maxPassenger")),
+                            (Long) jsonObj.get("id"),
+                            (String) jsonObj.get("driverLogin"),
                             (String) jsonObj.get("pickUpDatetime"),
                             (String) jsonObj.get("startPlace"),
-                            (String) jsonObj.get("endPlace")
+                            (String) jsonObj.get("endPlace"),
+                            String.valueOf(jsonObj.get("passengersCount")),
+                            String.valueOf(jsonObj.get("maxPassenger"))
                     ));
                 }
                 else if (time.equals(PAST) & currentDate.after(selectedDate)) {
                     travelList.add(new DriverTravel(
-                            String.valueOf(jsonObj.get("id")),
-                            (String) jsonObj.get("login"),
-                            (String) jsonObj.get("firstName"),
-                            (String) jsonObj.get("lastName"),
-                            String.valueOf(jsonObj.get("passengersCount")),
-                            String.valueOf(jsonObj.get("maxPassenger")),
+                            (Long) jsonObj.get("id"),
+                            (String) jsonObj.get("driverLogin"),
                             (String) jsonObj.get("pickUpDatetime"),
                             (String) jsonObj.get("startPlace"),
-                            (String) jsonObj.get("endPlace")
+                            (String) jsonObj.get("endPlace"),
+                            String.valueOf(jsonObj.get("passengersCount")),
+                            String.valueOf(jsonObj.get("maxPassenger"))
                     ));
                 }
             }

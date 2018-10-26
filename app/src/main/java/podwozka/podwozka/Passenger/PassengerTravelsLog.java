@@ -1,5 +1,6 @@
 package podwozka.podwozka.Passenger;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import podwozka.podwozka.Driver.DriverBrowseTravelsAdapter;
+import podwozka.podwozka.Driver.DriverRecyclerItemClickListener;
 import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.R;
 
@@ -44,6 +46,21 @@ public class PassengerTravelsLog extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
+
+        recyclerView.addOnItemTouchListener(
+                new DriverRecyclerItemClickListener(PassengerTravelsLog.this, recyclerView ,new DriverRecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        Intent nextScreen = new Intent(PassengerTravelsLog.this, PassengerTravelDriverAndCar.class);
+                        String driverLogin = mAdapter.returnTravel(position).getDriverLogin();
+                        nextScreen.putExtra("DRIVER_LOGIN", driverLogin);
+                        startActivity(nextScreen);
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );
 
         // TODO: Implement after server side is ready
         final String travelsFound = new DriverTravel().getAllUserTravles();
@@ -83,28 +100,24 @@ public class PassengerTravelsLog extends AppCompatActivity {
                 selectedDate = dateFormat.parse((String) jsonObj.get("pickUpDatetime"));
                 if (time.equals(COMING) & currentDate.before(selectedDate)) {
                     travelList.add(new DriverTravel(
-                            String.valueOf(jsonObj.get("id")),
-                            (String) jsonObj.get("login"),
-                            (String) jsonObj.get("firstName"),
-                            (String) jsonObj.get("lastName"),
-                            String.valueOf(jsonObj.get("passengersCount")),
-                            String.valueOf(jsonObj.get("maxPassenger")),
+                            (Long) jsonObj.get("id"),
+                            (String) jsonObj.get("driverLogin"),
                             (String) jsonObj.get("pickUpDatetime"),
                             (String) jsonObj.get("startPlace"),
-                            (String) jsonObj.get("endPlace")
+                            (String) jsonObj.get("endPlace"),
+                            String.valueOf(jsonObj.get("passengersCount")),
+                            String.valueOf(jsonObj.get("maxPassenger"))
                     ));
                 }
                 else if (time.equals(PAST) & currentDate.after(selectedDate)) {
                     travelList.add(new DriverTravel(
-                            String.valueOf(jsonObj.get("id")),
-                            (String) jsonObj.get("login"),
-                            (String) jsonObj.get("firstName"),
-                            (String) jsonObj.get("lastName"),
-                            String.valueOf(jsonObj.get("passengersCount")),
-                            String.valueOf(jsonObj.get("maxPassenger")),
+                            (Long) jsonObj.get("id"),
+                            (String) jsonObj.get("driverLogin"),
                             (String) jsonObj.get("pickUpDatetime"),
                             (String) jsonObj.get("startPlace"),
-                            (String) jsonObj.get("endPlace")
+                            (String) jsonObj.get("endPlace"),
+                            String.valueOf(jsonObj.get("passengersCount")),
+                            String.valueOf(jsonObj.get("maxPassenger"))
                     ));
                 }
             }

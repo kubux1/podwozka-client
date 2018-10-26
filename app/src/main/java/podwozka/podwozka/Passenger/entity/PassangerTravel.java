@@ -150,7 +150,7 @@ public class PassangerTravel implements Parcelable {
         try {
             // Automate this
             jsonObject.put("id", jsonObject.NULL);
-            jsonObject.put("login", passengerTravel.getLogin());
+            jsonObject.put("driverLogin", passengerTravel.getLogin());
             jsonObject.put("startPlace", passengerTravel.getStartPlace());
             jsonObject.put("endPlace", passengerTravel.getEndPlace());
             jsonObject.put("pickUpDatetime", passengerTravel.getStartDateTime());
@@ -176,7 +176,7 @@ public class PassangerTravel implements Parcelable {
                 JSONObject jsonObj = (JSONObject) obj;
                 travels.add(new PassangerTravel(
                         (Long)jsonObj.get("id"),
-                        (String)jsonObj.get("login"),
+                        (String)jsonObj.get("driverLogin"),
                         (String)jsonObj.get("firstName"),
                         (String)jsonObj.get("lastName"),
                         (String)jsonObj.get("startPlace"),

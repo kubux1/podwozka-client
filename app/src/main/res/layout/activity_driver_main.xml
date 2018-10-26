@@ -33,10 +33,10 @@
             tools:layout_editor_absoluteY="277dp" />
 
         <Button
-            android:id="@+id/accountInformationButton"
+            android:id="@+id/carInformationButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/user_account_info"
+            android:text="@string/car_info"
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="277dp" />
 
