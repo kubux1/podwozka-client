@@ -160,7 +160,7 @@ public class HttpCommands {
         return connection.getHttpResponseCode();
     }
 
-    public int signUpForTravel(String travelId) {
+    public int signUpForTravel(Long travelId) {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
         // TODO: Implement for server signing up for travel
