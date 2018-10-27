@@ -57,7 +57,6 @@
     <string name="surname_empty">Please type your surname </string>
         <!-- Errors -->
     <string name="err_create_fail">Creation attempt failed!</string>
-    <string name="surname_empty">Please type your surname</string>
     <string name="field_empty">Please type</string>
     <string name="car_not_added">Please add a car before planning a trip</string>
     <string name="unknown_error">Unknown error</string>

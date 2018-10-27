@@ -222,7 +222,7 @@
     {
         HttpCommands httpCommand = new HttpCommands();
 
-        httpCommand.findMatchingPassengerTravels(Long.parseLong(driverTravel.travelId));
+        httpCommand.findMatchingPassengerTravels(driverTravel.getTravelId());
 
         return httpCommand.getResponse();
     }
