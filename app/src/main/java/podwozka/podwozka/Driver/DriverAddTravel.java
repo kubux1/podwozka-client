@@ -143,9 +143,6 @@ public class DriverAddTravel extends AppCompatActivity {
         pickStartPlaceButton.setOnClickListener(getPlaceListener(START_PLACE_REQUEST));
         pickEndPlaceButton.setOnClickListener(getPlaceListener(END_PLACE_REQUEST));
 
-        np.setMinValue(0);
-        np.setMaxValue(10);
-
         btnNextScreen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 PopUpWindows alertWindow = new PopUpWindows();

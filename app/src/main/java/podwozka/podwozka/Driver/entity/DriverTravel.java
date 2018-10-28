@@ -192,6 +192,7 @@
 
     public int editTravelInfo(DriverTravel editedTravel){
         HttpCommands httpCommand = new HttpCommands();
+        int httpResponseCode = 0;
         org.json.JSONObject jsonObject = new org.json.JSONObject();
 
         // Convert PUT data into JSON format
@@ -204,11 +205,11 @@
             jsonObject.put("pickUpDatetime", editedTravel.getStartDatetime());
             jsonObject.put("passengersCount", 1);
 
-             httpCommand.editTravelInfo(jsonObject.toString());
+            httpResponseCode = httpCommand.editTravelInfo(jsonObject.toString());
         } catch (Exception e){
             e.printStackTrace();
         }
-        return httpCommand.getHttpResponseCode();
+        return httpResponseCode;
     }
 
     public int deleteTravel(Long travelId){

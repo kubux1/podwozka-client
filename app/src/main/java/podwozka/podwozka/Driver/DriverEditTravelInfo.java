@@ -46,8 +46,8 @@ public class DriverEditTravelInfo extends AppCompatActivity {
                         editedTravel.getDriverLogin(),
                         startPlace.getText().toString(),
                         endPlace.getText().toString(),
-                        pickUpTime.getText().toString(),
-                        editedTravel.getMaxPassengers());
+                        "2018-10-28T17:24",
+                        editedTravel.getPassengersCount());
 
                 int httpResponse = editedTravel.editTravelInfo(editedTravel);
                 Intent nextScreen = new Intent(DriverEditTravelInfo.this, DriverTravelsLog.class);
