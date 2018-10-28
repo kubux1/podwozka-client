@@ -56,6 +56,8 @@
     <string name="name_empty">Please type your name </string>
     <string name="surname_empty">Please type your surname </string>
     <string name="login_failed">User name or password incorrect</string>
+    <string name="save_changes">Save changes</string>
+
         <!-- Errors -->
     <string name="err_create_fail">Creation attempt failed!</string>
     <string name="field_empty">Please type</string>
@@ -76,8 +78,9 @@
     <string name="production_year_not_integer">Please pass only integers in a production year field</string>
     <string name="car_too_old">Car cannot be old more than 20 years</string>
     <string name="car_from_future">Car from future? :)</string>
-    <string name="brand_not_only_letters">Please type only letters in a brand field</string>
-    <string name="color_not_only_letters">Please type only letters in a color field</string>
+    <string name="brand_not_only_letters">Please type only letters in a Brand field</string>
+    <string name="color_not_only_letters">Please type only letters in a Color field</string>
+    <string name="max_passengers_only_numbers">Please type only numbers in a Max passengers capacity field</string>
 
     <!--Other fields-->
     <string name="login">Login</string>

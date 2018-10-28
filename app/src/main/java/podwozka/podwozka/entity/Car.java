@@ -15,7 +15,7 @@ public class Car {
     private String brand;
     private String color;
     private long productionYear;
-    private long registrationNumber;
+    private String registrationNumber;
     private long maxPassengersCapacity;
 
 
@@ -29,7 +29,7 @@ public class Car {
 
     public Car (){}
 
-    public Car(long id, String driverLogin, String model, String brand, String color, long productionYear, long registrationNumber, long maxPassengersCapacity) {
+    public Car(long id, String driverLogin, String model, String brand, String color, long productionYear, String registrationNumber, long maxPassengersCapacity) {
         this.id = id;
         this.driverLogin = driverLogin;
         this.model = model;
@@ -46,7 +46,7 @@ public class Car {
         this.brand = car.get(BRAND);
         this.color = car.get(COLOR);
         this.productionYear = Integer.parseInt(car.get(PRODUCTION_YEAR));
-        this.registrationNumber = Integer.parseInt(car.get(REGISTRATION_NUMBER));
+        this.registrationNumber = car.get(REGISTRATION_NUMBER);
         this.maxPassengersCapacity = Integer.parseInt(car.get(MAX_PASSENGERS_CAP));
     }
 
@@ -86,7 +86,7 @@ public class Car {
         this.productionYear = productionYear;
     }
 
-    public long getRegistrationNumber() {
+    public String getRegistrationNumber() {
         return registrationNumber;
     }
 
@@ -94,7 +94,7 @@ public class Car {
         return driverLogin;
     }
 
-    public void setRegistrationNumber(int registrationNumber) {
+    public void setRegistrationNumber(String registrationNumber) {
         this.registrationNumber = registrationNumber;
     }
 
@@ -140,7 +140,7 @@ public class Car {
                     (String)carInJsonObj.get(BRAND),
                     (String)carInJsonObj.get(COLOR),
                     (Long)carInJsonObj.get(PRODUCTION_YEAR),
-                    (Long)carInJsonObj.get(REGISTRATION_NUMBER),
+                    (String)carInJsonObj.get(REGISTRATION_NUMBER),
                     (Long)carInJsonObj.get(MAX_PASSENGERS_CAP)
             );
         } catch (Exception e){
@@ -163,7 +163,7 @@ public class Car {
                     (String)carInJsonObj.get(BRAND),
                     (String)carInJsonObj.get(COLOR),
                     -1 ,
-                    -1,
+                    null,
                     -1);
         } catch (Exception e){
             e.printStackTrace();

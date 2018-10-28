@@ -4,6 +4,7 @@ import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.MainActivity;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
+import podwozka.podwozka.entity.Car;
 import podwozka.podwozka.entity.HttpCommands;
 
 import android.content.Intent;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 
 public class DriverMain extends AppCompatActivity {
     public static ArrayList<DriverTravel> driverTravels = new ArrayList<DriverTravel>();
+    public Long maxPassengersCapacity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class DriverMain extends AppCompatActivity {
                 if(checkIfDriverAddedCar() == true) {
                     //Starting a new Intent
                     Intent nextScreen = new Intent(getApplicationContext(), DriverAddTravel.class);
+                    nextScreen.putExtra("CAPACITY", maxPassengersCapacity);
                     startActivity(nextScreen);
                 }
             }
@@ -78,6 +81,11 @@ public class DriverMain extends AppCompatActivity {
         HttpCommands httpCommand = new HttpCommands();
 
         int httpResponseCode = httpCommand.getCar();
+        try {
+            maxPassengersCapacity = new Car().JSONToCar(httpCommand.getResponse()).getMaxPassengersCapacity();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         if(httpResponseCode == HttpURLConnection.HTTP_OK){
             hasCar = true;
         } else if(httpResponseCode == HttpURLConnection.HTTP_NOT_FOUND){

@@ -64,9 +64,45 @@
     <string name="pick_end_place">Wybierz miejsce końcowe</string>
 
     <!-- Messages -->
-        <!-- Errors -->
+    <!-- Errors -->
     <string name="err_create_fail">Nie udało się utworzyć!</string>
 
     <!-- Maps -->
     <string name="toast_place">Miejsce</string>
+    <string name="car_info">Informacje o samochodzie</string>
+    <string name="email_user_exists">Konto z podanym adresem email lub loginem już istnieje</string>
+    <string name="login_failed">Nazwa użytkownika lub hasło są nieprawidłowe</string>
+    <string name="save_changes">Zapisz zmiany</string>
+    <string name="field_empty">Proszę podać</string>
+    <string name="car_not_added">Proszę dodać auto przed dodaniem podróży</string>
+    <string name="unknown_error">Bardzo nam przykro, wystąpił nieznany błąd :(</string>
+    <string name="car_exists">Już dodałeś auto</string>
+    <string name="travel_not_found">Podróż nieodnaleziona</string>
+    <string name="already_signed_up">Jesteś już zapisany na tę podróż</string>
+    <string name="error">Błąd</string>
+    <string name="pick_up_date_empty">Proszę wybrać datę odebrania</string>
+    <string name="pick_up_time_empty">Proszę wybrać czas odebrania</string>
+    <string name="no_matching_travels">Nie ma podróży pasujących do twoich kryteriów</string>
+    <string name="trip_stopped_existing">Ta podróż już nie istenieje</string>
+    <string name="no_coming_travels">Nie masz nadchodzących podróży</string>
+    <string name="no_past_travels">Nie masz przeszłych podróży</string>
+    <string name="password_too_short">Hasło powinno zawierać minimum 4 znaki</string>
+    <string name="password_too_long">Hasło powinno zawierać maksymalnie 4 znaki</string>
+    <string name="production_year_not_integer">Proszę podać tylko cyfry w polu rok produkcji</string>
+    <string name="car_too_old">Auto nie może być starsze niż 20 lat</string>
+    <string name="car_from_future">Auto z przyszłości? :)</string>
+    <string name="brand_not_only_letters">Proszę podać tylko litery w polu Marka</string>
+    <string name="color_not_only_letters">Proszę podać tylko litery w polu Kolor</string>
+    <string name="car_brand">Marka</string>
+    <string name="car_model">Model</string>
+    <string name="car_color">Kolor</string>
+    <string name="car_production_year">Rok produkcji</string>
+    <string name="car_registration_number">Numer rejestracyjny</string>
+    <string name="car_max_passengers_capacity">Ilu pasażerów możesz zabrać</string>
+    <string name="driver_name">Imię kierowcy</string>
+    <string name="car_added">Auto dodane</string>
+    <string name="trip_added">Podróż dodana</string>
+    <string name="travel_edit_success">Podróż zaktualizowana</string>
+    <string name="sing_up_success">Zapisałeś się na podróż</string>
+    <string name="max_passengers_only_numbers">Proszę podać tylko cyfry w polu Maksymalna ilość pasażerów</string>
 </resources>

@@ -38,6 +38,7 @@ public class DriverEditTravelInfo extends AppCompatActivity {
         pickUpTime.setText(time);
 
         Button saveChanges = findViewById(R.id.saveChanges);
+        // TODO: Change startDateTime to values from fields
         saveChanges.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
@@ -46,8 +47,8 @@ public class DriverEditTravelInfo extends AppCompatActivity {
                         editedTravel.getDriverLogin(),
                         startPlace.getText().toString(),
                         endPlace.getText().toString(),
-                        pickUpTime.getText().toString(),
-                        editedTravel.getMaxPassengers());
+                        "2018-10-28T17:24",
+                        editedTravel.getPassengersCount());
 
                 int httpResponse = editedTravel.editTravelInfo(editedTravel);
                 Intent nextScreen = new Intent(DriverEditTravelInfo.this, DriverTravelsLog.class);

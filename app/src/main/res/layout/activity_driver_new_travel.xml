@@ -80,17 +80,6 @@ tools:context=".Driver.DriverAddTravel">
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:ems="10"
-            android:text="@string/passengers_max" />
-
-        <NumberPicker
-            android:id="@+id/passengerCount"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp" />
-
         <Button
             android:id="@+id/submitNewTravelButton"
             android:layout_width="match_parent"

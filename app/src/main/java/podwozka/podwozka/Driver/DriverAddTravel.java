@@ -137,14 +137,11 @@ public class DriverAddTravel extends AppCompatActivity {
 
         pickedDate =  findViewById(R.id.pickedDate);
         pickedTime = findViewById(R.id.pickedTime);
-        final NumberPicker np = findViewById(R.id.passengerCount);
+        final String maxPassengersCapacity = Long.toString(getIntent().getLongExtra("CAPACITY",0));
 
         builder = new PlacePicker.IntentBuilder();
         pickStartPlaceButton.setOnClickListener(getPlaceListener(START_PLACE_REQUEST));
         pickEndPlaceButton.setOnClickListener(getPlaceListener(END_PLACE_REQUEST));
-
-        np.setMinValue(0);
-        np.setMaxValue(10);
 
         btnNextScreen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -160,7 +157,7 @@ public class DriverAddTravel extends AppCompatActivity {
                         startTravelPlaceMessage,
                         endTravelPlaceMessage,
                         (date+"T"+pickedTime.getText().toString()),
-                        Integer.toString(np.getValue()));
+                        maxPassengersCapacity);
 
                     httpResponse = newTravel.postNewTravel(newTravel);
                     if(httpResponse == HttpURLConnection.HTTP_CREATED) {
