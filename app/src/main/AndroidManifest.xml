@@ -28,11 +28,11 @@
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".Passenger.PassangerMain"></activity>
         <activity android:name=".Passenger.PassengerFindTravels"></activity>
-        <activity android:name=".Passenger.PassengerBrowseTravels"></activity>
+        <activity android:name=".Passenger.PassengerBrowseFoundTravels"></activity>
         <activity android:name=".Passenger.PassengerTravelsLog"></activity>
         <activity android:name=".Passenger.PassengerTravelDriverAndCar"></activity>
         <activity android:name=".Driver.DriverMain"></activity>
-        <activity android:name=".Driver.DriverPostNewTravel"></activity>
+        <activity android:name=".Driver.DriverAddTravel"></activity>
         <activity android:name=".Driver.DriverAddCar"></activity>
         <activity android:name=".Driver.DriverTravelsLog"></activity>
         <activity android:name=".Driver.DriverTravelEditor"></activity>

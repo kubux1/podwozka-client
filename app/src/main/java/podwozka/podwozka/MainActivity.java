@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -81,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+
+        checkForMessages();
     }
 
     @Override
@@ -100,6 +101,15 @@ public class MainActivity extends AppCompatActivity {
             startActivity(refresh);
         } else {
             Toast.makeText(MainActivity.this, "Language already selected!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Check if there was is any message from previous activity
+    public void checkForMessages(){
+        Intent i = getIntent();
+        String message = i.getStringExtra("MESSAGE");
+        if(message !=  null){
+            new PopUpWindows().showAlertWindow(MainActivity.this, null, message);
         }
     }
 }

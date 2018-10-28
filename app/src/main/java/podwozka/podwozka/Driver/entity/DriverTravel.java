@@ -3,8 +3,17 @@
     import android.os.Parcel;
     import android.os.Parcelable;
     import org.apache.http.NameValuePair;
+    import org.json.simple.JSONArray;
+    import org.json.simple.JSONObject;
+    import org.json.simple.parser.JSONParser;
+
+    import java.text.DateFormat;
+    import java.text.SimpleDateFormat;
     import java.util.ArrayList;
+    import java.util.Date;
     import java.util.List;
+
+    import podwozka.podwozka.Driver.DriverBrowseTravelsAdapter;
     import podwozka.podwozka.Driver.DriverMain;
     import podwozka.podwozka.entity.HttpCommands;
 
@@ -204,7 +213,6 @@
 
     public int deleteTravel(Long travelId){
         int httpResponse;
-        List<NameValuePair> travel = new ArrayList<>(1);
         HttpCommands httpCommand = new HttpCommands();
 
         httpResponse = httpCommand.deleteTravel(travelId);
@@ -214,8 +222,7 @@
     public int signUpForTravel(Long travelId) {
         HttpCommands httpCommand = new HttpCommands();
 
-        httpCommand.signUpForTravel(travelId);
-        return httpCommand.getHttpResponseCode();
+        return httpCommand.signUpForTravel(travelId);
     }
 
     public String findMatchingPassengerTravels(DriverTravel driverTravel)
@@ -225,5 +232,55 @@
         httpCommand.findMatchingPassengerTravels(driverTravel.getTravelId());
 
         return httpCommand.getResponse();
+    }
+
+    public boolean prepareTravelData (String travelsJSON, String time, List<DriverTravel> travelList, DriverBrowseTravelsAdapter mAdapter) {
+        JSONParser parser = new JSONParser();
+        Date currentDate = new Date(), selectedDate;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        final String COMING = "coming";
+        final String PAST = "past";
+        boolean isEmpty = true;
+
+        // Clear previous data
+        travelList.clear();
+        mAdapter.notifyDataSetChanged();
+
+        try {
+            JSONArray travelsObjects = (JSONArray)parser.parse(travelsJSON);
+            for (Object obj : travelsObjects) {
+                JSONObject jsonObj = (JSONObject) obj;
+                selectedDate = dateFormat.parse((String) jsonObj.get("pickUpDatetime"));
+                if (time.equals(COMING) & currentDate.before(selectedDate)) {
+                    travelList.add(new DriverTravel(
+                            (Long) jsonObj.get("id"),
+                            (String) jsonObj.get("driverLogin"),
+                            (String) jsonObj.get("pickUpDatetime"),
+                            (String) jsonObj.get("startPlace"),
+                            (String) jsonObj.get("endPlace"),
+                            String.valueOf(jsonObj.get("passengersCount")),
+                            String.valueOf(jsonObj.get("maxPassenger"))
+                    ));
+                    isEmpty = false;
+                }
+                else if (time.equals(PAST) & currentDate.after(selectedDate)) {
+                    travelList.add(new DriverTravel(
+                            (Long) jsonObj.get("id"),
+                            (String) jsonObj.get("driverLogin"),
+                            (String) jsonObj.get("pickUpDatetime"),
+                            (String) jsonObj.get("startPlace"),
+                            (String) jsonObj.get("endPlace"),
+                            String.valueOf(jsonObj.get("passengersCount")),
+                            String.valueOf(jsonObj.get("maxPassenger"))
+                    ));
+                    isEmpty = false;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mAdapter.notifyDataSetChanged();
+        return isEmpty;
     }
 }

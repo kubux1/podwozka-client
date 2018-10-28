@@ -3,11 +3,12 @@ package podwozka.podwozka.Driver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+
+import java.net.HttpURLConnection;
 
 import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.PopUpWindows;
@@ -27,7 +28,7 @@ public class DriverTravelEditor extends AppCompatActivity {
             public void onClick(View arg0) {
                 //Starting a new Intent
                 Intent nextScreen = new Intent(DriverTravelEditor.this, DriverEditTravelInfo.class);
-                nextScreen.putExtra("TRAVEL", (Parcelable)travel);
+                nextScreen.putExtra("TRAVEL", travel);
                 startActivity(nextScreen);
             }
         });
@@ -37,7 +38,7 @@ public class DriverTravelEditor extends AppCompatActivity {
             public void onClick(View arg0) {
                 //Starting a new Intent
                 Intent nextScreen = new Intent(DriverTravelEditor.this, DriverBrowseWaitingPassengers.class);
-                nextScreen.putExtra("TRAVEL", (Parcelable)travel);
+                nextScreen.putExtra("TRAVEL", travel);
                 startActivity(nextScreen);
             }
         });
@@ -53,13 +54,17 @@ public class DriverTravelEditor extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
                         int httpResponse = travel.deleteTravel(travel.getTravelId());
-                        if(httpResponse == 200){
-                            PopUpWindows successWindow = new PopUpWindows();
-                            successWindow.showAlertWindow(DriverTravelEditor.this, null, getResources().getString(R.string.travel_canceled));
-                            Intent nextScreen = new Intent(DriverTravelEditor.this, DriverTravelsLog.class);
-                            startActivity(nextScreen);
-                            finish();
+                        Intent nextScreen = new Intent(DriverTravelEditor.this, DriverTravelsLog.class);
+                        String message;
+                        if(httpResponse == HttpURLConnection.HTTP_OK){
+                            message = getString(R.string.travel_canceled);
                         }
+                        else {
+                            message = getString(R.string.unknown_error);
+                        }
+                        nextScreen.putExtra("MESSAGE", message);
+                        startActivity(nextScreen);
+                        finish();
                         dialog.dismiss();
                     }
                 });
@@ -77,6 +82,8 @@ public class DriverTravelEditor extends AppCompatActivity {
                 alert.show();
             }
         });
+
+        checkForMessages();
     }
 
     @Override
@@ -84,5 +91,14 @@ public class DriverTravelEditor extends AppCompatActivity {
         Intent nextScreen = new Intent(DriverTravelEditor.this, DriverTravelsLog.class);
         startActivity(nextScreen);
         finish();
+    }
+
+    // Check if there was is any message from previous activity
+    public void checkForMessages(){
+        Intent i = getIntent();
+        String message = i.getStringExtra("MESSAGE");
+        if(message !=  null){
+            new PopUpWindows().showAlertWindow(DriverTravelEditor.this, null, message);
+        }
     }
 }

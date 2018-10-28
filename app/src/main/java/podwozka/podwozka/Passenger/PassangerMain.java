@@ -1,6 +1,7 @@
 package podwozka.podwozka.Passenger;
 
 import podwozka.podwozka.MainActivity;
+import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 
 import android.content.DialogInterface;
@@ -38,6 +39,7 @@ public class PassangerMain extends AppCompatActivity {
             }
         });
 
+        /* Commented for future development
         Button accountInfo = findViewById(R.id.accountInformationButton);
         accountInfo.setOnClickListener(new View.OnClickListener() {
 
@@ -45,6 +47,7 @@ public class PassangerMain extends AppCompatActivity {
                 //TODO: Implement functionality
             }
         });
+        */
 
         final Button logOut = findViewById(R.id.logOutButton);
         logOut.setOnClickListener(new View.OnClickListener() {
@@ -86,5 +89,14 @@ public class PassangerMain extends AppCompatActivity {
 
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    // Check if there was is any message from previous activity
+    public void checkForMessages(){
+        Intent i = getIntent();
+        String message = i.getStringExtra("MESSAGE");
+        if(message !=  null){
+            new PopUpWindows().showAlertWindow(PassangerMain.this, null, message);
+        }
     }
 }

@@ -8,10 +8,16 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import android.text.TextUtils;
+
+import java.net.HttpURLConnection;
+
 import podwozka.podwozka.entity.User;
 
 public class RegisterActivity extends AppCompatActivity {
     public static User user;
+    public static final int PASSWORD_MIN_LENGTH = 4;
+    public static final int PASSWORD_MAX_LENGTH = 100;
+
     public final static boolean isValidEmail(CharSequence target) {
         if (TextUtils.isEmpty(target)) {
             return false;
@@ -76,6 +82,14 @@ public class RegisterActivity extends AppCompatActivity {
                 {
                     alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.password_retype_empty));
                 }
+                else if (passwordMessage.length() < PASSWORD_MIN_LENGTH)
+                {
+                    alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.password_too_short));
+                }
+                else if (passwordMessage.length() > PASSWORD_MAX_LENGTH)
+                {
+                    alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.password_too_long));
+                }
                 else if (!passwordMessage.equals(passwordRetypeMessage))
                 {
                     alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.passwords_diffrent));
@@ -88,14 +102,18 @@ public class RegisterActivity extends AppCompatActivity {
                     {
                         user = new User();
                         httpResponseCode = user.registerUser(nameMessage, surnameMessage, loginMessage, passwordMessage, emailAddressMessage);
-                        if(httpResponseCode == 201) {
-                            alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.registration_successful));
+                        if(httpResponseCode == HttpURLConnection.HTTP_CREATED) {
+                            nextScreen.putExtra("MESSAGE", getResources().getString(R.string.registration_successful));
                             startActivity(nextScreen);
-                        } else if (httpResponseCode == 400){
-                            alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.email_already_exists));
-                        }
-                    } else
-                    {
+
+                        } else if (httpResponseCode == HttpURLConnection.HTTP_BAD_REQUEST)
+                        {
+                            alertWindow.windowTimeout(3).showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.email_user_exists));
+                        } else
+                            {
+                            alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.unknown_error));
+                            }
+                    } else {
                         alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.email_not_valid));
                     }
                 }

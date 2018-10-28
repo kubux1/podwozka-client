@@ -1,4 +1,4 @@
-package podwozka.podwozka.entity;
+package podwozka.podwozka.Libs;
 
 import android.content.Context;
 import android.view.View;

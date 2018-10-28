@@ -32,9 +32,9 @@ import podwozka.podwozka.R;
 import static podwozka.podwozka.LoginActivity.user;
 
 
-public class DriverPostNewTravel extends AppCompatActivity {
+public class DriverAddTravel extends AppCompatActivity {
 
-    private static final String TAG = DriverPostNewTravel.class.getName();
+    private static final String TAG = DriverAddTravel.class.getName();
 
     private static final int START_PLACE_REQUEST = 1000;
 
@@ -165,14 +165,16 @@ public class DriverPostNewTravel extends AppCompatActivity {
                     httpResponse = newTravel.postNewTravel(newTravel);
                     if(httpResponse == HttpURLConnection.HTTP_CREATED) {
                         Intent nextScreen = new Intent(getApplicationContext(),
-                                DriverPostNewTravel.class);
+                                DriverAddTravel.class);
+                        nextScreen.putExtra("MESSAGE", getResources().getString(R.string.trip_added));
                         startActivity(nextScreen);
+                        finish();
                     } else {
-                        Toast.makeText(DriverPostNewTravel.this,
+                        Toast.makeText(DriverAddTravel.this,
                                 R.string.err_create_fail, Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    alertWindow.showAlertWindow(DriverPostNewTravel.this,
+                    alertWindow.showAlertWindow(DriverAddTravel.this,
                             null, mistake);
                 }
 
@@ -189,6 +191,8 @@ public class DriverPostNewTravel extends AppCompatActivity {
                 endPlaceView.setText(startText);
             }
         });
+
+        checkForMessages();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -203,7 +207,7 @@ public class DriverPostNewTravel extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent nextScreen = new Intent(DriverPostNewTravel.this, DriverMain.class);
+        Intent nextScreen = new Intent(DriverAddTravel.this, DriverMain.class);
         startActivity(nextScreen);
         finish();
     }
@@ -212,7 +216,7 @@ public class DriverPostNewTravel extends AppCompatActivity {
         return new View.OnClickListener() {
             public void onClick(View view) {
                 try {
-                    startActivityForResult(builder.build(DriverPostNewTravel.this),
+                    startActivityForResult(builder.build(DriverAddTravel.this),
                             requestCode);
                 } catch (GooglePlayServicesNotAvailableException
                         | GooglePlayServicesRepairableException ex) {
@@ -248,5 +252,14 @@ public class DriverPostNewTravel extends AppCompatActivity {
         }
 
         return null;
+    }
+
+    // Check if there was is any message from previous activity
+    public void checkForMessages(){
+        Intent i = getIntent();
+        String message = i.getStringExtra("MESSAGE");
+        if(message !=  null){
+            new PopUpWindows().showAlertWindow(DriverAddTravel.this, null, message);
+        }
     }
 }

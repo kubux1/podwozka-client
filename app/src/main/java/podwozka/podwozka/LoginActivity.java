@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
+import java.net.HttpURLConnection;
+
 import podwozka.podwozka.entity.User;
 
 public class LoginActivity extends AppCompatActivity {
@@ -61,12 +63,15 @@ public class LoginActivity extends AppCompatActivity {
                 if (errorsCount == 0) {
                     user = new User(loginMessage, loginOptionMessage);
                     httpResponseCode = user.logInUser(loginMessage, passwordMessage);
-                    if (httpResponseCode == 200) {
+                    if (httpResponseCode == HttpURLConnection.HTTP_OK) {
                         nextScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(nextScreen);
-                        finish(); // call this to finish the current activity
-                    } else {
-                        alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.account_not_existing));
+                        finish();
+                    } else if (httpResponseCode == HttpURLConnection.HTTP_UNAUTHORIZED){
+                        alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.login_failed));
+                    }
+                    else {
+                        alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.unknown_error));
                     }
                 }
             }

@@ -25,6 +25,7 @@ public class Car {
     private final static String PRODUCTION_YEAR = "productionYear";
     private final static String REGISTRATION_NUMBER = "registrationNumber";
     private final static String MAX_PASSENGERS_CAP= "maxPassengersCapacity";
+    private final static int MAX_CAR_AGE = 20;
 
     public Car (){}
 
@@ -105,6 +106,9 @@ public class Car {
         this.maxPassengersCapacity = maxPassengersCapacity;
     }
 
+    public int getMaxCarAge (){
+        return MAX_CAR_AGE;
+    }
     public String newCarToJSON (Car car){
         JSONObject carInJsonObject = new JSONObject();
 
@@ -165,10 +169,5 @@ public class Car {
             e.printStackTrace();
         }
         return car;
-    }
-
-    public String validateCarFields(Map<String, String> car){
-        String wrongField = null;
-        return wrongField;
     }
 }

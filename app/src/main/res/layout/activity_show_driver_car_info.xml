@@ -16,41 +16,67 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp">
 
+
         <TextView
             android:id="@+id/driverName"
-            android:layout_width="334dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/default_description_text_size"
+            android:text="@string/driver_name" />
+
+        <TextView
+            android:id="@+id/driverNameField"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="driverName"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="251dp" />
+            android:textSize="@dimen/default_input_text_size"
+            android:maxLength="@integer/default_input_text_max_length"
+            android:hint="@string/driver_name" />
 
         <TextView
             android:id="@+id/driverCarBrand"
-            android:layout_width="334dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="driverName"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="251dp" />
+            android:textSize="@dimen/default_description_text_size"
+            android:text="@string/car_brand" />
+
+        <TextView
+            android:id="@+id/driverCarBrandField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/default_input_text_size"
+            android:maxLength="@integer/default_input_text_max_length"
+            android:hint="@string/car_brand" />
 
         <TextView
             android:id="@+id/driverCarModel"
-            android:layout_width="334dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="driverName"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="251dp" />
+            android:textSize="@dimen/default_description_text_size"
+            android:text="@string/car_model" />
+
+        <TextView
+            android:id="@+id/driverCarModelField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/default_input_text_size"
+            android:maxLength="@integer/default_input_text_max_length"
+            android:hint="@string/car_model" />
 
         <TextView
             android:id="@+id/driverCarColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/default_description_text_size"
+            android:text="@string/car_color" />
+
+        <TextView
+            android:id="@+id/driverCarColorField"
             android:layout_width="334dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="driverName"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="251dp" />
+            android:hint="@string/car_color"
+            android:textSize="@dimen/default_input_text_size"
+            android:maxLength="@integer/default_input_text_max_length" />
 
     </LinearLayout>
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Passenger.NewTravelActivity">
+    tools:context=".Driver.DriverEditTravelInfo">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,19 +32,19 @@
             android:inputType="textPersonName" />
 
         <EditText
+            android:id="@+id/pickUpDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Kiedy"
+            android:inputType="textPersonName" />
+
+        <EditText
             android:id="@+id/pickUpTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="O której startujesz?"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/maxPassengers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Ile możesz zabrać maksymalnie osób?"
             android:inputType="textPersonName" />
 
         <Button

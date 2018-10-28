@@ -31,7 +31,7 @@ public class DriverMain extends AppCompatActivity {
             public void onClick(View arg0) {
                 if(checkIfDriverAddedCar() == true) {
                     //Starting a new Intent
-                    Intent nextScreen = new Intent(getApplicationContext(), DriverPostNewTravel.class);
+                    Intent nextScreen = new Intent(getApplicationContext(), DriverAddTravel.class);
                     startActivity(nextScreen);
                 }
             }
@@ -65,12 +65,7 @@ public class DriverMain extends AppCompatActivity {
             }
         });
 
-        // Check if there was is any message from previous activity
-        Intent i = getIntent();
-        String message = i.getParcelableExtra("MESSAGE");
-        if(message !=  null){
-            new PopUpWindows().showAlertWindow(DriverMain.this, null, message);
-        }
+        checkForMessages();
     }
 
     @Override
@@ -120,5 +115,14 @@ public class DriverMain extends AppCompatActivity {
 
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    // Check if there was is any message from previous activity
+    public void checkForMessages(){
+        Intent i = getIntent();
+        String message = i.getStringExtra("MESSAGE");
+        if(message !=  null){
+            new PopUpWindows().showAlertWindow(DriverMain.this, null, message);
+        }
     }
 }

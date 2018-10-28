@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import java.net.HttpURLConnection;
 
+import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import podwozka.podwozka.entity.Car;
 import podwozka.podwozka.entity.HttpCommands;
@@ -21,27 +22,39 @@ public class PassengerTravelDriverAndCar extends AppCompatActivity {
 
         HttpCommands httpCommand = new HttpCommands();
         int httpResponseCode;
+        boolean errorOccured = false;
         Intent i = getIntent();
         String driverLogin = i.getStringExtra("DRIVER_LOGIN");
 
-        TextView driverName = findViewById(R.id.driverName);
-        TextView driverCarBrand = findViewById(R.id.driverCarBrand);
-        TextView driverCarModel = findViewById(R.id.driverCarModel);
-        TextView driverCarColor = findViewById(R.id.driverCarColor);
+        TextView driverName = findViewById(R.id.driverNameField);
+        TextView driverCarBrand = findViewById(R.id.driverCarBrandField);
+        TextView driverCarModel = findViewById(R.id.driverCarModelField);
+        TextView driverCarColor = findViewById(R.id.driverCarColorField);
 
-        //TODO: Add error responses handling from server
         httpResponseCode = httpCommand.getUserName(driverLogin);
         if (httpResponseCode == HttpURLConnection.HTTP_OK) {
             String name = new User().JSONToUser(httpCommand.getResponse());
             driverName.setText(name);
+        } else {
+            errorOccured = true;
+            driverName.setText(getResources().getString(R.string.error));
         }
 
-        httpResponseCode = httpCommand.getCarLimited();
+        httpResponseCode = httpCommand.getCarLimited(driverLogin);
         if (httpResponseCode == HttpURLConnection.HTTP_OK) {
             Car driverCar = new Car().JSONToCar(httpCommand.getResponse());
             driverCarBrand.setText(driverCar.getBrand());
             driverCarModel.setText(driverCar.getModel());
             driverCarColor.setText(driverCar.getColor());
+        } else {
+            errorOccured = true;
+            driverCarBrand.setText(getResources().getString(R.string.error));
+            driverCarModel.setText(getResources().getString(R.string.error));
+            driverCarColor.setText(getResources().getString(R.string.error));
+        }
+
+        if(errorOccured == true){
+            new PopUpWindows().windowTimeout(3).showAlertWindow(PassengerTravelDriverAndCar.this, null, getResources().getString(R.string.unknown_error));
         }
     }
 

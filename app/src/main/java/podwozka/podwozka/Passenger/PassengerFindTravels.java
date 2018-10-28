@@ -25,6 +25,8 @@ public class PassengerFindTravels extends AppCompatActivity {
     private static TextView pickedTime;
     private static TextView pickedDate;
     private static String date;
+    private static String startTravelPlaceMessage;
+    private static String endTravelPlaceMessage;
 
     // Date dialog
     public static class DatePickerFragment extends DialogFragment
@@ -44,11 +46,11 @@ public class PassengerFindTravels extends AppCompatActivity {
 
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            String monthInString = Integer.toString(month);
+            String monthInString = Integer.toString(month + 1);
             String dayInString = Integer.toString(day);
 
             // Make sure there will be alawys two letters for month and day
-            if(month < 10)
+            if((month + 1) < 10)
                 monthInString = "0" + monthInString;
             if (day < 10)
                 dayInString = "0" + dayInString;
@@ -57,7 +59,7 @@ public class PassengerFindTravels extends AppCompatActivity {
 
             // Date in DD-MM-YYYY format which is more convenient for a user
             pickedDate.setText(new StringBuilder().append(day).append("-")
-                    .append(month).append("-").append(year));
+                    .append(month + 1).append("-").append(year));
         }
     }
 
@@ -84,8 +86,8 @@ public class PassengerFindTravels extends AppCompatActivity {
         }
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            pickedTime.setText(new StringBuilder().append(hourOfDay).append(":")
-                    .append(minute));
+            String timeInString = String.format("%02d:%02d", hourOfDay, minute);
+            pickedTime.setText(timeInString);
 
         }
     }
@@ -112,10 +114,16 @@ public class PassengerFindTravels extends AppCompatActivity {
                 boolean noErrors = true;
 
                 EditText startTravelPlace = findViewById(R.id.startTravelPlace);
-                String startTravelPlaceMessage = startTravelPlace.getText().toString();
+                startTravelPlaceMessage = startTravelPlace.getText().toString();
 
                 EditText endTravelPlace = findViewById(R.id.endTravelPlace);
-                String endTravelPlaceMessage = endTravelPlace.getText().toString();
+                endTravelPlaceMessage = endTravelPlace.getText().toString();
+
+                TextView pickedDate = findViewById(R.id.pickedDate);
+                String pickedDateMessage = pickedDate.getText().toString();
+
+                TextView pickedTime = findViewById(R.id.pickedTime);
+                String pickedTimeMessage = pickedTime.getText().toString();
 
                 if (startTravelPlaceMessage.isEmpty())
                 {
@@ -127,16 +135,26 @@ public class PassengerFindTravels extends AppCompatActivity {
                     alertWindow.showAlertWindow(PassengerFindTravels.this, null, getResources().getString(R.string.end_place_empty));
                     noErrors = false;
                 }
+                else if (pickedDateMessage.isEmpty())
+                {
+                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, getResources().getString(R.string.pick_up_date_empty));
+                    noErrors = false;
+                }
+                else if (pickedTimeMessage.isEmpty())
+                {
+                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, getResources().getString(R.string.pick_up_time_empty));
+                    noErrors = false;
+                }
 
                 if(noErrors == true) {
                     PassangerTravel passengerTravel = new PassangerTravel(null, user.getLogin(),
                             startTravelPlaceMessage,
                             endTravelPlaceMessage,
                             (date+"T"+pickedTime.getText().toString()),
-                            null,
+                            "0",
                             null);
                     travelsFound = passengerTravel.findMatchingTravels(passengerTravel);
-                    Intent nextScreen = new Intent(getApplicationContext(), PassengerBrowseTravels.class);
+                    Intent nextScreen = new Intent(PassengerFindTravels.this, PassengerBrowseFoundTravels.class);
                     nextScreen.putExtra("TRAVELS", travelsFound);
                     startActivity(nextScreen);
                 }
@@ -167,5 +185,24 @@ public class PassengerFindTravels extends AppCompatActivity {
         Intent nextScreen = new Intent(PassengerFindTravels.this, PassangerMain.class);
         startActivity(nextScreen);
         finish();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("startTravelPlace", startTravelPlaceMessage);
+        savedInstanceState.putString("endTravelPlace", endTravelPlaceMessage);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        EditText startTravelPlace = findViewById(R.id.startTravelPlace);
+        EditText endTravelPlace = findViewById(R.id.endTravelPlace);
+
+        startTravelPlaceMessage = savedInstanceState.getString("startTravelPlace");
+        startTravelPlace.setText(startTravelPlaceMessage);
+        endTravelPlaceMessage = savedInstanceState.getString("endTravelPlace");
+        endTravelPlace.setText(endTravelPlaceMessage);
     }
 }

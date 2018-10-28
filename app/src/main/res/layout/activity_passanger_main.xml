@@ -32,6 +32,7 @@
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="277dp" />
 
+        <!-- Commented for future development
         <Button
             android:id="@+id/accountInformationButton"
             android:layout_width="match_parent"
@@ -39,6 +40,7 @@
             android:text="@string/user_account_info"
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="277dp" />
+        -->
 
         <Button
             android:id="@+id/logOutButton"

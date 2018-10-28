@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:text="@string/start_date" />
+                android:hint="@string/start_date" />
 
             <Button
                 android:id="@+id/setDate"
@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:text="@string/start_time"
+                android:hint="@string/start_time"
                 android:inputType="textPersonName" />
 
             <Button
