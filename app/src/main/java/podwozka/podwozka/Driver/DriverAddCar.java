@@ -61,7 +61,7 @@ public class DriverAddCar extends AppCompatActivity {
     }
 
     public boolean validateProductionYear(String productionYear){
-        boolean isValidationSuccessful = false;
+        boolean isValidationSuccessful;
 
         int prodYear;
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -70,28 +70,39 @@ public class DriverAddCar extends AppCompatActivity {
             prodYear = Integer.parseInt(productionYear);
         }catch (Exception e){
             new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.production_year_not_integer));
+            isValidationSuccessful = false;
             return isValidationSuccessful;
         }
         if((currentYear - prodYear) > new Car().getMaxCarAge()){
             new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.car_too_old));
+            isValidationSuccessful = false;
         }
         else if (prodYear > currentYear){
             new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.car_from_future));
+            isValidationSuccessful = false;
+        }
+        else {
+            isValidationSuccessful = true;
         }
 
         return isValidationSuccessful;
     }
 
     public boolean validateBrandAndColorField(String brand, String color){
-        boolean isValidationSuccessful = false;
+        boolean isValidationSuccessful;
 
         // Check if brand name has only letters
         if(!brand.matches("[a-zA-Z]+")){
             new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.brand_not_only_letters));
+            isValidationSuccessful = false;
         }
         // Check if color name has only letters
         else if(!color.matches("[a-zA-Z]+")){
             new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.color_not_only_letters));
+            isValidationSuccessful = false;
+        }
+        else {
+            isValidationSuccessful = true;
         }
 
         return isValidationSuccessful;
