@@ -31,28 +31,32 @@ public class PassengerTravelDriverAndCar extends AppCompatActivity {
         TextView driverCarModel = findViewById(R.id.driverCarModelField);
         TextView driverCarColor = findViewById(R.id.driverCarColorField);
 
-        httpResponseCode = httpCommand.getUserName(driverLogin);
-        if (httpResponseCode == HttpURLConnection.HTTP_OK) {
-            String name = new User().JSONToUser(httpCommand.getResponse());
-            driverName.setText(name);
-        } else {
-            errorOccured = true;
-            driverName.setText(getResources().getString(R.string.error));
-        }
+        try {
+            httpResponseCode = httpCommand.getUserName(driverLogin);
+            if (httpResponseCode == HttpURLConnection.HTTP_OK) {
+                String name = new User().JSONToUser(httpCommand.getResponse());
+                driverName.setText(name);
+            } else {
+                errorOccured = true;
+                driverName.setText(getResources().getString(R.string.error));
+            }
 
-        httpResponseCode = httpCommand.getCarLimited(driverLogin);
-        if (httpResponseCode == HttpURLConnection.HTTP_OK) {
-            Car driverCar = new Car().JSONToCar(httpCommand.getResponse());
-            driverCarBrand.setText(driverCar.getBrand());
-            driverCarModel.setText(driverCar.getModel());
-            driverCarColor.setText(driverCar.getColor());
-        } else {
-            errorOccured = true;
-            driverCarBrand.setText(getResources().getString(R.string.error));
-            driverCarModel.setText(getResources().getString(R.string.error));
-            driverCarColor.setText(getResources().getString(R.string.error));
+            httpResponseCode = httpCommand.getCarLimited(driverLogin);
+            if (httpResponseCode == HttpURLConnection.HTTP_OK) {
+                Car driverCar = new Car().JSONToCarRestricted(httpCommand.getResponse());
+                driverCarBrand.setText(driverCar.getBrand());
+                driverCarModel.setText(driverCar.getModel());
+                driverCarColor.setText(driverCar.getColor());
+            } else {
+                errorOccured = true;
+                driverCarBrand.setText(getResources().getString(R.string.error));
+                driverCarModel.setText(getResources().getString(R.string.error));
+                driverCarColor.setText(getResources().getString(R.string.error));
+            }
+        } catch (Exception e)
+        {
+            new PopUpWindows().windowTimeout(3).showAlertWindow(PassengerTravelDriverAndCar.this, null, getResources().getString(R.string.unknown_error));
         }
-
         if(errorOccured == true){
             new PopUpWindows().windowTimeout(3).showAlertWindow(PassengerTravelDriverAndCar.this, null, getResources().getString(R.string.unknown_error));
         }
