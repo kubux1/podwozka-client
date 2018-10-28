@@ -38,6 +38,7 @@ public class DriverEditTravelInfo extends AppCompatActivity {
         pickUpTime.setText(time);
 
         Button saveChanges = findViewById(R.id.saveChanges);
+        // TODO: Change startDateTime to values from fields
         saveChanges.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {

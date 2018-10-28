@@ -23,6 +23,7 @@ public class DriverTravelEditor extends AppCompatActivity {
         Intent i = getIntent();
         final DriverTravel travel = i.getParcelableExtra("TRAVEL");
 
+        /* Uncomment when fixed bug that after editing travel, passengers loses association to signed up travels
         Button editTravel = findViewById(R.id.editTravel);
         editTravel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -32,7 +33,7 @@ public class DriverTravelEditor extends AppCompatActivity {
                 startActivity(nextScreen);
             }
         });
-
+        */
         Button waitingPassengersButton = (Button) findViewById(R.id.passangersInfo);
         waitingPassengersButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {

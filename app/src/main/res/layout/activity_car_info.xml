@@ -96,20 +96,18 @@
 
         <TextView
             android:id="@+id/maxPassangersCapacityText"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="25"
-            android:textSize="17dp"
+            android:textSize="@dimen/default_description_text_size"
             android:text="@string/car_max_passengers_capacity" />
 
-        <NumberPicker
+        <EditText
             android:id="@+id/maxPassangersCapacity"
-            android:layout_width="wrap_content"
-            android:tag="@string/max_passengers_capacity_field"
-            android:defaultValue="0"
-            android:min="0"
-            android:max ="4"
-            android:layout_height="50dp" />
+            android:layout_width="40dp"
+            android:layout_height="60dp"
+            android:textSize="@dimen/default_input_text_size"
+            android:maxLength="@integer/default_input_text_max_length"
+            android:tag="@string/max_passengers_capacity_field"/>
 
         <Button
             android:id="@+id/submitCarInfo"

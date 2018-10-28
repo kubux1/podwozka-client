@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp">
-
+<!-- Uncomment when fixed bug that after editing travel, passengers loses association to signed up travels
         <Button
             android:id="@+id/editTravel"
             android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:text="@string/edit_travel"
             tools:layout_editor_absoluteX="58dp"
             tools:layout_editor_absoluteY="24dp" />
-
+-->
         <Button
             android:id="@+id/passangersInfo"
             android:layout_width="match_parent"

@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (errorsCount == 0) {
                     user = new User(loginMessage, loginOptionMessage);
                     httpResponseCode = user.logInUser(loginMessage, passwordMessage);
-                    if (httpResponseCode == HttpURLConnection.HTTP_OK) {
+                    if (httpResponseCode == HttpURLConnection.HTTP_OK | httpResponseCode == HttpURLConnection.HTTP_BAD_REQUEST) {
                         nextScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(nextScreen);
                         finish();
