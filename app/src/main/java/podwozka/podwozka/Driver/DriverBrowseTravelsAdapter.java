@@ -52,8 +52,7 @@ public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrows
         holder.date.setText(startDatetime);
         int freeSpace = 0;
         try{
-            freeSpace = Integer.parseInt(travel.getMaxPassengers()) -
-                    Integer.parseInt(travel.getPassengersCount());
+            freeSpace = Integer.parseInt(travel.getPassengersCount());
         } catch (NumberFormatException e)
         {
             e.printStackTrace();

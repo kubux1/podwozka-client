@@ -13,9 +13,9 @@
         android:scrollbars="vertical" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/noTravelsFound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nie masz żadnych wycieczek"
+        android:text="@string/no_matching_travels"
         android:visibility="invisible" />
 </RelativeLayout>

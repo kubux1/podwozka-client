@@ -1,12 +1,19 @@
 package podwozka.podwozka.entity;
 
 import org.json.JSONObject;
+
+import java.net.HttpURLConnection;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import static podwozka.podwozka.LoginActivity.user;
 
 public class HttpCommands {
     private int httpResponseCode;
     private String response;
+
+    private int serverTimeoutInSeconds = 5;
+    private TimeUnit timeUnit = TimeUnit.SECONDS;
 
     public HttpCommands() {
     }
@@ -30,26 +37,31 @@ public class HttpCommands {
     public int sendLogInData(String dataToSend) {
         CountDownLatch latch = new CountDownLatch(1);
         Connection connection = new Connection();
+        int httpResponseCode;
 
         connection.sendCommand("api/authenticate", "POST", dataToSend, null, latch);
         // Wait for a sendCommand task to end
         try {
-            latch.await();
+            latch.await(serverTimeoutInSeconds, timeUnit);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        httpResponseCode = connection.getHttpResponseCode();
 
-        try {
-            // Extract user id token from server response
-            if (connection.getHttpResponseCode() == 200) {
+        if (httpResponseCode == HttpURLConnection.HTTP_OK) {
+            try {
+                // Extract user id token from server response
                 JSONObject jsonObj = new JSONObject(connection.getResponse());
                 setResponse(jsonObj.getString("id_token"));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+        else if(httpResponseCode == 0){
+            httpResponseCode = HttpURLConnection.HTTP_UNAVAILABLE;
         }
 
-        return connection.getHttpResponseCode();
+        return httpResponseCode;
     }
 
     public int sendRegisterData(String data) {
@@ -163,7 +175,7 @@ public class HttpCommands {
     public int signUpForTravel(Long travelId) {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
-        // TODO: Implement for server signing up for travel
+
         connection.sendCommand("api/travels/signUp?login=" + user.getLogin() +
                         "&travelId=" + travelId, "POST",
                 null, user.getIdToken(), latch);
@@ -213,7 +225,7 @@ public class HttpCommands {
     public int getCar() {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
-        // TODO: Implement for server signing up for travel
+
         connection.sendCommand("api/cars?login=" + user.getLogin(), "GET",
                 null, user.getIdToken(), latch);
         // Wait for a sendCommand task to end
@@ -227,11 +239,11 @@ public class HttpCommands {
         return connection.getHttpResponseCode();
     }
 
-    public int getCarLimited() {
+    public int getCarLimited(String driverLogin) {
         Connection connection = new Connection();
         CountDownLatch latch = new CountDownLatch(1);
-        // TODO: Implement for server signing up for travel
-        connection.sendCommand("api/cars/restricted?login=" + user.getLogin(), "GET",
+
+        connection.sendCommand("api/cars/restricted?login=" + driverLogin, "GET",
                 null, user.getIdToken(), latch);
         // Wait for a sendCommand task to end
         try {

@@ -13,25 +13,36 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
+        <TextView
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/default_description_text_size"
+            android:text="@string/user_login" />
+
         <EditText
             android:id="@+id/loginField"
-            android:layout_width="334dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/user_login"
-            android:inputType="textPersonName"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="251dp" />
+            android:textSize="@dimen/default_input_text_size"
+            android:maxLength="@integer/default_input_text_max_length"
+            android:hint="@string/user_login" />
+
+        <TextView
+            android:id="@+id/password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/default_description_text_size"
+            android:text="@string/user_password" />
 
         <EditText
             android:id="@+id/passwordField"
-            android:layout_width="334dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:textSize="@dimen/default_input_text_size"
+            android:maxLength="@integer/password_max_length"
             android:hint="@string/user_password"
-            android:inputType="textPassword"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="251dp" />
+            android:inputType="textPassword" />
 
 
         <LinearLayout

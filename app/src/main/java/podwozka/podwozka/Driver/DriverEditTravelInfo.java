@@ -2,15 +2,14 @@ package podwozka.podwozka.Driver;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.R;
 import java.net.HttpURLConnection;
+import podwozka.podwozka.Libs.DateFunctions;
 
 public class DriverEditTravelInfo extends AppCompatActivity {
 
@@ -30,11 +29,13 @@ public class DriverEditTravelInfo extends AppCompatActivity {
         final EditText endPlace = findViewById(R.id.endTravelPlace);
         endPlace.setText(editedTravel.getEndPlace());
 
-        final EditText pickUpTime = findViewById(R.id.pickUpTime);
-        pickUpTime.setText(editedTravel.getStartDatetime());
+        String date = new DateFunctions().serverDateTimeToDate(editedTravel.getStartDatetime());
+        final EditText pickUpDate = findViewById(R.id.pickUpDate);
+        pickUpDate.setText(date);
 
-        final EditText maxPassengers = findViewById(R.id.maxPassengers);
-        maxPassengers.setText(editedTravel.getMaxPassengers());
+        String time = new DateFunctions().serverDateTimeToTime(editedTravel.getStartDatetime());
+        final EditText pickUpTime = findViewById(R.id.pickUpTime);
+        pickUpTime.setText(time);
 
         Button saveChanges = findViewById(R.id.saveChanges);
         saveChanges.setOnClickListener(new View.OnClickListener() {
@@ -46,14 +47,21 @@ public class DriverEditTravelInfo extends AppCompatActivity {
                         startPlace.getText().toString(),
                         endPlace.getText().toString(),
                         pickUpTime.getText().toString(),
-                        maxPassengers.getText().toString());
+                        editedTravel.getMaxPassengers());
 
                 int httpResponse = editedTravel.editTravelInfo(editedTravel);
+                Intent nextScreen = new Intent(DriverEditTravelInfo.this, DriverTravelsLog.class);
+                String message = null;
                 if(httpResponse == HttpURLConnection.HTTP_OK){
-                    Intent nextScreen = new Intent(DriverEditTravelInfo.this, DriverTravelsLog.class);
                     nextScreen.putExtra("TRAVEL", editedTravel);
-                    startActivity(nextScreen);
+                    message = getResources().getString(R.string.travel_edit_success);
+                } else if(httpResponse == HttpURLConnection.HTTP_NOT_FOUND){
+                    message = getResources().getString(R.string.travel_not_found);
+                } else {
+                    message = getResources().getString(R.string.unknown_error);
                 }
+                nextScreen.putExtra("MESSAGE", message);
+                startActivity(nextScreen);
             }
         });
     }

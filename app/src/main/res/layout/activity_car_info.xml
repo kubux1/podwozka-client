@@ -14,55 +14,93 @@
         tools:layout_editor_absoluteY="0dp"
         android:id="@+id/carInfoLayout">
 
+        <TextView
+            android:id="@+id/brandFieldName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/default_description_text_size"
+            android:text="@string/car_brand" />
+
         <EditText
             android:id="@+id/brand"
-            android:layout_width="334dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/brand"
-            android:tag="@string/brand_field"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="251dp" />
+            android:textSize="@dimen/default_input_text_size"
+            android:maxLength="@integer/default_input_text_max_length"
+            android:hint="@string/car_brand"
+            android:tag="@string/brand_field" />
+
+        <TextView
+            android:id="@+id/modelFieldName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/default_description_text_size"
+            android:text="@string/car_model" />
 
         <EditText
             android:id="@+id/model"
-            android:layout_width="335dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/model"
+            android:textSize="@dimen/default_input_text_size"
+            android:maxLength="@integer/default_input_text_max_length"
+            android:hint="@string/car_model"
             android:tag="@string/model_field" />
+
+        <TextView
+            android:id="@+id/colorFieldName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/default_description_text_size"
+            android:text="@string/car_color" />
 
         <EditText
             android:id="@+id/color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/color"
+            android:textSize="@dimen/default_input_text_size"
+            android:maxLength="@integer/default_input_text_max_length"
+            android:hint="@string/car_color"
             android:tag="@string/color_field"/>
+
+        <TextView
+            android:id="@+id/productionYearFieldName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/default_description_text_size"
+            android:text="@string/car_production_year" />
 
         <EditText
             android:id="@+id/productionYear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/production_year"
+            android:textSize="@dimen/default_input_text_size"
+            android:maxLength="@integer/car_prod_year_max_length"
+            android:hint="@string/car_production_year"
             android:tag="@string/production_year_field"/>
+
+        <TextView
+            android:id="@+id/registrationNumberFieldName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/default_description_text_size"
+            android:text="@string/car_registration_number" />
 
         <EditText
             android:id="@+id/registrationNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/registration_number"
+            android:textSize="@dimen/default_input_text_size"
+            android:maxLength="@integer/default_input_text_max_length"
+            android:hint="@string/car_registration_number"
             android:tag="@string/registration_number_field"/>
 
         <TextView
             android:id="@+id/maxPassangersCapacityText"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:ems="25"
             android:textSize="17dp"
-            android:hint="@string/max_passengers_capacity" />
+            android:text="@string/car_max_passengers_capacity" />
 
         <NumberPicker
             android:id="@+id/maxPassangersCapacity"

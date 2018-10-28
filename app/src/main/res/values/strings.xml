@@ -46,20 +46,38 @@
     <string name="travel_canceled">Travel canceled</string>
     <string name="sign_up_for_trip_confirmation">Are you sure you want to sign up for this travel?</string>
     <string name="email_not_valid">Email not valid</string>
-    <string name="email_already_exists">Account with that email already exists</string>
+    <string name="email_user_exists">Account with that email or user name already exists</string>
     <string name="registration_successful">Registration successful</string>
     <string name="account_not_existing">Account with such login does not exist</string>
     <string name="account_type_empty">Please choose account type</string>
     <string name="free_seats">Free seats</string>
     <string name="password_retype_empty">Please retype password </string>
-    <string name="passwords_diffrent">Passwords are diffrent</string>
+    <string name="passwords_diffrent">Passwords are different</string>
     <string name="name_empty">Please type your name </string>
     <string name="surname_empty">Please type your surname </string>
+    <string name="login_failed">User name or password incorrect</string>
         <!-- Errors -->
     <string name="err_create_fail">Creation attempt failed!</string>
     <string name="field_empty">Please type</string>
     <string name="car_not_added">Please add a car before planning a trip</string>
-    <string name="unknown_error">Unknown error</string>
+    <string name="unknown_error">We are really sorry, an unknown error occurred :(</string>
+    <string name="car_exists">You already added a car</string>
+    <string name="travel_not_found">Trip not found</string>
+    <string name="already_signed_up">You already signed up for this trip</string>
+    <string name="error">Error</string>
+    <string name="pick_up_date_empty">Please choose pick up date</string>
+    <string name="pick_up_time_empty">Please choose pick up time</string>
+    <string name="no_matching_travels">There are no travels matching your criteria</string>
+    <string name="trip_stopped_existing">This trip was deleted</string>
+    <string name="no_coming_travels">You have no coming travels</string>
+    <string name="no_past_travels">You have no past travels</string>
+    <string name="password_too_short">Password should have at least 4 signs</string>
+    <string name="password_too_long">Password cannot have more signs than 100</string>
+    <string name="production_year_not_integer">Please pass only integers in a production year field</string>
+    <string name="car_too_old">Car cannot be old more than 20 years</string>
+    <string name="car_from_future">Car from future? :)</string>
+    <string name="brand_not_only_letters">Please type only letters in a brand field</string>
+    <string name="color_not_only_letters">Please type only letters in a color field</string>
 
     <!--Other fields-->
     <string name="login">Login</string>
@@ -73,13 +91,15 @@
 
     <!-- Maps -->
     <string name="toast_place">Place</string>
+
     <!--Car fields-->
-    <string name="brand">Brand</string>
-    <string name="model">Model</string>
-    <string name="color">Color</string>
-    <string name="production_year">Production year</string>
-    <string name="registration_number">Registration number</string>
-    <string name="max_passengers_capacity">How many passengers can you take</string>
+    <string name="car_brand">Brand</string>
+    <string name="car_model">Model</string>
+    <string name="car_color">Color</string>
+    <string name="car_production_year">Production year</string>
+    <string name="car_registration_number">Registration number</string>
+    <string name="car_max_passengers_capacity">How many passengers can you take</string>
+    <string name="driver_name">Driver name</string>
 
     <string name="brand_field">brand</string>
     <string name="model_field">model</string>
@@ -90,5 +110,8 @@
 
     <!--Success messages-->
     <string name="car_added">Car added</string>
+    <string name="trip_added">Trip added</string>
+    <string name="travel_edit_success">Trip updated</string>
+    <string name="sing_up_success">Signing up successful</string>
 
 </resources>

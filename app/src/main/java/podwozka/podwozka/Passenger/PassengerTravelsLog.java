@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 import android.view.View;
+import android.widget.TextView;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -31,6 +32,8 @@ public class PassengerTravelsLog extends AppCompatActivity {
     private DriverBrowseTravelsAdapter mAdapter;
     private final static String COMING = "coming";
     private final static String PAST = "past";
+    private TextView noComingTravels;
+    private TextView noPastTravels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,8 @@ public class PassengerTravelsLog extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         final Button comingTravels = findViewById(R.id.comingTravels);
         final Button pastTravels = findViewById(R.id.pastTravels);
+        noComingTravels = findViewById(R.id.noComingTravels);
+        noPastTravels = findViewById(R.id.noPastTravels);
 
         mAdapter = new DriverBrowseTravelsAdapter(travelList, getApplicationContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -54,6 +59,7 @@ public class PassengerTravelsLog extends AppCompatActivity {
                         String driverLogin = mAdapter.returnTravel(position).getDriverLogin();
                         nextScreen.putExtra("DRIVER_LOGIN", driverLogin);
                         startActivity(nextScreen);
+                        finish();
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
@@ -62,17 +68,18 @@ public class PassengerTravelsLog extends AppCompatActivity {
                 })
         );
 
-        // TODO: Implement after server side is ready
         final String travelsFound = new DriverTravel().getAllUserTravles();
-
-        prepareTravelData(travelsFound,"coming");
 
         comingTravels.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
                 comingTravels.setBackgroundColor(Color.GRAY);
                 pastTravels.setBackgroundColor(0);
-                prepareTravelData(travelsFound, COMING);
+                noPastTravels.setVisibility(View.INVISIBLE);
+                boolean isEmpty = new DriverTravel().prepareTravelData(travelsFound, COMING, travelList, mAdapter);
+                if(isEmpty){
+                    noComingTravels.setVisibility(View.VISIBLE);
+                }
             }
         });
         pastTravels.setOnClickListener(new View.OnClickListener() {
@@ -80,51 +87,13 @@ public class PassengerTravelsLog extends AppCompatActivity {
             public void onClick(View arg0) {
                 pastTravels.setBackgroundColor(Color.GRAY);
                 comingTravels.setBackgroundColor(0);
-                prepareTravelData(travelsFound, PAST);
+                noComingTravels.setVisibility(View.INVISIBLE);
+                boolean isEmpty = new DriverTravel().prepareTravelData(travelsFound, PAST, travelList, mAdapter);
+                if(isEmpty){
+                    noPastTravels.setVisibility(View.VISIBLE);
+                }
             }
         });
-    }
-    private void prepareTravelData (String travelsJSON, String time) {
-        JSONParser parser = new JSONParser();
-        Date currentDate = new Date(), selectedDate;
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-
-        // Clear previous data
-        travelList.clear();
-        mAdapter.notifyDataSetChanged();
-
-        try {
-            JSONArray travelsObjects = (JSONArray)parser.parse(travelsJSON);
-            for (Object obj : travelsObjects) {
-                JSONObject jsonObj = (JSONObject) obj;
-                selectedDate = dateFormat.parse((String) jsonObj.get("pickUpDatetime"));
-                if (time.equals(COMING) & currentDate.before(selectedDate)) {
-                    travelList.add(new DriverTravel(
-                            (Long) jsonObj.get("id"),
-                            (String) jsonObj.get("driverLogin"),
-                            (String) jsonObj.get("pickUpDatetime"),
-                            (String) jsonObj.get("startPlace"),
-                            (String) jsonObj.get("endPlace"),
-                            String.valueOf(jsonObj.get("passengersCount")),
-                            String.valueOf(jsonObj.get("maxPassenger"))
-                    ));
-                }
-                else if (time.equals(PAST) & currentDate.after(selectedDate)) {
-                    travelList.add(new DriverTravel(
-                            (Long) jsonObj.get("id"),
-                            (String) jsonObj.get("driverLogin"),
-                            (String) jsonObj.get("pickUpDatetime"),
-                            (String) jsonObj.get("startPlace"),
-                            (String) jsonObj.get("endPlace"),
-                            String.valueOf(jsonObj.get("passengersCount")),
-                            String.valueOf(jsonObj.get("maxPassenger"))
-                    ));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        mAdapter.notifyDataSetChanged();
+        comingTravels.callOnClick();
     }
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="integer" name="default_input_text_max_length">30</item>
+    <item type="integer" name="password_max_length">100</item>
+    <item type="integer" name="car_prod_year_max_length">4</item>
+</resources>

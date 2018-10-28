@@ -9,12 +9,18 @@ import android.support.v7.app.AlertDialog;
 public class PopUpWindows {
 
     // pass value in miliseconds
-    private int alertWindowTimeout = 1500;
+    private int milisecondsInOneSecond = 1000;
+    private int _windowTimeout = 1500;
     private String response;
 
     private void setResponse(String response){ this.response = response; }
 
     public String getResponse(){ return this.response; }
+
+    public PopUpWindows windowTimeout(int windowTimeout){
+        this._windowTimeout = windowTimeout*milisecondsInOneSecond;
+        return this;
+    }
 
     public void showAlertWindow(Context context, final String title, final String message){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
@@ -54,7 +60,7 @@ public class PopUpWindows {
         });
 
         // dialog timeout
-        handler.postDelayed(runnable, alertWindowTimeout);
+        handler.postDelayed(runnable, _windowTimeout);
     }
 
     public void showYesNoWindow(Context context, final String title, final String message) {
