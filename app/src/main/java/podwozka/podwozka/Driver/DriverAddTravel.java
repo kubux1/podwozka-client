@@ -23,11 +23,15 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.net.HttpURLConnection;
+import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.Locale;
 
 import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
+import podwozka.podwozka.entity.PdPlace;
+import podwozka.podwozka.entity.PdTravel;
 
 import static podwozka.podwozka.LoginActivity.user;
 
@@ -50,9 +54,13 @@ public class DriverAddTravel extends AppCompatActivity {
     // Maps
     private PlacePicker.IntentBuilder builder;
 
-    TextView startPlaceView;
+    private TextView startPlaceView;
 
-    TextView endPlaceView;
+    private TextView endPlaceView;
+
+    private PdPlace startPlace;
+
+    private PdPlace endPlace;
 
     // Date dialog
     public static class DatePickerFragment extends DialogFragment
@@ -111,8 +119,10 @@ public class DriverAddTravel extends AppCompatActivity {
         }
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            pickedTime.setText(new StringBuilder().append(hourOfDay).append(":")
-                    .append(minute));
+            pickedTime.setText(new StringBuilder()
+                    .append(String.format(Locale.ENGLISH,"%02d", hourOfDay))
+                    .append(":")
+                    .append(String.format(Locale.ENGLISH,"%02d", minute)));
 
         }
     }
@@ -148,22 +158,21 @@ public class DriverAddTravel extends AppCompatActivity {
                 PopUpWindows alertWindow = new PopUpWindows();
                 int httpResponse;
 
-                String startTravelPlaceMessage = startPlaceView.getText().toString();
-                String endTravelPlaceMessage = endPlaceView.getText().toString();
-
                 String mistake = findMistake();
                 if(mistake == null) {
-                DriverTravel newTravel = new DriverTravel(user.getLogin(),
-                        startTravelPlaceMessage,
-                        endTravelPlaceMessage,
-                        (date+"T"+pickedTime.getText().toString()),
-                        maxPassengersCapacity);
+                    PdTravel travel = new PdTravel();
+                    travel.setDriverLogin(user.getLogin());
+                    travel.setStartPlace(startPlace);
+                    travel.setEndPlace(endPlace);
+                    travel.setPassengersCount(Long.parseLong(maxPassengersCapacity));
+                    travel.setPickUpDatetime(date+"T"+pickedTime.getText().toString());
 
-                    httpResponse = newTravel.postNewTravel(newTravel);
-                    if(httpResponse == HttpURLConnection.HTTP_CREATED) {
+                    httpResponse = travel.post();
+                    if (httpResponse == HttpURLConnection.HTTP_CREATED) {
                         Intent nextScreen = new Intent(getApplicationContext(),
                                 DriverAddTravel.class);
-                        nextScreen.putExtra("MESSAGE", getResources().getString(R.string.trip_added));
+                        nextScreen.putExtra("MESSAGE",
+                                getResources().getString(R.string.trip_added));
                         startActivity(nextScreen);
                         finish();
                     } else {
@@ -217,7 +226,7 @@ public class DriverAddTravel extends AppCompatActivity {
                             requestCode);
                 } catch (GooglePlayServicesNotAvailableException
                         | GooglePlayServicesRepairableException ex) {
-                    Log.e(TAG, "Place Picker cannot use GooglePlayServices", ex);
+                    Log.e(TAG, "PdPlace Picker cannot use GooglePlayServices", ex);
                 }
             }
         };
@@ -228,10 +237,12 @@ public class DriverAddTravel extends AppCompatActivity {
             case START_PLACE_REQUEST:
                 startPlaceView.setText(String.format("%s: %s", place.getName(),
                         place.getAddress()));
+                startPlace = new PdPlace(place);
                 break;
             case END_PLACE_REQUEST:
                 endPlaceView.setText(String.format("%s: %s", place.getName(),
                         place.getAddress()));
+                endPlace = new PdPlace(place);
                 break;
         }
         String toastMsg = String.format("%s: %s", R.string.toast_place, place.getName());
