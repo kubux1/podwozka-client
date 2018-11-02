@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Objects;
 
 import podwozka.podwozka.Constants;
+import podwozka.podwozka.Passenger.entity.PassangerTravel;
 
 public class PdTravel {
     private Long travelId;
@@ -134,5 +135,16 @@ public class PdTravel {
             e.printStackTrace();
         }
         return httpResponse;
+    }
+
+    public String findMatchingTravels(){
+        HttpCommands httpCommand = new HttpCommands();
+
+        try {
+            httpCommand.findTravels(toJson());
+        } catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+        return httpCommand.getResponse();
     }
 }

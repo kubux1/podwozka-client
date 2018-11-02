@@ -171,8 +171,8 @@ public class DriverAddTravel extends AppCompatActivity {
                     if (httpResponse == HttpURLConnection.HTTP_CREATED) {
                         Intent nextScreen = new Intent(getApplicationContext(),
                                 DriverAddTravel.class);
-                        Toast.makeText(DriverAddTravel.this,
-                                R.string.trip_added, Toast.LENGTH_LONG).show();
+                        nextScreen.putExtra("MESSAGE",
+                                getResources().getString(R.string.trip_added));
                         startActivity(nextScreen);
                         finish();
                     } else {

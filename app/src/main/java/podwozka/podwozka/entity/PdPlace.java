@@ -20,7 +20,7 @@ public class PdPlace {
     public PdPlace(Place place) {
         this.latitude = place.getLatLng().latitude;
         this.longitude = place.getLatLng().longitude;
-        this.name = place.getName().toString();
+        setNameFromCharSequence(place.getName());
         this.address = new Address(Optional.ofNullable(
                 place.getAddress()).orElse("")
                 .toString());
@@ -94,5 +94,12 @@ public class PdPlace {
     public int hashCode() {
 
         return Objects.hash(id, latitude, longitude, name, address);
+    }
+
+    private void setNameFromCharSequence(CharSequence name) {
+        String tmp = new StringBuilder(name).toString();
+        tmp = tmp.replace("\'", " ");
+        tmp= tmp.replace("\"", " ");
+        this.name = tmp.replace("°", " ");
     }
 }

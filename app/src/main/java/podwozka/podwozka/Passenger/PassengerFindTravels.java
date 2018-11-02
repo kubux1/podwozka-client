@@ -8,25 +8,58 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+
+import java.net.HttpURLConnection;
 import java.util.Calendar;
+
+import podwozka.podwozka.Driver.DriverAddTravel;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import podwozka.podwozka.Passenger.entity.PassangerTravel;
+import podwozka.podwozka.entity.PdPlace;
+import podwozka.podwozka.entity.PdTravel;
+
 import static podwozka.podwozka.LoginActivity.user;
 
 
 public class PassengerFindTravels extends AppCompatActivity {
-    private static TextView pickedTime;
-    private static TextView pickedDate;
+
+    private static final String TAG = PassengerFindTravels.class.getName();
+
+    private static final int START_PLACE_REQUEST = 1000;
+
+    private static final int END_PLACE_REQUEST = 1001;
+
+    private static TextView pickedTime = null;
+    private static TextView pickedDate = null;
     private static String date;
     private static String startTravelPlaceMessage;
     private static String endTravelPlaceMessage;
+
+    // Maps
+    private PlacePicker.IntentBuilder builder;
+
+    private TextView startPlaceView;
+
+    private TextView endPlaceView;
+
+    private PdPlace startPlace = null;
+
+    private PdPlace endPlace = null;
+
 
     // Date dialog
     public static class DatePickerFragment extends DialogFragment
@@ -97,87 +130,66 @@ public class PassengerFindTravels extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
-    String travelsFound;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passanger_new_travel);
+
         Button btnNextScreen = findViewById(R.id.submitNewTravelButton);
         Button reversePlacesButton = findViewById(R.id.reverseTravelPlaces);
-        pickedDate = findViewById(R.id.pickedDate);
-        pickedTime = findViewById(R.id.pickedTime);
+        Button pickStartPlaceButton = findViewById(R.id.pickStartPlace);
+        Button pickEndPlaceButton = findViewById(R.id.pickEndPlace);
 
+        startPlaceView = findViewById(R.id.startPlaceView);
+        endPlaceView = findViewById(R.id.endPlaceView);
+
+        pickedDate =  findViewById(R.id.pickedDate);
+        pickedTime = findViewById(R.id.pickedTime);
+        final String maxPassengersCapacity = Long.toString(getIntent().getLongExtra("CAPACITY",0));
+
+        builder = new PlacePicker.IntentBuilder();
+        pickStartPlaceButton.setOnClickListener(getPlaceListener(START_PLACE_REQUEST));
+        pickEndPlaceButton.setOnClickListener(getPlaceListener(END_PLACE_REQUEST));
 
         btnNextScreen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 PopUpWindows alertWindow = new PopUpWindows();
-                boolean noErrors = true;
 
-                EditText startTravelPlace = findViewById(R.id.startTravelPlace);
-                startTravelPlaceMessage = startTravelPlace.getText().toString();
+                String mistake = findMistake();
+                if(mistake == null) {
+                    PdTravel travel = new PdTravel();
+                    travel.setDriverLogin(user.getLogin());
+                    travel.setStartPlace(startPlace);
+                    travel.setEndPlace(endPlace);
+                    travel.setPassengersCount(Long.parseLong(maxPassengersCapacity));
+                    travel.setPickUpDatetime(date+"T"+pickedTime.getText().toString());
 
-                EditText endTravelPlace = findViewById(R.id.endTravelPlace);
-                endTravelPlaceMessage = endTravelPlace.getText().toString();
-
-                TextView pickedDate = findViewById(R.id.pickedDate);
-                String pickedDateMessage = pickedDate.getText().toString();
-
-                TextView pickedTime = findViewById(R.id.pickedTime);
-                String pickedTimeMessage = pickedTime.getText().toString();
-
-                if (startTravelPlaceMessage.isEmpty())
-                {
-                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, getResources().getString(R.string.start_place_empty));
-                    noErrors = false;
-                }
-                else if (endTravelPlaceMessage.isEmpty())
-                {
-                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, getResources().getString(R.string.end_place_empty));
-                    noErrors = false;
-                }
-                else if (pickedDateMessage.isEmpty())
-                {
-                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, getResources().getString(R.string.pick_up_date_empty));
-                    noErrors = false;
-                }
-                else if (pickedTimeMessage.isEmpty())
-                {
-                    alertWindow.showAlertWindow(PassengerFindTravels.this, null, getResources().getString(R.string.pick_up_time_empty));
-                    noErrors = false;
-                }
-
-                if(noErrors == true) {
-                    PassangerTravel passengerTravel = new PassangerTravel(null, user.getLogin(),
-                            startTravelPlaceMessage,
-                            endTravelPlaceMessage,
-                            (date+"T"+pickedTime.getText().toString()),
-                            "0",
-                            null);
-                    travelsFound = passengerTravel.findMatchingTravels(passengerTravel);
-                    Intent nextScreen = new Intent(PassengerFindTravels.this, PassengerBrowseFoundTravels.class);
+                    String travelsFound = travel.findMatchingTravels();
+                    Intent nextScreen = new Intent(PassengerFindTravels.this,
+                            PassengerBrowseFoundTravels.class);
                     nextScreen.putExtra("TRAVELS", travelsFound);
                     startActivity(nextScreen);
+                } else {
+                    alertWindow.showAlertWindow(PassengerFindTravels.this,
+                            null, mistake);
                 }
 
             }
         });
 
+
+
+
+
         reversePlacesButton.setOnClickListener(new View.OnClickListener() {
-
             public void onClick(View arg0) {
-                //Starting a new Inten
-                EditText startTravelPlace = findViewById(R.id.startTravelPlace);
-                String startTravelPlaceMessage = startTravelPlace.getText().toString();
+                String startText = startPlaceView.getText().toString();
+                String endText = endPlaceView.getText().toString();
 
-                EditText endTravelPlace = findViewById(R.id.endTravelPlace);
-                String endTravelPlaceMessage = endTravelPlace.getText().toString();
-
-                startTravelPlace.setText(endTravelPlaceMessage);
-                endTravelPlace.setText(startTravelPlaceMessage);
-
+                startPlaceView.setText(endText);
+                endPlaceView.setText(startText);
             }
         });
-
     }
 
     @Override
@@ -204,5 +216,61 @@ public class PassengerFindTravels extends AppCompatActivity {
         startTravelPlace.setText(startTravelPlaceMessage);
         endTravelPlaceMessage = savedInstanceState.getString("endTravelPlace");
         endTravelPlace.setText(endTravelPlaceMessage);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == START_PLACE_REQUEST
+                || requestCode == END_PLACE_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(this, intent);
+                setPlace(place, requestCode);
+            }
+        }
+    }
+
+    protected View.OnClickListener getPlaceListener(final int requestCode) {
+        return new View.OnClickListener() {
+            public void onClick(View view) {
+                try {
+                    startActivityForResult(builder.build(PassengerFindTravels.this),
+                            requestCode);
+                } catch (GooglePlayServicesNotAvailableException
+                        | GooglePlayServicesRepairableException ex) {
+                    Log.e(TAG, "PdPlace Picker cannot use GooglePlayServices", ex);
+                }
+            }
+        };
+    }
+
+    private void setPlace(Place place, int requestCode) {
+        switch(requestCode) {
+            case START_PLACE_REQUEST:
+                startPlaceView.setText(String.format("%s: %s", place.getName(),
+                        place.getAddress()));
+                startPlace = new PdPlace(place);
+                break;
+            case END_PLACE_REQUEST:
+                endPlaceView.setText(String.format("%s: %s", place.getName(),
+                        place.getAddress()));
+                endPlace = new PdPlace(place);
+                break;
+        }
+        String toastMsg = String.format("%s: %s", R.string.toast_place, place.getName());
+        Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+    }
+
+    private String findMistake() {
+        if (startPlace == null)
+        {
+            return getResources().getString(R.string.start_place_empty);
+        } else if (endPlace == null) {
+            return getResources().getString(R.string.end_place_empty);
+        } else if (pickedDate == null) {
+            return getResources().getString(R.string.end_place_empty);
+        } else if (pickedTime == null) {
+            return getResources().getString(R.string.end_place_empty);
+        }
+
+        return null;
     }
 }
