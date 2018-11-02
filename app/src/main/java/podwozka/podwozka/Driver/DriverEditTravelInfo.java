@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import podwozka.podwozka.Driver.entity.DriverTravel;
+import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import java.net.HttpURLConnection;
 import podwozka.podwozka.Libs.DateFunctions;
@@ -50,15 +51,18 @@ public class DriverEditTravelInfo extends AppCompatActivity {
                         "2018-10-28T17:24",
                         editedTravel.getPassengersCount());
 
-                int httpResponse = editedTravel.editTravelInfo(editedTravel);
+                int httpResponseCode = editedTravel.editTravelInfo(editedTravel);
                 Intent nextScreen = new Intent(DriverEditTravelInfo.this, DriverTravelsLog.class);
                 String message = null;
-                if(httpResponse == HttpURLConnection.HTTP_OK){
+                if(httpResponseCode == HttpURLConnection.HTTP_OK){
                     nextScreen.putExtra("TRAVEL", editedTravel);
                     message = getResources().getString(R.string.travel_edit_success);
-                } else if(httpResponse == HttpURLConnection.HTTP_NOT_FOUND){
+                } else if(httpResponseCode == HttpURLConnection.HTTP_NOT_FOUND){
                     message = getResources().getString(R.string.travel_not_found);
-                } else {
+                } else if (httpResponseCode == HttpURLConnection.HTTP_UNAVAILABLE){
+                    new PopUpWindows().showAlertWindow(DriverEditTravelInfo.this, null, getResources().getString(R.string.server_down));
+                }
+                else {
                     message = getResources().getString(R.string.unknown_error);
                 }
                 nextScreen.putExtra("MESSAGE", message);

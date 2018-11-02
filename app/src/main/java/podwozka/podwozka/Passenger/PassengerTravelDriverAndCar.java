@@ -47,7 +47,9 @@ public class PassengerTravelDriverAndCar extends AppCompatActivity {
                 driverCarBrand.setText(driverCar.getBrand());
                 driverCarModel.setText(driverCar.getModel());
                 driverCarColor.setText(driverCar.getColor());
-            } else {
+            } else if (httpResponseCode == HttpURLConnection.HTTP_UNAVAILABLE){
+                new PopUpWindows().showAlertWindow(PassengerTravelDriverAndCar.this, null, getResources().getString(R.string.server_down));
+            }else {
                 errorOccured = true;
                 driverCarBrand.setText(getResources().getString(R.string.error));
                 driverCarModel.setText(getResources().getString(R.string.error));

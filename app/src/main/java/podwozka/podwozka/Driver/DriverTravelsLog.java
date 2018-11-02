@@ -69,34 +69,40 @@ public class DriverTravelsLog extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
         travelsFound = new DriverTravel().getAllUserTravles();
-        new DriverTravel().prepareTravelData(travelsFound, COMING, travelList, mAdapter);
+        if(travelsFound == null)
+        {
+            new PopUpWindows().showAlertWindow(DriverTravelsLog.this, null, getResources().getString(R.string.server_down));
+        }
+        else {
+            new DriverTravel().prepareTravelData(travelsFound, COMING, travelList, mAdapter);
 
-        comingTravels.setOnClickListener(new View.OnClickListener() {
+            comingTravels.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View arg0) {
-                comingTravels.setBackgroundColor(Color.GRAY);
-                pastTravels.setBackgroundColor(0);
-                noPastTravels.setVisibility(View.INVISIBLE);
-                boolean isEmpty = new DriverTravel().prepareTravelData(travelsFound, COMING, travelList, mAdapter);
-                if(isEmpty){
-                    noComingTravels.setVisibility(View.VISIBLE);
+                public void onClick(View arg0) {
+                    comingTravels.setBackgroundColor(Color.GRAY);
+                    pastTravels.setBackgroundColor(0);
+                    noPastTravels.setVisibility(View.INVISIBLE);
+                    boolean isEmpty = new DriverTravel().prepareTravelData(travelsFound, COMING, travelList, mAdapter);
+                    if (isEmpty) {
+                        noComingTravels.setVisibility(View.VISIBLE);
+                    }
                 }
-            }
-        });
-        pastTravels.setOnClickListener(new View.OnClickListener() {
+            });
+            pastTravels.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View arg0) {
-                pastTravels.setBackgroundColor(Color.GRAY);
-                comingTravels.setBackgroundColor(0);
-                noComingTravels.setVisibility(View.INVISIBLE);
-                boolean isEmpty = new DriverTravel().prepareTravelData(travelsFound, PAST, travelList, mAdapter);
-                if(isEmpty){
-                    noPastTravels.setVisibility(View.VISIBLE);
+                public void onClick(View arg0) {
+                    pastTravels.setBackgroundColor(Color.GRAY);
+                    comingTravels.setBackgroundColor(0);
+                    noComingTravels.setVisibility(View.INVISIBLE);
+                    boolean isEmpty = new DriverTravel().prepareTravelData(travelsFound, PAST, travelList, mAdapter);
+                    if (isEmpty) {
+                        noPastTravels.setVisibility(View.VISIBLE);
+                    }
                 }
-            }
-        });
-        comingTravels.callOnClick();
-        checkForMessages();
+            });
+            comingTravels.callOnClick();
+            checkForMessages();
+        }
     }
 
     @Override

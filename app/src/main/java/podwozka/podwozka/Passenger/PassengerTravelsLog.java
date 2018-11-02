@@ -24,6 +24,7 @@ import java.util.List;
 import podwozka.podwozka.Driver.DriverBrowseTravelsAdapter;
 import podwozka.podwozka.Driver.DriverRecyclerItemClickListener;
 import podwozka.podwozka.Driver.entity.DriverTravel;
+import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 
 public class PassengerTravelsLog extends AppCompatActivity {
@@ -53,8 +54,9 @@ public class PassengerTravelsLog extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
         recyclerView.addOnItemTouchListener(
-                new DriverRecyclerItemClickListener(PassengerTravelsLog.this, recyclerView ,new DriverRecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
+                new DriverRecyclerItemClickListener(PassengerTravelsLog.this, recyclerView, new DriverRecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
                         Intent nextScreen = new Intent(PassengerTravelsLog.this, PassengerTravelDriverAndCar.class);
                         String driverLogin = mAdapter.returnTravel(position).getDriverLogin();
                         nextScreen.putExtra("DRIVER_LOGIN", driverLogin);
@@ -62,38 +64,43 @@ public class PassengerTravelsLog extends AppCompatActivity {
                         finish();
                     }
 
-                    @Override public void onLongItemClick(View view, int position) {
+                    @Override
+                    public void onLongItemClick(View view, int position) {
                         // do whatever
                     }
                 })
         );
 
         final String travelsFound = new DriverTravel().getAllUserTravles();
+        if (travelsFound == null) {
+            new PopUpWindows().showAlertWindow(PassengerTravelsLog.this, null, getResources().getString(R.string.server_down));
+        } else {
 
-        comingTravels.setOnClickListener(new View.OnClickListener() {
+            comingTravels.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View arg0) {
-                comingTravels.setBackgroundColor(Color.GRAY);
-                pastTravels.setBackgroundColor(0);
-                noPastTravels.setVisibility(View.INVISIBLE);
-                boolean isEmpty = new DriverTravel().prepareTravelData(travelsFound, COMING, travelList, mAdapter);
-                if(isEmpty){
-                    noComingTravels.setVisibility(View.VISIBLE);
+                public void onClick(View arg0) {
+                    comingTravels.setBackgroundColor(Color.GRAY);
+                    pastTravels.setBackgroundColor(0);
+                    noPastTravels.setVisibility(View.INVISIBLE);
+                    boolean isEmpty = new DriverTravel().prepareTravelData(travelsFound, COMING, travelList, mAdapter);
+                    if (isEmpty) {
+                        noComingTravels.setVisibility(View.VISIBLE);
+                    }
                 }
-            }
-        });
-        pastTravels.setOnClickListener(new View.OnClickListener() {
+            });
+            pastTravels.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View arg0) {
-                pastTravels.setBackgroundColor(Color.GRAY);
-                comingTravels.setBackgroundColor(0);
-                noComingTravels.setVisibility(View.INVISIBLE);
-                boolean isEmpty = new DriverTravel().prepareTravelData(travelsFound, PAST, travelList, mAdapter);
-                if(isEmpty){
-                    noPastTravels.setVisibility(View.VISIBLE);
+                public void onClick(View arg0) {
+                    pastTravels.setBackgroundColor(Color.GRAY);
+                    comingTravels.setBackgroundColor(0);
+                    noComingTravels.setVisibility(View.INVISIBLE);
+                    boolean isEmpty = new DriverTravel().prepareTravelData(travelsFound, PAST, travelList, mAdapter);
+                    if (isEmpty) {
+                        noPastTravels.setVisibility(View.VISIBLE);
+                    }
                 }
-            }
-        });
-        comingTravels.callOnClick();
+            });
+            comingTravels.callOnClick();
+        }
     }
 }

@@ -165,6 +165,10 @@ public class PassengerFindTravels extends AppCompatActivity {
                     travel.setPickUpDatetime(date+"T"+pickedTime.getText().toString());
 
                     String travelsFound = travel.findMatchingTravels();
+                    if(travelsFound == null)
+                    {
+                        new PopUpWindows().showAlertWindow(PassengerFindTravels.this, null, getResources().getString(R.string.server_down));
+                    }
                     Intent nextScreen = new Intent(PassengerFindTravels.this,
                             PassengerBrowseFoundTravels.class);
                     nextScreen.putExtra("TRAVELS", travelsFound);
