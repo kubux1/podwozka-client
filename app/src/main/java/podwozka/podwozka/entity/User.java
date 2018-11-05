@@ -31,6 +31,10 @@ public class User {
         return this.idToken;
     }
 
+    public String getBearerToken(){
+        return "Bearer " + this.idToken;
+    }
+
     public String getLoginOption(){
         return this.loginOption;
     }

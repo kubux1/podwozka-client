@@ -86,6 +86,7 @@
     <string name="trip_stopped_existing">Ta podróż już nie istenieje</string>
     <string name="no_coming_travels">Nie masz nadchodzących podróży</string>
     <string name="no_past_travels">Nie masz przeszłych podróży</string>
+    <string name="no_travels">Nie masz podróży</string>
     <string name="password_too_short">Hasło powinno zawierać minimum 4 znaki</string>
     <string name="password_too_long">Hasło powinno zawierać maksymalnie 4 znaki</string>
     <string name="production_year_not_integer">Proszę podać tylko cyfry w polu rok produkcji</string>

@@ -73,6 +73,7 @@
     <string name="trip_stopped_existing">This trip was deleted</string>
     <string name="no_coming_travels">You have no coming travels</string>
     <string name="no_past_travels">You have no past travels</string>
+    <string name="no_travels">You have no travels</string>
     <string name="password_too_short">Password should have at least 4 signs</string>
     <string name="password_too_long">Password cannot have more signs than 100</string>
     <string name="production_year_not_integer">Please pass only integers in a production year field</string>

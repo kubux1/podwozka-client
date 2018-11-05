@@ -22,15 +22,12 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
-import java.net.HttpURLConnection;
 import java.util.Calendar;
 
-import podwozka.podwozka.Driver.DriverAddTravel;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
-import podwozka.podwozka.Passenger.entity.PassangerTravel;
-import podwozka.podwozka.entity.PdPlace;
-import podwozka.podwozka.entity.PdTravel;
+import podwozka.podwozka.entity.PlaceDTO;
+import podwozka.podwozka.entity.TravelDTO;
 
 import static podwozka.podwozka.LoginActivity.user;
 
@@ -56,9 +53,9 @@ public class PassengerFindTravels extends AppCompatActivity {
 
     private TextView endPlaceView;
 
-    private PdPlace startPlace = null;
+    private PlaceDTO startPlace = null;
 
-    private PdPlace endPlace = null;
+    private PlaceDTO endPlace = null;
 
 
     // Date dialog
@@ -157,7 +154,7 @@ public class PassengerFindTravels extends AppCompatActivity {
 
                 String mistake = findMistake();
                 if(mistake == null) {
-                    PdTravel travel = new PdTravel();
+                    TravelDTO travel = new TravelDTO();
                     travel.setDriverLogin(user.getLogin());
                     travel.setStartPlace(startPlace);
                     travel.setEndPlace(endPlace);
@@ -236,7 +233,7 @@ public class PassengerFindTravels extends AppCompatActivity {
                             requestCode);
                 } catch (GooglePlayServicesNotAvailableException
                         | GooglePlayServicesRepairableException ex) {
-                    Log.e(TAG, "PdPlace Picker cannot use GooglePlayServices", ex);
+                    Log.e(TAG, "PlaceDTO Picker cannot use GooglePlayServices", ex);
                 }
             }
         };
@@ -247,12 +244,12 @@ public class PassengerFindTravels extends AppCompatActivity {
             case START_PLACE_REQUEST:
                 startPlaceView.setText(String.format("%s: %s", place.getName(),
                         place.getAddress()));
-                startPlace = new PdPlace(place);
+                startPlace = new PlaceDTO(place);
                 break;
             case END_PLACE_REQUEST:
                 endPlaceView.setText(String.format("%s: %s", place.getName(),
                         place.getAddress()));
-                endPlace = new PdPlace(place);
+                endPlace = new PlaceDTO(place);
                 break;
         }
         String toastMsg = String.format("%s: %s", R.string.toast_place, place.getName());

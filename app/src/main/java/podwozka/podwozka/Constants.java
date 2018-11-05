@@ -10,6 +10,7 @@ public final class Constants {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.setDateFormat(new StdDateFormat());
+
         return mapper;
     }
 }

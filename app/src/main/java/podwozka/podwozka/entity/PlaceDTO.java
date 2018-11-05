@@ -5,7 +5,7 @@ import com.google.android.gms.location.places.Place;
 import java.util.Objects;
 import java.util.Optional;
 
-public class PdPlace {
+public class PlaceDTO {
 
     private Long id;
 
@@ -15,26 +15,18 @@ public class PdPlace {
 
     private String name;
 
-    private Address address;
+    private AddressDTO address;
 
-    public PdPlace(Place place) {
+    public PlaceDTO(Place place) {
         this.latitude = place.getLatLng().latitude;
         this.longitude = place.getLatLng().longitude;
         setNameFromCharSequence(place.getName());
-        this.address = new Address(Optional.ofNullable(
+        this.address = new AddressDTO(Optional.ofNullable(
                 place.getAddress()).orElse("")
                 .toString());
     }
 
-    public PdPlace(PdPlace pdPlace) {
-        this.id = pdPlace.getId();
-        this.latitude = pdPlace.getLatitude();
-        this.longitude = pdPlace.getLongitude();
-        this.name = pdPlace.getName();
-        this.address = new Address(pdPlace.getAddress());
-    }
-
-    public PdPlace() {
+    public PlaceDTO() {
         // Empty constructor needed for Jackson.
     }
 
@@ -70,24 +62,24 @@ public class PdPlace {
         this.name = name;
     }
 
-    public Address getAddress() {
+    public AddressDTO getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddress(AddressDTO addressDTO) {
+        this.address = addressDTO;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PdPlace)) return false;
-        PdPlace pdPlace = (PdPlace) o;
-        return Double.compare(pdPlace.latitude, latitude) == 0 &&
-                Double.compare(pdPlace.longitude, longitude) == 0 &&
-                Objects.equals(id, pdPlace.id) &&
-                Objects.equals(name, pdPlace.name) &&
-                Objects.equals(address, pdPlace.address);
+        if (!(o instanceof PlaceDTO)) return false;
+        PlaceDTO placeDTO = (PlaceDTO) o;
+        return Double.compare(placeDTO.latitude, latitude) == 0 &&
+                Double.compare(placeDTO.longitude, longitude) == 0 &&
+                Objects.equals(id, placeDTO.id) &&
+                Objects.equals(name, placeDTO.name) &&
+                Objects.equals(address, placeDTO.address);
     }
 
     @Override

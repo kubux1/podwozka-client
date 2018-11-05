@@ -2,7 +2,7 @@ package podwozka.podwozka.entity;
 
 import java.util.Objects;
 
-public class Address {
+public class AddressDTO {
 
     private Long id;
 
@@ -16,11 +16,11 @@ public class Address {
 
     private String country;
 
-    public Address() {
+    public AddressDTO() {
         // Empty constructor needed for Jackson.
     }
 
-    public Address(String address) {
+    public AddressDTO(String address) {
         // TODO: parse String
         this.buildingNumber = 1L;
         this.street = "Długa";
@@ -29,13 +29,13 @@ public class Address {
         this.country = "Polska";
     }
 
-    public Address(Address address) {
-        this.id = address.getId();
-        this.buildingNumber = address.getBuildingNumber();
-        this.street = address.getStreet();
-        this.postcode = address.getPostcode();
-        this.locality = address.getLocality();
-        this.country = address.getCountry();
+    public AddressDTO(AddressDTO addressDTO) {
+        this.id = addressDTO.getId();
+        this.buildingNumber = addressDTO.getBuildingNumber();
+        this.street = addressDTO.getStreet();
+        this.postcode = addressDTO.getPostcode();
+        this.locality = addressDTO.getLocality();
+        this.country = addressDTO.getCountry();
     }
 
     public Long getId() {
@@ -89,14 +89,14 @@ public class Address {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Address)) return false;
-        Address address = (Address) o;
-        return Objects.equals(id, address.id) &&
-                Objects.equals(buildingNumber, address.buildingNumber) &&
-                Objects.equals(street, address.street) &&
-                Objects.equals(postcode, address.postcode) &&
-                Objects.equals(locality, address.locality) &&
-                Objects.equals(country, address.country);
+        if (!(o instanceof AddressDTO)) return false;
+        AddressDTO addressDTO = (AddressDTO) o;
+        return Objects.equals(id, addressDTO.id) &&
+                Objects.equals(buildingNumber, addressDTO.buildingNumber) &&
+                Objects.equals(street, addressDTO.street) &&
+                Objects.equals(postcode, addressDTO.postcode) &&
+                Objects.equals(locality, addressDTO.locality) &&
+                Objects.equals(country, addressDTO.country);
     }
 
     @Override
