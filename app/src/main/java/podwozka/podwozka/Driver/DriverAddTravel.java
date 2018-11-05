@@ -156,7 +156,7 @@ public class DriverAddTravel extends AppCompatActivity {
         btnNextScreen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 PopUpWindows alertWindow = new PopUpWindows();
-                int httpResponse;
+                int httpResponseCode;
 
                 String mistake = findMistake();
                 if(mistake == null) {
@@ -167,15 +167,18 @@ public class DriverAddTravel extends AppCompatActivity {
                     travel.setPassengersCount(Long.parseLong(maxPassengersCapacity));
                     travel.setPickUpDatetime(date+"T"+pickedTime.getText().toString());
 
-                    httpResponse = travel.post();
-                    if (httpResponse == HttpURLConnection.HTTP_CREATED) {
+                    httpResponseCode = travel.post();
+                    if (httpResponseCode == HttpURLConnection.HTTP_CREATED) {
                         Intent nextScreen = new Intent(getApplicationContext(),
                                 DriverAddTravel.class);
                         nextScreen.putExtra("MESSAGE",
                                 getResources().getString(R.string.trip_added));
                         startActivity(nextScreen);
                         finish();
-                    } else {
+                    } else if (httpResponseCode == HttpURLConnection.HTTP_UNAVAILABLE){
+                        new PopUpWindows().showAlertWindow(DriverAddTravel.this, null, getResources().getString(R.string.server_down));
+                    }
+                    else {
                         Toast.makeText(DriverAddTravel.this,
                                 R.string.err_create_fail, Toast.LENGTH_LONG).show();
                     }

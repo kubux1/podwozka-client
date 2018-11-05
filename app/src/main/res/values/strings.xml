@@ -81,6 +81,7 @@
     <string name="brand_not_only_letters">Please type only letters in a Brand field</string>
     <string name="color_not_only_letters">Please type only letters in a Color field</string>
     <string name="max_passengers_only_numbers">Please type only numbers in a Max passengers capacity field</string>
+    <string name="server_down">We are really sorry, our server is down :(</string>
 
     <!--Other fields-->
     <string name="login">Login</string>

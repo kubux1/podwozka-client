@@ -54,11 +54,13 @@ public class DriverTravelEditor extends AppCompatActivity {
                 builder.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
-                        int httpResponse = travel.deleteTravel(travel.getTravelId());
+                        int httpResponseCode = travel.deleteTravel(travel.getTravelId());
                         Intent nextScreen = new Intent(DriverTravelEditor.this, DriverTravelsLog.class);
-                        String message;
-                        if(httpResponse == HttpURLConnection.HTTP_OK){
+                        String message = null;
+                        if(httpResponseCode == HttpURLConnection.HTTP_OK){
                             message = getString(R.string.travel_canceled);
+                        } else if (httpResponseCode == HttpURLConnection.HTTP_UNAVAILABLE){
+                            new PopUpWindows().showAlertWindow(DriverTravelEditor.this, null, getResources().getString(R.string.server_down));
                         }
                         else {
                             message = getString(R.string.unknown_error);
