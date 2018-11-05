@@ -105,4 +105,5 @@
     <string name="travel_edit_success">Podróż zaktualizowana</string>
     <string name="sing_up_success">Zapisałeś się na podróż</string>
     <string name="max_passengers_only_numbers">Proszę podać tylko cyfry w polu Maksymalna ilość pasażerów</string>
+    <string name="server_down">Bardzo nam przykro, nasz serwer padł :(</string>
 </resources>
