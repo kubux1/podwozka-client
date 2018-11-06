@@ -30,4 +30,8 @@ public class APIClient {
     public static TravelService getTravelService() {
         return retrofit.create(TravelService.class);
     }
+
+    public static PassengerTravelService getPassengerTravelService() {
+        return retrofit.create(PassengerTravelService.class);
+    }
 }

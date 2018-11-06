@@ -1,8 +1,11 @@
 package podwozka.podwozka.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Objects;
 
-public class AddressDTO {
+public class AddressDTO implements Parcelable {
 
     private Long id;
 
@@ -37,6 +40,27 @@ public class AddressDTO {
         this.locality = addressDTO.getLocality();
         this.country = addressDTO.getCountry();
     }
+
+    protected AddressDTO(Parcel in) {
+        id = in.readLong();
+        buildingNumber = in.readLong();
+        street = in.readString();
+        postcode = in.readString();
+        locality = in.readString();
+        country = in.readString();
+    }
+
+    public static final Creator<AddressDTO> CREATOR = new Creator<AddressDTO>() {
+        @Override
+        public AddressDTO createFromParcel(Parcel in) {
+            return new AddressDTO(in);
+        }
+
+        @Override
+        public AddressDTO[] newArray(int size) {
+            return new AddressDTO[size];
+        }
+    };
 
     public Long getId() {
         return id;
@@ -103,5 +127,20 @@ public class AddressDTO {
     public int hashCode() {
 
         return Objects.hash(id, buildingNumber, street, postcode, locality, country);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(this.id);
+        parcel.writeLong(this.buildingNumber);
+        parcel.writeString(this.street);
+        parcel.writeString(this.postcode);
+        parcel.writeString(this.locality);
+        parcel.writeString(this.country);
     }
 }

@@ -13,4 +13,8 @@ public final class Constants {
 
         return mapper;
     }
+
+    public static final String MESSAGE = "MESSAGE";
+
+    public static final String TRAVELDTO = "TRAVELDTO";
 }

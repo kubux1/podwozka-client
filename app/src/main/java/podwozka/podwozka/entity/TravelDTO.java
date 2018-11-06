@@ -11,6 +11,7 @@ import java.util.Objects;
 import podwozka.podwozka.Constants;
 
 public class TravelDTO implements Parcelable {
+
     private Long id;
 
     private String driverLogin;
@@ -29,6 +30,29 @@ public class TravelDTO implements Parcelable {
 
     public TravelDTO() {
     }
+
+    protected TravelDTO(Parcel in) {
+        id = in.readLong();
+        driverLogin = in.readString();
+        startPlace = in.readParcelable(PlaceDTO.class.getClassLoader());
+        endPlace = in.readParcelable(PlaceDTO.class.getClassLoader());
+        firstName = in.readString();
+        lastName = in.readString();
+        passengersCount = in.readLong();
+        pickUpDatetime = in.readString();
+    }
+
+    public static final Creator<TravelDTO> CREATOR = new Creator<TravelDTO>() {
+        @Override
+        public TravelDTO createFromParcel(Parcel in) {
+            return new TravelDTO(in);
+        }
+
+        @Override
+        public TravelDTO[] newArray(int size) {
+            return new TravelDTO[size];
+        }
+    };
 
     public Long getId() {
         return id;
@@ -159,11 +183,11 @@ public class TravelDTO implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
         dest.writeString(this.driverLogin);
+        dest.writeParcelable(this.startPlace, flags);
+        dest.writeParcelable(this.endPlace, flags);
         dest.writeString(this.firstName);
         dest.writeString(this.lastName);
         dest.writeLong(this.passengersCount);
         dest.writeString(this.pickUpDatetime);
-        dest.writeString(this.startPlace.getName());
-        dest.writeString(this.endPlace.getName());
     }
 }

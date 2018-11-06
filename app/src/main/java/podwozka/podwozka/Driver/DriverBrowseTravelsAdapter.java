@@ -1,7 +1,7 @@
 package podwozka.podwozka.Driver;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,8 @@ import podwozka.podwozka.R;
 import podwozka.podwozka.entity.TravelDTO;
 
 
-public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrowseTravelsAdapter.MyViewHolder> {
+public class DriverBrowseTravelsAdapter extends
+        RecyclerView.Adapter<DriverBrowseTravelsAdapter.MyViewHolder> {
 
     private List<TravelDTO> travelsList2;
     private List<DriverTravel> travelsList;

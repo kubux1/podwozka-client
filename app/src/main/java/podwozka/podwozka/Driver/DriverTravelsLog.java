@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import podwozka.podwozka.Constants;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import podwozka.podwozka.Rest.APIClient;
@@ -71,7 +72,7 @@ public class DriverTravelsLog extends AppCompatActivity {
     // Check if there was is any message from previous activity
     public void checkForMessages(){
         Intent i = getIntent();
-        String message = i.getStringExtra("MESSAGE");
+        String message = i.getStringExtra(Constants.MESSAGE);
         if(message !=  null){
             new PopUpWindows().showAlertWindow(DriverTravelsLog.this, null, message);
         }
@@ -135,12 +136,12 @@ public class DriverTravelsLog extends AppCompatActivity {
             @Override public void onItemClick(View view, int position) {
                 Intent nextScreen = new Intent(DriverTravelsLog.this, DriverTravelEditor.class);
                 TravelDTO travel = mAdapter.returnTravel(position, 1);
-                nextScreen.putExtra("TRAVEL", travel);
+                nextScreen.putExtra(Constants.TRAVELDTO, travel);
                 startActivity(nextScreen);
             }
 
             @Override public void onLongItemClick(View view, int position) {
-                // do whatever
+                // pass
             }
         });
     }

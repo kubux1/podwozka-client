@@ -1,11 +1,14 @@
 package podwozka.podwozka.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.location.places.Place;
 
 import java.util.Objects;
 import java.util.Optional;
 
-public class PlaceDTO {
+public class PlaceDTO implements Parcelable {
 
     private Long id;
 
@@ -29,6 +32,26 @@ public class PlaceDTO {
     public PlaceDTO() {
         // Empty constructor needed for Jackson.
     }
+
+    protected PlaceDTO(Parcel in) {
+        id = in.readLong();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+        name = in.readString();
+        address = in.readParcelable(AddressDTO.class.getClassLoader());
+    }
+
+    public static final Creator<PlaceDTO> CREATOR = new Creator<PlaceDTO>() {
+        @Override
+        public PlaceDTO createFromParcel(Parcel in) {
+            return new PlaceDTO(in);
+        }
+
+        @Override
+        public PlaceDTO[] newArray(int size) {
+            return new PlaceDTO[size];
+        }
+    };
 
     public Long getId() {
         return id;
@@ -93,5 +116,19 @@ public class PlaceDTO {
         tmp = tmp.replace("\'", " ");
         tmp= tmp.replace("\"", " ");
         this.name = tmp.replace("°", " ");
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeLong(id);
+        parcel.writeDouble(latitude);
+        parcel.writeDouble(longitude);
+        parcel.writeString(name);
+        parcel.writeParcelable(address, flags);
     }
 }

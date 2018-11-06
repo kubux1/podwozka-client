@@ -2,94 +2,80 @@ package podwozka.podwozka.Driver;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.TextView;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
-
-import podwozka.podwozka.Driver.entity.DriverTravel;
+import podwozka.podwozka.Constants;
 import podwozka.podwozka.Passenger.entity.PassangerTravel;
 import podwozka.podwozka.R;
+import podwozka.podwozka.Rest.APIClient;
+import podwozka.podwozka.Rest.PassengerTravelService;
+import podwozka.podwozka.entity.PassengerTravelDTO;
+import podwozka.podwozka.entity.TravelDTO;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static podwozka.podwozka.LoginActivity.user;
 
 public class DriverBrowseWaitingPassengers extends AppCompatActivity {
+
+    private static final String TAG = DriverBrowseWaitingPassengers.class.getName();
+    private PassengerTravelService passengerTravelService = APIClient.getPassengerTravelService();
     private List<PassangerTravel> travelList = new ArrayList<>();
     private RecyclerView recyclerView;
     private TextView route, date;
     private DriverBrowseWaitingPassengersAdapter mAdapter;
-    private static DriverTravel travel;
+    private static TravelDTO travelDTO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_browse_waiting_passengers_list);
-
         Intent i = getIntent();
-        travel = i.getParcelableExtra("TRAVEL");
+
+        travelDTO = i.getParcelableExtra(Constants.TRAVELDTO);
         recyclerView = findViewById(R.id.recycler_view);
         date = findViewById(R.id.date);
         route = findViewById(R.id.route);
 
         mAdapter = new DriverBrowseWaitingPassengersAdapter(travelList, getApplicationContext());
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(
+                getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        String travelsFound = new DriverTravel().findMatchingPassengerTravels(travel);
-        prepareTravelData(travelsFound);
+        Call<List<PassengerTravelDTO>> call = passengerTravelService.getAllUserTravels(
+                user.getLogin(), 0, user.getBearerToken());
+        call.enqueue(getFetchCallback());
 
-        String routeString = travel.getStartPlace() + " - " + travel.getEndPlace();
+        String routeString = travelDTO.getStartPlace().getName() + " - " +
+                travelDTO.getEndPlace().getName();
         route.setText(routeString);
 
-        String dateString = changeDateFormat(travel.getStartDatetime());
+        String dateString = changeDateFormat(travelDTO.getPickUpDatetime());
         date.setText(dateString);
     }
 
     @Override
     public void onBackPressed() {
-        Intent nextScreen = new Intent(DriverBrowseWaitingPassengers.this, DriverTravelEditor.class);
-        nextScreen.putExtra("TRAVEL", (Parcelable)travel);
+        Intent nextScreen = new Intent(DriverBrowseWaitingPassengers.this,
+                DriverTravelEditor.class);
+        nextScreen.putExtra(Constants.TRAVELDTO, travelDTO);
         startActivity(nextScreen);
         finish();
-    }
-
-    private void prepareTravelData (String travelsJSON) {
-        JSONParser parser = new JSONParser();
-        try {
-            JSONArray travelsObjects = (JSONArray)parser.parse(travelsJSON);
-
-            for (Object obj : travelsObjects) {
-                JSONObject jsonObj = (JSONObject) obj;
-                travelList.add(new PassangerTravel(
-                        (Long)jsonObj.get("id"),
-                        (String)jsonObj.get("login"),
-                        (String)jsonObj.get("firstName"),
-                        (String)jsonObj.get("lastName"),
-                        (String)jsonObj.get("startPlace"),
-                        (String)jsonObj.get("endPlace"),
-                        (String)jsonObj.get("startDatetime"),
-                        null,
-                        (Long)jsonObj.get("driverId")));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        mAdapter.notifyDataSetChanged();
     }
 
     private String changeDateFormat(String strDate){
@@ -104,5 +90,22 @@ public class DriverBrowseWaitingPassengers extends AppCompatActivity {
             e.printStackTrace();
         }
         return strDate;
+    }
+
+    private Callback<List<PassengerTravelDTO>> getFetchCallback() {
+        return new Callback<List<PassengerTravelDTO>>() {
+            @Override
+            public void onResponse(Call<List<PassengerTravelDTO>> call, Response<List<PassengerTravelDTO>> response) {
+                Log.i(TAG, response.message());
+                if(response.isSuccessful()) {
+                    mAdapter.update(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PassengerTravelDTO>> call, Throwable t) {
+                Log.e(TAG, t.getMessage(), t);
+            }
+        };
     }
 }
