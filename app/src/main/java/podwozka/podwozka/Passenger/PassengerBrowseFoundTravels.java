@@ -2,7 +2,6 @@ package podwozka.podwozka.Passenger;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +11,6 @@ import android.view.View;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import podwozka.podwozka.Constants;
