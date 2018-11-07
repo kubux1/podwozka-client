@@ -1,6 +1,5 @@
 package podwozka.podwozka.Driver;
 
-import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.MainActivity;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
@@ -16,10 +15,8 @@ import android.widget.Button;
 import android.content.DialogInterface;
 
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
 
 public class DriverMain extends AppCompatActivity {
-    public static ArrayList<DriverTravel> driverTravels = new ArrayList<DriverTravel>();
     public Long maxPassengersCapacity;
 
     @Override

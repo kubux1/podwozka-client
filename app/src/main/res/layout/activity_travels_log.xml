@@ -57,4 +57,18 @@
         android:text="@string/no_past_travels"
         android:visibility="invisible" />
 
+
+    <TextView
+        android:id="@+id/noTravels"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="372dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="77dp"
+        android:scrollbars="vertical"
+        android:text="@string/no_travels"
+        android:visibility="invisible" />
+
 </RelativeLayout>

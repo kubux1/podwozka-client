@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import podwozka.podwozka.entity.HttpCommands;
 import podwozka.podwozka.LoginActivity;
 
+// TODO: Remove, please use PassengerTravelDTO
 public class PassangerTravel implements Parcelable {
     private Long travelId;
     private String login;

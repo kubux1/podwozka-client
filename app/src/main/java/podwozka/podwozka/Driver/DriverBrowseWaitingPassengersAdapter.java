@@ -13,11 +13,13 @@ import java.util.List;
 
 import podwozka.podwozka.Passenger.entity.PassangerTravel;
 import podwozka.podwozka.R;
+import podwozka.podwozka.entity.PassengerTravelDTO;
 
-
-public class DriverBrowseWaitingPassengersAdapter extends RecyclerView.Adapter<DriverBrowseWaitingPassengersAdapter.MyViewHolder> {
+public class DriverBrowseWaitingPassengersAdapter extends
+        RecyclerView.Adapter<DriverBrowseWaitingPassengersAdapter.MyViewHolder> {
 
     private List<PassangerTravel> travelsList;
+    private List<PassengerTravelDTO> travelsList2;
     public Context context;
     public RatingBar ratingBar;
 
@@ -43,7 +45,8 @@ public class DriverBrowseWaitingPassengersAdapter extends RecyclerView.Adapter<D
     }
 
 
-    public DriverBrowseWaitingPassengersAdapter(List<PassangerTravel> travelsList, Context context) {
+    public DriverBrowseWaitingPassengersAdapter(List<PassangerTravel> travelsList,
+                                                Context context) {
         this.travelsList = travelsList;
         this.context = context;
     }
@@ -65,6 +68,15 @@ public class DriverBrowseWaitingPassengersAdapter extends RecyclerView.Adapter<D
 
     @Override
     public int getItemCount() {
-        return travelsList.size();
+        if (travelsList == null) {
+            return travelsList2.size();
+        } else {
+            return travelsList.size();
+        }
+    }
+
+    public void update(List<PassengerTravelDTO> travelsList) {
+        travelsList2 = travelsList;
+        notifyDataSetChanged();
     }
 }

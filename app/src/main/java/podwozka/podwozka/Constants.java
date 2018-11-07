@@ -10,6 +10,17 @@ public final class Constants {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.setDateFormat(new StdDateFormat());
+
         return mapper;
     }
+
+    public static final String MESSAGE = "MESSAGE";
+
+    public static final String TRAVELDTO = "TRAVELDTO";
+
+    public static final String TRAVELDTOS = "TRAVELDTOS";
+
+    public static final String DRIVER_LOGIN = "DRIVER_LOGIN";
+
+    public static final String CAPACITY = "CAPACITY";
 }

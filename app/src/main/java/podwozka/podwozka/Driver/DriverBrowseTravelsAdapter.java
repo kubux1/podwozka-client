@@ -1,22 +1,22 @@
 package podwozka.podwozka.Driver;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Iterator;
 import java.util.List;
 
-import podwozka.podwozka.Driver.entity.DriverTravel;
 import podwozka.podwozka.R;
+import podwozka.podwozka.entity.TravelDTO;
 
 
-public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrowseTravelsAdapter.MyViewHolder> {
+public class DriverBrowseTravelsAdapter extends
+        RecyclerView.Adapter<DriverBrowseTravelsAdapter.MyViewHolder> {
 
-    private List<DriverTravel> travelsList;
+    private List<TravelDTO> travelsList;
     public Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -30,7 +30,7 @@ public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrows
         }
     }
 
-    public DriverBrowseTravelsAdapter(List<DriverTravel> travelsList, Context context) {
+    public DriverBrowseTravelsAdapter(List<TravelDTO> travelsList, Context context) {
         this.travelsList = travelsList;
         this.context = context;
     }
@@ -45,18 +45,12 @@ public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrows
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        DriverTravel travel = travelsList.get(position);
-        String title = travel.getStartPlace() + " - " + travel.getEndPlace();
+        TravelDTO travel = travelsList.get(position);
+        String title = travel.getStartPlace().getName() + " - " + travel.getEndPlace().getName();
         holder.title.setText(title);
-        String startDatetime = this.context.getResources().getString(R.string.start_place)+ ": " + travel.getStartDatetime();
+        String startDatetime = this.context.getResources().getString(R.string.start_time)+ ": " + travel.getPickUpDatetime();
         holder.date.setText(startDatetime);
-        int freeSpace = 0;
-        try{
-            freeSpace = Integer.parseInt(travel.getPassengersCount());
-        } catch (NumberFormatException e)
-        {
-            e.printStackTrace();
-        }
+        Long freeSpace = travel.getPassengersCount();
 
         String freeSpaceMessage = this.context.getResources().getString(R.string.free_seats) + ": " + freeSpace;
         holder.freeSpace.setText(freeSpaceMessage);
@@ -67,7 +61,12 @@ public class DriverBrowseTravelsAdapter extends RecyclerView.Adapter<DriverBrows
         return travelsList.size();
     }
 
-    public DriverTravel returnTravel (int position){
+    public void update(List<TravelDTO> travelsList) {
+        this.travelsList = travelsList;
+        notifyDataSetChanged();
+    }
+
+    public TravelDTO returnTravel (int position){
         return travelsList.get(position);
     }
 }

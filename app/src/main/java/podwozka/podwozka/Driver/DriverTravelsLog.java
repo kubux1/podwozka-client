@@ -7,60 +7,47 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import podwozka.podwozka.Driver.entity.DriverTravel;
+import podwozka.podwozka.Constants;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
+import podwozka.podwozka.Rest.APIClient;
+import podwozka.podwozka.Rest.TravelService;
+import podwozka.podwozka.entity.TravelDTO;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static podwozka.podwozka.LoginActivity.user;
 
 public class DriverTravelsLog extends AppCompatActivity {
-    private List<DriverTravel> travelList = new ArrayList<>();
-    private RecyclerView recyclerView;
-    private DriverBrowseTravelsAdapter mAdapter;
-    final String COMING = "coming";
-    final String PAST = "past";
-    private TextView noComingTravels;
-    private TextView noPastTravels;
-
+    private static final String TAG = DriverTravelsLog.class.getName();
+    protected List<TravelDTO> travelList = new ArrayList<>();
+    protected RecyclerView recyclerView;
+    protected DriverBrowseTravelsAdapter mAdapter;
+    protected TextView noTravels;
+    protected Button comingTravels;
+    protected Button pastTravels;
+    protected TravelService travelService = APIClient.getTravelService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travels_log);
 
-        final String travelsFound;
         recyclerView = findViewById(R.id.recycler_view);
-        final Button comingTravels = findViewById(R.id.comingTravels);
-        final Button pastTravels = findViewById(R.id.pastTravels);
-        noComingTravels = findViewById(R.id.noComingTravels);
-        noPastTravels = findViewById(R.id.noPastTravels);
+        comingTravels = findViewById(R.id.comingTravels);
+        pastTravels = findViewById(R.id.pastTravels);
+        noTravels = findViewById(R.id.noTravels);
 
-        recyclerView.addOnItemTouchListener(
-                new DriverRecyclerItemClickListener(DriverTravelsLog.this, recyclerView ,new DriverRecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        Intent nextScreen = new Intent(DriverTravelsLog.this, DriverTravelEditor.class);
-                        DriverTravel travel = mAdapter.returnTravel(position);
-                        nextScreen.putExtra("TRAVEL", travel);
-                        startActivity(nextScreen);
-                    }
-
-                    @Override public void onLongItemClick(View view, int position) {
-                        // do whatever
-                    }
-                })
-        );
+        recyclerView.addOnItemTouchListener(getRecyclerListener());
 
         mAdapter = new DriverBrowseTravelsAdapter(travelList, getApplicationContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -68,41 +55,11 @@ public class DriverTravelsLog extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        travelsFound = new DriverTravel().getAllUserTravles();
-        if(travelsFound == null)
-        {
-            new PopUpWindows().showAlertWindow(DriverTravelsLog.this, null, getResources().getString(R.string.server_down));
-        }
-        else {
-            new DriverTravel().prepareTravelData(travelsFound, COMING, travelList, mAdapter);
+        comingTravels.setOnClickListener(getComingTravelsListener());
+        comingTravels.callOnClick();
+        pastTravels.setOnClickListener(getPastTravelsListener());
 
-            comingTravels.setOnClickListener(new View.OnClickListener() {
-
-                public void onClick(View arg0) {
-                    comingTravels.setBackgroundColor(Color.GRAY);
-                    pastTravels.setBackgroundColor(0);
-                    noPastTravels.setVisibility(View.INVISIBLE);
-                    boolean isEmpty = new DriverTravel().prepareTravelData(travelsFound, COMING, travelList, mAdapter);
-                    if (isEmpty) {
-                        noComingTravels.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
-            pastTravels.setOnClickListener(new View.OnClickListener() {
-
-                public void onClick(View arg0) {
-                    pastTravels.setBackgroundColor(Color.GRAY);
-                    comingTravels.setBackgroundColor(0);
-                    noComingTravels.setVisibility(View.INVISIBLE);
-                    boolean isEmpty = new DriverTravel().prepareTravelData(travelsFound, PAST, travelList, mAdapter);
-                    if (isEmpty) {
-                        noPastTravels.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
-            comingTravels.callOnClick();
-            checkForMessages();
-        }
+        checkForMessages();
     }
 
     @Override
@@ -115,9 +72,77 @@ public class DriverTravelsLog extends AppCompatActivity {
     // Check if there was is any message from previous activity
     public void checkForMessages(){
         Intent i = getIntent();
-        String message = i.getStringExtra("MESSAGE");
+        String message = i.getStringExtra(Constants.MESSAGE);
         if(message !=  null){
             new PopUpWindows().showAlertWindow(DriverTravelsLog.this, null, message);
         }
+    }
+
+    protected Callback<List<TravelDTO>> getFetchCallback() {
+        return new Callback<List<TravelDTO>>() {
+            @Override
+            public void onResponse(Call<List<TravelDTO>> call, Response<List<TravelDTO>> response) {
+                Log.i(TAG, response.message());
+                if(response.isSuccessful()) {
+                    mAdapter.update(response.body());
+                    if (mAdapter.getItemCount() > 0) noTravels.setVisibility(View.INVISIBLE);
+                    else noTravels.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TravelDTO>> call, Throwable t) {
+                Log.e(TAG, t.getMessage(), t);
+            }
+        };
+    }
+
+    protected void getComingTravels() {
+        Call<List<TravelDTO>> call = travelService.getAllUserComingTravels(
+                user.getLogin(), 0, user.getBearerToken());
+        call.enqueue(getFetchCallback());
+        comingTravels.setBackgroundColor(Color.GRAY);
+        pastTravels.setBackgroundColor(0);
+    }
+
+    protected View.OnClickListener getComingTravelsListener() {
+        return new View.OnClickListener() {
+            public void onClick(View arg0) {
+                getComingTravels();
+            }
+        };
+    }
+
+    protected void getPastTravels() {
+        Call<List<TravelDTO>> call = travelService.getAllUserPastTravels(
+                user.getLogin(), 0, user.getBearerToken());
+        call.enqueue(getFetchCallback());
+        pastTravels.setBackgroundColor(Color.GRAY);
+        comingTravels.setBackgroundColor(0);
+    }
+
+    protected View.OnClickListener getPastTravelsListener() {
+        return new View.OnClickListener() {
+            public void onClick(View arg0) {
+                getPastTravels();
+            }
+        };
+    }
+
+    private DriverRecyclerItemClickListener getRecyclerListener() {
+        return new DriverRecyclerItemClickListener(
+                DriverTravelsLog.this, recyclerView,
+                new DriverRecyclerItemClickListener.OnItemClickListener() {
+            @Override public void onItemClick(View view, int position) {
+                Intent nextScreen = new Intent(DriverTravelsLog.this, DriverTravelEditor.class);
+                TravelDTO travel = mAdapter.returnTravel(position);
+                nextScreen.putExtra(Constants.TRAVELDTO, travel);
+                startActivity(nextScreen);
+            }
+
+            @Override public void onLongItemClick(View view, int position) {
+                // pass
+            }
+        });
     }
 }
