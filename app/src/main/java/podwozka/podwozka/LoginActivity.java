@@ -67,8 +67,12 @@ public class LoginActivity extends AppCompatActivity {
                         nextScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(nextScreen);
                         finish();
-                    } else if (httpResponseCode == HttpURLConnection.HTTP_UNAUTHORIZED){
+                    }
+                    else if (httpResponseCode == HttpURLConnection.HTTP_UNAUTHORIZED){
                         alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.login_failed));
+                    }
+                    else if (httpResponseCode == HttpURLConnection.HTTP_UNAVAILABLE){
+                        alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.server_down));
                     }
                     else {
                         alertWindow.showAlertWindow(LoginActivity.this, null, getResources().getString(R.string.unknown_error));

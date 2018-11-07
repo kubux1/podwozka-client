@@ -49,9 +49,14 @@ public class DriverAddCar extends AppCompatActivity {
                 Intent nextScreen = new Intent(DriverAddCar.this, DriverMain.class);
                 nextScreen.putExtra("MESSAGE",  getResources().getString(R.string.car_added));
                 startActivity(nextScreen);
-            } else if (httpResponseCode == HttpURLConnection.HTTP_FORBIDDEN | httpResponseCode == HttpURLConnection.HTTP_BAD_REQUEST) {
+            }
+            else if (httpResponseCode == HttpURLConnection.HTTP_FORBIDDEN | httpResponseCode == HttpURLConnection.HTTP_BAD_REQUEST) {
                 new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.car_exists));
-            } else {
+            }
+            else if (httpResponseCode == HttpURLConnection.HTTP_UNAVAILABLE){
+                new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.server_down));
+            }
+            else {
                 new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.unknown_error));
             }
         }

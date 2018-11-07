@@ -106,10 +106,16 @@ public class RegisterActivity extends AppCompatActivity {
                             nextScreen.putExtra("MESSAGE", getResources().getString(R.string.registration_successful));
                             startActivity(nextScreen);
 
-                        } else if (httpResponseCode == HttpURLConnection.HTTP_BAD_REQUEST)
+                        }
+                        else if (httpResponseCode == HttpURLConnection.HTTP_BAD_REQUEST)
                         {
                             alertWindow.windowTimeout(3).showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.email_user_exists));
-                        } else
+                        }
+                        else if (httpResponseCode == HttpURLConnection.HTTP_UNAVAILABLE)
+                        {
+                            alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.server_down));
+                        }
+                        else
                             {
                             alertWindow.showAlertWindow(RegisterActivity.this, null, getResources().getString(R.string.unknown_error));
                             }

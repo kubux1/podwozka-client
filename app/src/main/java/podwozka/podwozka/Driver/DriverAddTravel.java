@@ -269,6 +269,12 @@ public class DriverAddTravel extends AppCompatActivity {
                             getResources().getString(R.string.trip_added));
                     startActivity(nextScreen);
                     finish();
+                } else if (response.code()  == HttpURLConnection.HTTP_UNAVAILABLE) {
+                    new PopUpWindows().showAlertWindow(DriverAddTravel.this,
+                            null, getResources().getString(R.string.server_down));
+                } else {
+                    Toast.makeText(DriverAddTravel.this,
+                            R.string.err_create_fail, Toast.LENGTH_LONG).show();
                 }
             }
 

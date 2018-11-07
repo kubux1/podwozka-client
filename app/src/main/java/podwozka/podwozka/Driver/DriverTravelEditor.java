@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import java.net.HttpURLConnection;
+
 import podwozka.podwozka.Constants;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
@@ -86,6 +88,11 @@ public class DriverTravelEditor extends AppCompatActivity {
                 Log.i(TAG, response.message());
                 if(response.isSuccessful()) {
                     message = getString(R.string.travel_canceled);
+                } else if (response.code() == HttpURLConnection.HTTP_UNAVAILABLE) {
+                    new PopUpWindows().showAlertWindow(DriverTravelEditor.this,
+                            null, getResources().getString(R.string.server_down));
+                } else {
+                    message = getString(R.string.unknown_error);
                 }
             }
             @Override
