@@ -11,8 +11,6 @@ import android.view.View;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import podwozka.podwozka.Constants;
@@ -46,9 +44,7 @@ public class PassengerBrowseFoundTravels extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_travels_list);
-
         travelList = getIntent().getParcelableArrayListExtra(Constants.TRAVELDTOS);
-
         if(CollectionUtils.isEmpty(travelList)) {
             TextView noTravels = findViewById(R.id.noTravelsFound);
             noTravels.setVisibility(View.VISIBLE);
