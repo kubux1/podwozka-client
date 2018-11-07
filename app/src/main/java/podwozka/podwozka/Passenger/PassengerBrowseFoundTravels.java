@@ -2,6 +2,7 @@ package podwozka.podwozka.Passenger;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,9 +47,7 @@ public class PassengerBrowseFoundTravels extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_travels_list);
-
         travelList = getIntent().getParcelableArrayListExtra(Constants.TRAVELDTOS);
-
         if(CollectionUtils.isEmpty(travelList)) {
             TextView noTravels = findViewById(R.id.noTravelsFound);
             noTravels.setVisibility(View.VISIBLE);

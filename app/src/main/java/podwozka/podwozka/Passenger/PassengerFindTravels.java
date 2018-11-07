@@ -13,6 +13,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import podwozka.podwozka.Constants;
@@ -135,7 +136,7 @@ public class PassengerFindTravels extends DriverAddTravel {
                 if(response.isSuccessful()) {
                     Intent nextScreen = new Intent(PassengerFindTravels.this,
                             PassengerBrowseFoundTravels.class);
-                    nextScreen.putExtra(Constants.TRAVELDTOS, response.body().toArray());
+                    nextScreen.putExtra(Constants.TRAVELDTOS, (ArrayList) response.body());
                     startActivity(nextScreen);
                 }
             }
