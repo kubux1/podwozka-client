@@ -10,37 +10,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="98dp"
+        tools:layout_editor_absoluteX="118dp"
         tools:layout_editor_absoluteY="0dp">
 
-        <EditText
-            android:id="@+id/startTravelPlace"
-            android:layout_width="334dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/start_place"
-            android:inputType="textPersonName"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="251dp" />
+        <TextView
+            android:id="@+id/startPlaceView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-        <EditText
-            android:id="@+id/endTravelPlace"
-            android:layout_width="335dp"
+        <Button
+            android:id="@+id/pickStartPlace"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/end_place"
-            android:inputType="textPersonName" />
+            android:text="@string/pick_start_place" />
+
+        <TextView
+            android:id="@+id/endPlaceView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/pickEndPlace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_end_place" />
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/pickedDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="@string/start_date" />
+                android:text="@string/start_date" />
 
             <Button
                 android:id="@+id/setDate"
@@ -55,15 +59,15 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/pickedTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="@string/start_time"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:text="@string/start_time" />
 
             <Button
                 android:id="@+id/setTime"

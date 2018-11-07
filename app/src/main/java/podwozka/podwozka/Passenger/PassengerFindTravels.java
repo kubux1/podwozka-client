@@ -1,131 +1,39 @@
 package podwozka.podwozka.Passenger;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
+
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
-import java.util.Calendar;
+import java.util.List;
 
+import podwozka.podwozka.Constants;
+import podwozka.podwozka.Driver.DriverAddTravel;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
-import podwozka.podwozka.entity.PlaceDTO;
 import podwozka.podwozka.entity.TravelDTO;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static podwozka.podwozka.LoginActivity.user;
 
 
-public class PassengerFindTravels extends AppCompatActivity {
+public class PassengerFindTravels extends DriverAddTravel {
 
     private static final String TAG = PassengerFindTravels.class.getName();
 
-    private static final int START_PLACE_REQUEST = 1000;
-
-    private static final int END_PLACE_REQUEST = 1001;
-
-    private static TextView pickedTime = null;
-    private static TextView pickedDate = null;
-    private static String date;
     private static String startTravelPlaceMessage;
+
     private static String endTravelPlaceMessage;
-
-    // Maps
-    private PlacePicker.IntentBuilder builder;
-
-    private TextView startPlaceView;
-
-    private TextView endPlaceView;
-
-    private PlaceDTO startPlace = null;
-
-    private PlaceDTO endPlace = null;
-
-
-    // Date dialog
-    public static class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            String monthInString = Integer.toString(month + 1);
-            String dayInString = Integer.toString(day);
-
-            // Make sure there will be alawys two letters for month and day
-            if((month + 1) < 10)
-                monthInString = "0" + monthInString;
-            if (day < 10)
-                dayInString = "0" + dayInString;
-            // Date in YYYY-MM-DD format only accepted by server
-            date = Integer.toString(year) + "-" + monthInString + "-" + dayInString;
-
-            // Date in DD-MM-YYYY format which is more convenient for a user
-            pickedDate.setText(new StringBuilder().append(day).append("-")
-                    .append(month + 1).append("-").append(year));
-        }
-    }
-
-    public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
-    }
-
-
-    // Time dialog
-    public static class TimePickerFragment extends DialogFragment
-            implements TimePickerDialog.OnTimeSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
-        }
-
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            String timeInString = String.format("%02d:%02d", hourOfDay, minute);
-            pickedTime.setText(timeInString);
-
-        }
-    }
-
-    public void showTimePickerDialog(View v) {
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "timePicker");
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,11 +69,11 @@ public class PassengerFindTravels extends AppCompatActivity {
                     travel.setPassengersCount(Long.parseLong(maxPassengersCapacity));
                     travel.setPickUpDatetime(date+"T"+pickedTime.getText().toString());
 
-                    String travelsFound = travel.findMatchingTravels();
-                    Intent nextScreen = new Intent(PassengerFindTravels.this,
-                            PassengerBrowseFoundTravels.class);
-                    nextScreen.putExtra("TRAVELS", travelsFound);
-                    startActivity(nextScreen);
+                    Call<List<TravelDTO>> call = travelService.finMatching(0,
+                            travel,
+                            user.getBearerToken());
+                    call.enqueue(getFetchCallback());
+
                 } else {
                     alertWindow.showAlertWindow(PassengerFindTravels.this,
                             null, mistake);
@@ -173,10 +81,6 @@ public class PassengerFindTravels extends AppCompatActivity {
 
             }
         });
-
-
-
-
 
         reversePlacesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -215,17 +119,35 @@ public class PassengerFindTravels extends AppCompatActivity {
         endTravelPlace.setText(endTravelPlaceMessage);
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == START_PLACE_REQUEST
-                || requestCode == END_PLACE_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(this, intent);
-                setPlace(place, requestCode);
-            }
+    public void checkForMessages(){
+        Intent i = getIntent();
+        String message = i.getStringExtra(Constants.MESSAGE);
+        if(message !=  null){
+            new PopUpWindows().showAlertWindow(PassengerFindTravels.this, null, message);
         }
     }
 
-    protected View.OnClickListener getPlaceListener(final int requestCode) {
+    private Callback<List<TravelDTO>> getFetchCallback() {
+        return new Callback<List<TravelDTO>>() {
+            @Override
+            public void onResponse(Call<List<TravelDTO>> call, Response<List<TravelDTO>> response) {
+                Log.i(TAG, response.message());
+                if(response.isSuccessful()) {
+                    Intent nextScreen = new Intent(PassengerFindTravels.this,
+                            PassengerBrowseFoundTravels.class);
+                    nextScreen.putExtra(Constants.TRAVELDTOS, response.body().toArray());
+                    startActivity(nextScreen);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TravelDTO>> call, Throwable t) {
+                Log.e(TAG, t.getMessage(), t);
+            }
+        };
+    }
+
+    private View.OnClickListener getPlaceListener(final int requestCode) {
         return new View.OnClickListener() {
             public void onClick(View view) {
                 try {
@@ -237,37 +159,5 @@ public class PassengerFindTravels extends AppCompatActivity {
                 }
             }
         };
-    }
-
-    private void setPlace(Place place, int requestCode) {
-        switch(requestCode) {
-            case START_PLACE_REQUEST:
-                startPlaceView.setText(String.format("%s: %s", place.getName(),
-                        place.getAddress()));
-                startPlace = new PlaceDTO(place);
-                break;
-            case END_PLACE_REQUEST:
-                endPlaceView.setText(String.format("%s: %s", place.getName(),
-                        place.getAddress()));
-                endPlace = new PlaceDTO(place);
-                break;
-        }
-        String toastMsg = String.format("%s: %s", R.string.toast_place, place.getName());
-        Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-    }
-
-    private String findMistake() {
-        if (startPlace == null)
-        {
-            return getResources().getString(R.string.start_place_empty);
-        } else if (endPlace == null) {
-            return getResources().getString(R.string.end_place_empty);
-        } else if (pickedDate == null) {
-            return getResources().getString(R.string.end_place_empty);
-        } else if (pickedTime == null) {
-            return getResources().getString(R.string.end_place_empty);
-        }
-
-        return null;
     }
 }

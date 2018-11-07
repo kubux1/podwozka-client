@@ -24,12 +24,19 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import java.net.HttpURLConnection;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
+import podwozka.podwozka.Constants;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
+import podwozka.podwozka.Rest.APIClient;
+import podwozka.podwozka.Rest.TravelService;
 import podwozka.podwozka.entity.PlaceDTO;
 import podwozka.podwozka.entity.TravelDTO;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static podwozka.podwozka.LoginActivity.user;
 
@@ -38,27 +45,29 @@ public class DriverAddTravel extends AppCompatActivity {
 
     private static final String TAG = DriverAddTravel.class.getName();
 
-    private static final int START_PLACE_REQUEST = 1000;
+    protected static final int START_PLACE_REQUEST = 1000;
 
-    private static final int END_PLACE_REQUEST = 1001;
+    protected static final int END_PLACE_REQUEST = 1001;
 
     // values
-    private static TextView pickedTime;
+    protected static TextView pickedTime;
 
-    private static TextView pickedDate;
+    protected static TextView pickedDate;
 
-    private static String date;
+    protected static String date;
 
     // Maps
-    private PlacePicker.IntentBuilder builder;
+    protected PlacePicker.IntentBuilder builder;
 
-    private TextView startPlaceView;
+    protected TextView startPlaceView;
 
-    private TextView endPlaceView;
+    protected TextView endPlaceView;
 
-    private PlaceDTO startPlace;
+    protected PlaceDTO startPlace;
 
-    private PlaceDTO endPlace;
+    protected PlaceDTO endPlace;
+
+    protected TravelService travelService = APIClient.getTravelService();
 
     // Date dialog
     public static class DatePickerFragment extends DialogFragment
@@ -78,6 +87,7 @@ public class DriverAddTravel extends AppCompatActivity {
 
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
+            month++;
             String monthInString = Integer.toString(month);
             String dayInString = Integer.toString(day);
 
@@ -130,6 +140,15 @@ public class DriverAddTravel extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
+    // Check if there was is any message from previous activity
+    public void checkForMessages(){
+        Intent i = getIntent();
+        String message = i.getStringExtra(Constants.MESSAGE);
+        if(message !=  null){
+            new PopUpWindows().showAlertWindow(DriverAddTravel.this, null, message);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,7 +173,6 @@ public class DriverAddTravel extends AppCompatActivity {
         btnNextScreen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 PopUpWindows alertWindow = new PopUpWindows();
-                int httpResponse;
 
                 String mistake = findMistake();
                 if(mistake == null) {
@@ -165,18 +183,9 @@ public class DriverAddTravel extends AppCompatActivity {
                     travel.setPassengersCount(Long.parseLong(maxPassengersCapacity));
                     travel.setPickUpDatetime(date+"T"+pickedTime.getText().toString());
 
-                    httpResponse = travel.post();
-                    if (httpResponse == HttpURLConnection.HTTP_CREATED) {
-                        Intent nextScreen = new Intent(getApplicationContext(),
-                                DriverAddTravel.class);
-                        nextScreen.putExtra("MESSAGE",
-                                getResources().getString(R.string.trip_added));
-                        startActivity(nextScreen);
-                        finish();
-                    } else {
-                        Toast.makeText(DriverAddTravel.this,
-                                R.string.err_create_fail, Toast.LENGTH_LONG).show();
-                    }
+                    Call<TravelDTO> call = travelService.createTravel(travel,
+                            user.getBearerToken());
+                    call.enqueue(getFetchCallback());
                 } else {
                     alertWindow.showAlertWindow(DriverAddTravel.this,
                             null, mistake);
@@ -216,21 +225,7 @@ public class DriverAddTravel extends AppCompatActivity {
         finish();
     }
 
-    protected View.OnClickListener getPlaceListener(final int requestCode) {
-        return new View.OnClickListener() {
-            public void onClick(View view) {
-                try {
-                    startActivityForResult(builder.build(DriverAddTravel.this),
-                            requestCode);
-                } catch (GooglePlayServicesNotAvailableException
-                        | GooglePlayServicesRepairableException ex) {
-                    Log.e(TAG, "PlaceDTO Picker cannot use GooglePlayServices", ex);
-                }
-            }
-        };
-    }
-
-    private void setPlace(Place place, int requestCode) {
+    protected void setPlace(Place place, int requestCode) {
         switch(requestCode) {
             case START_PLACE_REQUEST:
                 startPlaceView.setText(String.format("%s: %s", place.getName(),
@@ -247,25 +242,56 @@ public class DriverAddTravel extends AppCompatActivity {
         Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
     }
 
-    private String findMistake() {
-        if (startPlaceView.getText().toString().isEmpty())
+    protected String findMistake() {
+        if (startPlace == null)
         {
             return getResources().getString(R.string.start_place_empty);
-        }
-        else if (endPlaceView.getText().toString().isEmpty())
-        {
+        } else if (endPlace == null) {
+            return getResources().getString(R.string.end_place_empty);
+        } else if (pickedDate == null) {
+            return getResources().getString(R.string.end_place_empty);
+        } else if (pickedTime == null) {
             return getResources().getString(R.string.end_place_empty);
         }
 
         return null;
     }
 
-    // Check if there was is any message from previous activity
-    public void checkForMessages(){
-        Intent i = getIntent();
-        String message = i.getStringExtra("MESSAGE");
-        if(message !=  null){
-            new PopUpWindows().showAlertWindow(DriverAddTravel.this, null, message);
-        }
+    private Callback<TravelDTO> getFetchCallback() {
+        return new Callback<TravelDTO>() {
+            @Override
+            public void onResponse(Call<TravelDTO> call, Response<TravelDTO> response) {
+                Log.i(TAG, response.message());
+                if(response.isSuccessful()) {
+                    Intent nextScreen = new Intent(getApplicationContext(),
+                            DriverAddTravel.class);
+                    nextScreen.putExtra(Constants.MESSAGE,
+                            getResources().getString(R.string.trip_added));
+                    startActivity(nextScreen);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TravelDTO> call, Throwable t) {
+                Log.e(TAG, t.getMessage(), t);
+                Toast.makeText(DriverAddTravel.this,
+                        R.string.err_create_fail, Toast.LENGTH_LONG).show();
+            }
+        };
+    }
+
+    private View.OnClickListener getPlaceListener(final int requestCode) {
+        return new View.OnClickListener() {
+            public void onClick(View view) {
+                try {
+                    startActivityForResult(builder.build(DriverAddTravel.this),
+                            requestCode);
+                } catch (GooglePlayServicesNotAvailableException
+                        | GooglePlayServicesRepairableException ex) {
+                    Log.e(TAG, "PlaceDTO Picker cannot use GooglePlayServices", ex);
+                }
+            }
+        };
     }
 }

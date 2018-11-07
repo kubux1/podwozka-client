@@ -16,7 +16,7 @@
     import podwozka.podwozka.Driver.DriverBrowseTravelsAdapter;
     import podwozka.podwozka.Driver.DriverMain;
     import podwozka.podwozka.entity.HttpCommands;
-
+    // TODO: Remove, please use TravelDTO
     public class DriverTravel implements Parcelable {
         private Long travelId;
         private String login;

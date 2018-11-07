@@ -23,27 +23,40 @@ public interface TravelService {
 
     @GET("api/travels/past")
     Call<List<TravelDTO>> getAllUserPastTravels(@Query("login") String login,
-                                            @Query("page") int pageIndex,
-                                            @Header(HttpHeaders.AUTHORIZATION) String authHeader);
+                                                @Query("page") int pageIndex,
+                                                @Header(HttpHeaders.AUTHORIZATION)
+                                                        String authHeader);
 
     @GET("api/travels/coming")
     Call<List<TravelDTO>> getAllUserComingTravels(@Query("login") String login,
-                                            @Query("page") int pageIndex,
-                                            @Header(HttpHeaders.AUTHORIZATION) String authHeader);
+                                                  @Query("page") int pageIndex,
+                                                  @Header(HttpHeaders.AUTHORIZATION)
+                                                          String authHeader);
+
+    @POST("api/travels/findMatching")
+    Call<List<TravelDTO>> finMatching(@Query("page") int pageIndex,
+                                      @Body TravelDTO travelDTO,
+                                      @Header(HttpHeaders.AUTHORIZATION) String authHeader);
 
     @POST("api/travels")
-    Call<List<TravelDTO>> createTravel(@Body TravelDTO travelDTO,
-                                       @Header(HttpHeaders.AUTHORIZATION) String authHeader);
+    Call<TravelDTO> createTravel(@Body TravelDTO travelDTO,
+                                 @Header(HttpHeaders.AUTHORIZATION) String authHeader);
+
+    @POST("api/travels/signUp")
+    Call<TravelDTO> signUpForTravel(@Query("page") int pageIndex,
+                                    @Query("login") String login,
+                                    @Query("travelId") Long travelId,
+                                    @Header(HttpHeaders.AUTHORIZATION) String authHeader);
 
     @PUT("api/travels")
-    Call<List<TravelDTO>> updateTravel(@Body TravelDTO travelDTO,
-                                       @Header(HttpHeaders.AUTHORIZATION) String authHeader);
+    Call<TravelDTO> updateTravel(@Body TravelDTO travelDTO,
+                                 @Header(HttpHeaders.AUTHORIZATION) String authHeader);
 
     @GET("api/travels/{id}")
-    Call<List<TravelDTO>> getTravel(@Path("id") Long id,
-                                    @Header(HttpHeaders.AUTHORIZATION) String authHeader);
+    Call<TravelDTO> getTravel(@Path("id") Long id,
+                              @Header(HttpHeaders.AUTHORIZATION) String authHeader);
 
     @DELETE("api/travels/delete/{id}")
     Call<Void> deleteTravel(@Path("id") Long id,
-                                       @Header(HttpHeaders.AUTHORIZATION) String authHeader);
+                            @Header(HttpHeaders.AUTHORIZATION) String authHeader);
 }

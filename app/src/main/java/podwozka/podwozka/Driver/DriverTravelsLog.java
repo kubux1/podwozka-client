@@ -29,13 +29,13 @@ import static podwozka.podwozka.LoginActivity.user;
 
 public class DriverTravelsLog extends AppCompatActivity {
     private static final String TAG = DriverTravelsLog.class.getName();
-    private List<TravelDTO> travelList = new ArrayList<>();
-    private RecyclerView recyclerView;
-    private DriverBrowseTravelsAdapter mAdapter;
-    private TextView noTravels;
-    private Button comingTravels;
-    private Button pastTravels;
-    private TravelService travelService = APIClient.getTravelService();
+    protected List<TravelDTO> travelList = new ArrayList<>();
+    protected RecyclerView recyclerView;
+    protected DriverBrowseTravelsAdapter mAdapter;
+    protected TextView noTravels;
+    protected Button comingTravels;
+    protected Button pastTravels;
+    protected TravelService travelService = APIClient.getTravelService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class DriverTravelsLog extends AppCompatActivity {
 
         recyclerView.addOnItemTouchListener(getRecyclerListener());
 
-        mAdapter = new DriverBrowseTravelsAdapter(travelList, getApplicationContext(), 1);
+        mAdapter = new DriverBrowseTravelsAdapter(travelList, getApplicationContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -78,7 +78,7 @@ public class DriverTravelsLog extends AppCompatActivity {
         }
     }
 
-    private Callback<List<TravelDTO>> getFetchCallback() {
+    protected Callback<List<TravelDTO>> getFetchCallback() {
         return new Callback<List<TravelDTO>>() {
             @Override
             public void onResponse(Call<List<TravelDTO>> call, Response<List<TravelDTO>> response) {
@@ -97,7 +97,7 @@ public class DriverTravelsLog extends AppCompatActivity {
         };
     }
 
-    private void getComingTravels() {
+    protected void getComingTravels() {
         Call<List<TravelDTO>> call = travelService.getAllUserComingTravels(
                 user.getLogin(), 0, user.getBearerToken());
         call.enqueue(getFetchCallback());
@@ -105,7 +105,7 @@ public class DriverTravelsLog extends AppCompatActivity {
         pastTravels.setBackgroundColor(0);
     }
 
-    private View.OnClickListener getComingTravelsListener() {
+    protected View.OnClickListener getComingTravelsListener() {
         return new View.OnClickListener() {
             public void onClick(View arg0) {
                 getComingTravels();
@@ -113,7 +113,7 @@ public class DriverTravelsLog extends AppCompatActivity {
         };
     }
 
-    private void getPastTravels() {
+    protected void getPastTravels() {
         Call<List<TravelDTO>> call = travelService.getAllUserPastTravels(
                 user.getLogin(), 0, user.getBearerToken());
         call.enqueue(getFetchCallback());
@@ -121,7 +121,7 @@ public class DriverTravelsLog extends AppCompatActivity {
         comingTravels.setBackgroundColor(0);
     }
 
-    private View.OnClickListener getPastTravelsListener() {
+    protected View.OnClickListener getPastTravelsListener() {
         return new View.OnClickListener() {
             public void onClick(View arg0) {
                 getPastTravels();
@@ -135,7 +135,7 @@ public class DriverTravelsLog extends AppCompatActivity {
                 new DriverRecyclerItemClickListener.OnItemClickListener() {
             @Override public void onItemClick(View view, int position) {
                 Intent nextScreen = new Intent(DriverTravelsLog.this, DriverTravelEditor.class);
-                TravelDTO travel = mAdapter.returnTravel(position, 1);
+                TravelDTO travel = mAdapter.returnTravel(position);
                 nextScreen.putExtra(Constants.TRAVELDTO, travel);
                 startActivity(nextScreen);
             }

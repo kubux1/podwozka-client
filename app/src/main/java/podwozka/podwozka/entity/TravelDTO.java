@@ -3,12 +3,7 @@ package podwozka.podwozka.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
-
-import podwozka.podwozka.Constants;
 
 public class TravelDTO implements Parcelable {
 
@@ -116,41 +111,6 @@ public class TravelDTO implements Parcelable {
 
     public void setPickUpDatetime(String pickUpDatetime) {
         this.pickUpDatetime = pickUpDatetime;
-    }
-
-    public String toJson() throws JsonProcessingException {
-        ObjectMapper mapper = Constants.getDefaultObjectMapper();
-        return mapper.writeValueAsString(this);
-    }
-
-    public int post() {
-        int httpResponse = -1;
-        HttpCommands httpCommand = new HttpCommands();
-
-        try {
-            httpResponse = httpCommand.postNewTravel(toJson());
-        } catch (JsonProcessingException e){
-            e.printStackTrace();
-        }
-        return httpResponse;
-    }
-
-    public String findMatchingTravels(){
-        HttpCommands httpCommand = new HttpCommands();
-
-        try {
-            httpCommand.findTravels(toJson());
-        } catch (JsonProcessingException e){
-            e.printStackTrace();
-        }
-        return httpCommand.getResponse();
-    }
-
-    public static String getAllUserTravles() {
-        HttpCommands httpCommand = new HttpCommands();
-
-        httpCommand.getAllUserTravles();
-        return httpCommand.getResponse();
     }
 
     @Override

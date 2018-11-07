@@ -17,4 +17,10 @@ public final class Constants {
     public static final String MESSAGE = "MESSAGE";
 
     public static final String TRAVELDTO = "TRAVELDTO";
+
+    public static final String TRAVELDTOS = "TRAVELDTOS";
+
+    public static final String DRIVER_LOGIN = "DRIVER_LOGIN";
+
+    public static final String CAPACITY = "CAPACITY";
 }
