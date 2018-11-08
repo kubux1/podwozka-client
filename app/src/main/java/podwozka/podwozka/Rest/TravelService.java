@@ -43,8 +43,7 @@ public interface TravelService {
                                  @Header(HttpHeaders.AUTHORIZATION) String authHeader);
 
     @POST("api/travels/signUp")
-    Call<TravelDTO> signUpForTravel(@Query("page") int pageIndex,
-                                    @Query("login") String login,
+    Call<Void> signUpForTravel(@Query("login") String login,
                                     @Query("travelId") Long travelId,
                                     @Header(HttpHeaders.AUTHORIZATION) String authHeader);
 

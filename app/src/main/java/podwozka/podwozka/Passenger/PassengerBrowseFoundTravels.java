@@ -19,6 +19,7 @@ import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import podwozka.podwozka.Rest.APIClient;
 import podwozka.podwozka.Rest.TravelService;
+import podwozka.podwozka.entity.PlaceDTO;
 import podwozka.podwozka.entity.TravelDTO;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,6 +45,7 @@ public class PassengerBrowseFoundTravels extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_travels_list);
+
         travelList = getIntent().getParcelableArrayListExtra(Constants.TRAVELDTOS);
         if(CollectionUtils.isEmpty(travelList)) {
             TextView noTravels = findViewById(R.id.noTravelsFound);
@@ -64,6 +66,24 @@ public class PassengerBrowseFoundTravels extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent nextScreen = new Intent(PassengerBrowseFoundTravels.this, PassengerFindTravels.class);
+
+        PlaceDTO startPlace = getIntent().getParcelableExtra(Constants.START_PLACE_SAVED);
+        if(startPlace != null) {
+            nextScreen.putExtra(Constants.START_PLACE_SAVED, startPlace);
+        }
+        PlaceDTO endPlace = getIntent().getParcelableExtra(Constants.END_PLACE_SAVED);
+        if(startPlace != null) {
+            nextScreen.putExtra(Constants.END_PLACE_SAVED, endPlace);
+        }
+        String date = getIntent().getStringExtra(Constants.DATE_SAVED);
+        if(date != null) {
+            nextScreen.putExtra(Constants.DATE_SAVED, date);
+        }
+        String time = getIntent().getStringExtra(Constants.TIME_SAVED);
+        if(time != null) {
+            nextScreen.putExtra(Constants.TIME_SAVED, time);
+        }
+
         startActivity(nextScreen);
         finish();
     }
@@ -93,8 +113,8 @@ public class PassengerBrowseFoundTravels extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
-                        Call<List<TravelDTO>> call = travelService.getAllUserComingTravels(
-                                user.getLogin(), 0, user.getBearerToken());
+                        Call<Void> call = travelService.signUpForTravel(
+                                user.getLogin(), travel.getId(), user.getBearerToken());
                         call.enqueue(getFetchCallback());
 
                         dialog.dismiss();
@@ -112,14 +132,11 @@ public class PassengerBrowseFoundTravels extends AppCompatActivity {
         });
     }
 
-    private Callback<List<TravelDTO>> getFetchCallback() {
-        return new Callback<List<TravelDTO>>() {
+    private Callback<Void>  getFetchCallback() {
+        return new Callback<Void> () {
             @Override
-            public void onResponse(Call<List<TravelDTO>> call, Response<List<TravelDTO>> response) {
+            public void onResponse(Call<Void>  call, Response<Void>  response) {
                 Log.i(TAG, response.message());
-                if(response.isSuccessful()) {
-                    mAdapter.update(response.body());
-                }
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     new PopUpWindows().showAlertWindow(
                             PassengerBrowseFoundTravels.this, null,
@@ -135,6 +152,11 @@ public class PassengerBrowseFoundTravels extends AppCompatActivity {
                             PassengerBrowseFoundTravels.this, null,
                             getResources().getString(R.string.trip_stopped_existing));
                 }
+                else if (response.code() == HttpURLConnection.HTTP_UNAVAILABLE) {
+                    new PopUpWindows().showAlertWindow(
+                            PassengerBrowseFoundTravels.this, null,
+                            getResources().getString(R.string.server_down));
+                }
                 else {
                     new PopUpWindows().showAlertWindow(
                             PassengerBrowseFoundTravels.this, null,
@@ -143,7 +165,7 @@ public class PassengerBrowseFoundTravels extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<TravelDTO>> call, Throwable t) {
+            public void onFailure(Call<Void>  call, Throwable t) {
                 Log.e(TAG, t.getMessage(), t);
             }
         };

@@ -23,4 +23,12 @@ public final class Constants {
     public static final String DRIVER_LOGIN = "DRIVER_LOGIN";
 
     public static final String CAPACITY = "CAPACITY";
+
+    public static final String START_PLACE_SAVED = "START_PLACE_SAVED";
+
+    public static final String END_PLACE_SAVED = "END_PLACE_SAVED";
+
+    public static final String DATE_SAVED = "DATE_SAVED";
+
+    public static final String TIME_SAVED = "TIME_SAVED";
 }

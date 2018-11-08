@@ -136,7 +136,10 @@ public class AddressDTO implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(this.id);
+        if(this.id != null)
+            parcel.writeLong(id);
+        else
+            parcel.writeLong(0);
         parcel.writeLong(this.buildingNumber);
         parcel.writeString(this.street);
         parcel.writeString(this.postcode);

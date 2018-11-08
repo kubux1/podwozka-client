@@ -125,7 +125,10 @@ public class PlaceDTO implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeLong(id);
+        if(id != null)
+            parcel.writeLong(id);
+        else
+            parcel.writeLong(0);
         parcel.writeDouble(latitude);
         parcel.writeDouble(longitude);
         parcel.writeString(name);
