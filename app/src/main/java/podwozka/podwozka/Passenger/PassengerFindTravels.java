@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -20,6 +18,7 @@ import podwozka.podwozka.Constants;
 import podwozka.podwozka.Driver.DriverAddTravel;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
+import podwozka.podwozka.entity.PlaceDTO;
 import podwozka.podwozka.entity.TravelDTO;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,9 +31,13 @@ public class PassengerFindTravels extends DriverAddTravel {
 
     private static final String TAG = PassengerFindTravels.class.getName();
 
-    private static String startTravelPlaceMessage;
+    private static PlaceDTO startPlaceSaved;
 
-    private static String endTravelPlaceMessage;
+    private static PlaceDTO endPlaceSaved;
+
+    protected static String dateSaved;
+
+    protected static String timeSaved;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,11 @@ public class PassengerFindTravels extends DriverAddTravel {
                     travel.setPassengersCount(Long.parseLong(maxPassengersCapacity));
                     travel.setPickUpDatetime(date+"T"+pickedTime.getText().toString());
 
+                    startPlaceSaved = startPlace;
+                    endPlaceSaved = endPlace;
+                    dateSaved = date;
+                    timeSaved = pickedTime.getText().toString();
+
                     Call<List<TravelDTO>> call = travelService.finMatching(0,
                             travel,
                             user.getBearerToken());
@@ -92,6 +100,7 @@ public class PassengerFindTravels extends DriverAddTravel {
                 endPlaceView.setText(startText);
             }
         });
+        findAndsetSavedValues();
     }
 
     @Override
@@ -101,23 +110,31 @@ public class PassengerFindTravels extends DriverAddTravel {
         finish();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString("startTravelPlace", startTravelPlaceMessage);
-        savedInstanceState.putString("endTravelPlace", endTravelPlaceMessage);
-    }
+    public void findAndsetSavedValues(){
+        Intent i = getIntent();
 
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        EditText startTravelPlace = findViewById(R.id.startTravelPlace);
-        EditText endTravelPlace = findViewById(R.id.endTravelPlace);
+        startPlaceSaved = i.getParcelableExtra(Constants.START_PLACE_SAVED);
+        if(startPlaceSaved != null){
+            startPlaceView.setText(String.format("%s: %s", startPlaceSaved.getName(),""));
+            startPlace = startPlaceSaved;
+        }
 
-        startTravelPlaceMessage = savedInstanceState.getString("startTravelPlace");
-        startTravelPlace.setText(startTravelPlaceMessage);
-        endTravelPlaceMessage = savedInstanceState.getString("endTravelPlace");
-        endTravelPlace.setText(endTravelPlaceMessage);
+        endPlaceSaved = i.getParcelableExtra(Constants.END_PLACE_SAVED);
+        if(endPlaceSaved != null){
+            endPlaceView.setText(String.format("%s: %s", endPlaceSaved.getName(),""));
+            endPlace = endPlaceSaved;
+        }
+
+        dateSaved = i.getStringExtra(Constants.DATE_SAVED);
+        if(dateSaved != null){
+            pickedDate.setText(dateSaved);
+            date = dateSaved;
+        }
+
+        timeSaved = i.getStringExtra(Constants.TIME_SAVED);
+        if(timeSaved != null){
+            pickedTime.setText(timeSaved);
+        }
     }
 
     public void checkForMessages(){
@@ -137,6 +154,10 @@ public class PassengerFindTravels extends DriverAddTravel {
                     Intent nextScreen = new Intent(PassengerFindTravels.this,
                             PassengerBrowseFoundTravels.class);
                     nextScreen.putExtra(Constants.TRAVELDTOS, (ArrayList) response.body());
+                    nextScreen.putExtra(Constants.START_PLACE_SAVED, startPlaceSaved);
+                    nextScreen.putExtra(Constants.END_PLACE_SAVED, endPlaceSaved);
+                    nextScreen.putExtra(Constants.DATE_SAVED, dateSaved);
+                    nextScreen.putExtra(Constants.TIME_SAVED, timeSaved);
                     startActivity(nextScreen);
                 }
             }

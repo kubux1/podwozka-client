@@ -9,7 +9,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class APIClient {
 
     private static final String scheme = "http";
-    private static final String hostIP = "192.168.0.10";
+    private static final String hostIP = "80.211.235.140";
     private static final int port = 8080;
     private static final HttpUrl hostUrl = new HttpUrl.Builder()
             .scheme(scheme)
