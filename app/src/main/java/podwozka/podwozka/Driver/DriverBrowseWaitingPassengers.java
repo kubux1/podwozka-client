@@ -16,13 +16,12 @@ import java.text.ParseException;
 import java.util.Date;
 
 import podwozka.podwozka.Constants;
-import podwozka.podwozka.Passenger.entity.PassangerTravel;
 import podwozka.podwozka.R;
 import podwozka.podwozka.Rest.APIClient;
-import podwozka.podwozka.Rest.PassengerTravelService;
-import podwozka.podwozka.entity.PassengerTravelDTO;
+import podwozka.podwozka.Rest.TravelService;
 import podwozka.podwozka.entity.TravelDTO;
 
+import podwozka.podwozka.entity.TravelUser;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,11 +31,12 @@ import static podwozka.podwozka.LoginActivity.user;
 public class DriverBrowseWaitingPassengers extends AppCompatActivity {
 
     private static final String TAG = DriverBrowseWaitingPassengers.class.getName();
-    private PassengerTravelService passengerTravelService = APIClient.getPassengerTravelService();
-    private List<PassangerTravel> travelList = new ArrayList<>();
+    private TravelService travelService = APIClient.getTravelService();
+    private List<TravelUser> travelList = new ArrayList<>();
     private RecyclerView recyclerView;
     private TextView route, date;
-    private DriverBrowseWaitingPassengersAdapter mAdapter;
+    private DriverBrowseComingPassengersAdapter driverBrowseComingPassengersAdapter;
+    private DriverBrowsePastPassengersAdapter driverBrowsePastPassengersAdapter;
     private static TravelDTO travelDTO;
 
     @Override
@@ -50,15 +50,20 @@ public class DriverBrowseWaitingPassengers extends AppCompatActivity {
         date = findViewById(R.id.date);
         route = findViewById(R.id.route);
 
-        mAdapter = new DriverBrowseWaitingPassengersAdapter(travelList, getApplicationContext());
+        driverBrowseComingPassengersAdapter = new DriverBrowseComingPassengersAdapter(travelList, getApplicationContext());
+        driverBrowsePastPassengersAdapter = new DriverBrowsePastPassengersAdapter(travelList, getApplicationContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(
                 getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
 
-        Call<List<PassengerTravelDTO>> call = passengerTravelService.getAllUserTravels(
-                user.getLogin(), 0, user.getBearerToken());
+        if (isFromFuture(travelDTO))
+            recyclerView.setAdapter(driverBrowseComingPassengersAdapter);
+        else
+            recyclerView.setAdapter(driverBrowsePastPassengersAdapter);
+
+        Call<List<TravelUser>> call = travelService.getSignedUpPassenger(
+                user.getLogin(), travelDTO.getId(), user.getBearerToken());
         call.enqueue(getFetchCallback());
 
         String routeString = travelDTO.getStartPlace().getName() + " - " +
@@ -78,6 +83,20 @@ public class DriverBrowseWaitingPassengers extends AppCompatActivity {
         finish();
     }
 
+    private boolean isFromFuture(TravelDTO travelDTO) {
+        Date travelDate = null;
+        Date now = null;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            travelDate = dateFormat.parse(travelDTO.getPickUpDatetime());
+            now = new Date();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return !now.after(travelDate);
+    }
+
+
     private String changeDateFormat(String strDate){
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -92,18 +111,19 @@ public class DriverBrowseWaitingPassengers extends AppCompatActivity {
         return strDate;
     }
 
-    private Callback<List<PassengerTravelDTO>> getFetchCallback() {
-        return new Callback<List<PassengerTravelDTO>>() {
+    private Callback<List<TravelUser>> getFetchCallback() {
+        return new Callback<List<TravelUser>>() {
             @Override
-            public void onResponse(Call<List<PassengerTravelDTO>> call, Response<List<PassengerTravelDTO>> response) {
+            public void onResponse(Call<List<TravelUser>> call, Response<List<TravelUser>> response) {
                 Log.i(TAG, response.message());
                 if(response.isSuccessful()) {
-                    mAdapter.update(response.body());
+                    driverBrowseComingPassengersAdapter.update(response.body());
+                    driverBrowsePastPassengersAdapter.update(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<PassengerTravelDTO>> call, Throwable t) {
+            public void onFailure(Call<List<TravelUser>> call, Throwable t) {
                 Log.e(TAG, t.getMessage(), t);
             }
         };

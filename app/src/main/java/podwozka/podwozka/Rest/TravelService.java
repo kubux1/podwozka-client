@@ -5,6 +5,7 @@ import org.apache.http.HttpHeaders;
 import java.util.List;
 
 import podwozka.podwozka.entity.TravelDTO;
+import podwozka.podwozka.entity.TravelUser;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -46,6 +47,16 @@ public interface TravelService {
     Call<Void> signUpForTravel(@Query("login") String login,
                                     @Query("travelId") Long travelId,
                                     @Header(HttpHeaders.AUTHORIZATION) String authHeader);
+
+    @PUT("api/travels/signedUpPassenger")
+    Call<TravelUser> acceptTravel(@Body TravelUser travelDTO,
+                                 @Header(HttpHeaders.AUTHORIZATION) String authHeader);
+
+    @GET("api/travels/signedUpPassenger")
+    Call<List<TravelUser>> getSignedUpPassenger(@Query("login") String login,
+                                          @Query("travelId") Long travelId,
+                              @Header(HttpHeaders.AUTHORIZATION) String authHeader);
+
 
     @PUT("api/travels")
     Call<TravelDTO> updateTravel(@Body TravelDTO travelDTO,
