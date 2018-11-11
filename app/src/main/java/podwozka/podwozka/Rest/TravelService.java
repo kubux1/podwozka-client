@@ -34,6 +34,18 @@ public interface TravelService {
                                                   @Header(HttpHeaders.AUTHORIZATION)
                                                           String authHeader);
 
+    @GET("api/travels/passenger/past")
+    Call<List<TravelDTO>> getAllUserPastTravelsForPassenger(@Query("login") String login,
+                                                @Query("page") int pageIndex,
+                                                @Header(HttpHeaders.AUTHORIZATION)
+                                                        String authHeader);
+
+    @GET("api/travels/passenger/coming")
+    Call<List<TravelDTO>> getAllUserComingTravelsForPassenger(@Query("login") String login,
+                                                  @Query("page") int pageIndex,
+                                                  @Header(HttpHeaders.AUTHORIZATION)
+                                                          String authHeader);
+
     @POST("api/travels/findMatching")
     Call<List<TravelDTO>> finMatching(@Query("page") int pageIndex,
                                       @Body TravelDTO travelDTO,
@@ -56,6 +68,11 @@ public interface TravelService {
     Call<List<TravelUser>> getSignedUpPassenger(@Query("login") String login,
                                           @Query("travelId") Long travelId,
                               @Header(HttpHeaders.AUTHORIZATION) String authHeader);
+
+    @GET("api/travels/signedUpTravels")
+    Call<List<TravelUser>> getSignedUpTravels(@Query("login") String login,
+                                                @Query("passenger") String passenger,
+                                                @Header(HttpHeaders.AUTHORIZATION) String authHeader);
 
 
     @PUT("api/travels")
