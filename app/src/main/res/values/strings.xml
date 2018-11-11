@@ -119,4 +119,7 @@
     <string name="travel_edit_success">Trip updated</string>
     <string name="sing_up_success">Signing up successful</string>
 
+    <!--Acceptance fields-->
+    <string name="accepted">Acceptance:</string>
+
 </resources>
