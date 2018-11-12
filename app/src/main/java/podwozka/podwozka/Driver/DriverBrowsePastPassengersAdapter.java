@@ -1,7 +1,7 @@
 package podwozka.podwozka.Driver;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +11,15 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import podwozka.podwozka.Passenger.entity.PassangerTravel;
 import podwozka.podwozka.R;
-import podwozka.podwozka.entity.PassengerTravelDTO;
+import podwozka.podwozka.entity.TravelUser;
 
-public class DriverBrowseWaitingPassengersAdapter extends
-        RecyclerView.Adapter<DriverBrowseWaitingPassengersAdapter.MyViewHolder> {
+;
 
-    private List<PassangerTravel> travelsList;
-    private List<PassengerTravelDTO> travelsList2;
+public class DriverBrowsePastPassengersAdapter extends
+        RecyclerView.Adapter<DriverBrowsePastPassengersAdapter.MyViewHolder> {
+
+    private List<TravelUser> travelsList;
     public Context context;
     public RatingBar ratingBar;
 
@@ -45,8 +45,8 @@ public class DriverBrowseWaitingPassengersAdapter extends
     }
 
 
-    public DriverBrowseWaitingPassengersAdapter(List<PassangerTravel> travelsList,
-                                                Context context) {
+    public DriverBrowsePastPassengersAdapter(List<TravelUser> travelsList,
+                                             Context context) {
         this.travelsList = travelsList;
         this.context = context;
     }
@@ -54,29 +54,25 @@ public class DriverBrowseWaitingPassengersAdapter extends
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_browse_travels_signed_up_person_item, parent, false);
+                .inflate(R.layout.activity_browse_past_travels_signed_up_person_item, parent, false);
 
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        PassangerTravel travel = travelsList.get(position);
-        String name = travel.getFirstName() + " " + travel.getLastName();
+        TravelUser travel = travelsList.get(position);
+        String name = travel.getUserLogin();
         holder.name.setText(name);
     }
 
     @Override
     public int getItemCount() {
-        if (travelsList == null) {
-            return travelsList2.size();
-        } else {
-            return travelsList.size();
-        }
+        return travelsList.size();
     }
 
-    public void update(List<PassengerTravelDTO> travelsList) {
-        travelsList2 = travelsList;
+    public void update(List<TravelUser> travelsList) {
+        this.travelsList = travelsList;
         notifyDataSetChanged();
     }
 }
