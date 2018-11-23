@@ -15,6 +15,7 @@ import java.util.List;
 
 import podwozka.podwozka.Constants;
 import podwozka.podwozka.Driver.DriverBrowseTravelsAdapter;
+import podwozka.podwozka.Libs.AppStatus;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import podwozka.podwozka.Rest.APIClient;
@@ -34,17 +35,28 @@ import com.google.android.gms.common.util.CollectionUtils;
 import static podwozka.podwozka.LoginActivity.user;
 
 public class PassengerBrowseFoundTravels extends AppCompatActivity {
+
     private List<TravelDTO> travelList = new ArrayList<>();
     private RecyclerView recyclerView;
     private DriverBrowseTravelsAdapter mAdapter;
     private static final String TAG = PassengerBrowseFoundTravels.class.getName();
     protected TravelService travelService = APIClient.getTravelService();
 
+    private PlaceDTO startPlace;
+    private PlaceDTO endPlace;
+    private String date;
+    private String time;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_travels_list);
+
+        startPlace = getIntent().getParcelableExtra(Constants.START_PLACE_SAVED);
+        endPlace = getIntent().getParcelableExtra(Constants.END_PLACE_SAVED);
+        date = getIntent().getParcelableExtra(Constants.DATE_SAVED);
+        time = getIntent().getStringExtra(Constants.TIME_SAVED);
 
         travelList = getIntent().getParcelableArrayListExtra(Constants.TRAVELDTOS);
         if(CollectionUtils.isEmpty(travelList)) {
@@ -67,19 +79,15 @@ public class PassengerBrowseFoundTravels extends AppCompatActivity {
     public void onBackPressed() {
         Intent nextScreen = new Intent(PassengerBrowseFoundTravels.this, PassengerFindTravels.class);
 
-        PlaceDTO startPlace = getIntent().getParcelableExtra(Constants.START_PLACE_SAVED);
         if(startPlace != null) {
             nextScreen.putExtra(Constants.START_PLACE_SAVED, startPlace);
         }
-        PlaceDTO endPlace = getIntent().getParcelableExtra(Constants.END_PLACE_SAVED);
-        if(startPlace != null) {
+        if(endPlace != null) {
             nextScreen.putExtra(Constants.END_PLACE_SAVED, endPlace);
         }
-        String date = getIntent().getStringExtra(Constants.DATE_SAVED);
         if(date != null) {
             nextScreen.putExtra(Constants.DATE_SAVED, date);
         }
-        String time = getIntent().getStringExtra(Constants.TIME_SAVED);
         if(time != null) {
             nextScreen.putExtra(Constants.TIME_SAVED, time);
         }
@@ -93,36 +101,47 @@ public class PassengerBrowseFoundTravels extends AppCompatActivity {
                 recyclerView, new PassangerRecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                final TravelDTO travel = mAdapter.returnTravel(position);
-                AlertDialog.Builder builder = new AlertDialog.Builder(PassengerBrowseFoundTravels.this);
+                if (AppStatus.getInstance(PassengerBrowseFoundTravels.this).isOnline()) {
+                    final TravelDTO travel = mAdapter.returnTravel(position);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PassengerBrowseFoundTravels.this);
 
-                builder.setMessage(getResources()
-                        .getString(R.string.sign_up_for_trip_confirmation));
+                    builder.setMessage(getResources()
+                            .getString(R.string.sign_up_for_trip_confirmation));
 
-                builder.setNegativeButton(getResources().getString(R.string.no),
-                        new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(getResources().getString(R.string.no),
+                            new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                        dialog.dismiss();
-                    }
-                });
+                                    dialog.dismiss();
+                                }
+                            });
 
-                builder.setPositiveButton(getResources().getString(R.string.yes),
-                        new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton(getResources().getString(R.string.yes),
+                            new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int which) {
-                        Call<Void> call = travelService.signUpForTravel(
-                                user.getLogin(), travel.getId(), user.getBearerToken());
-                        call.enqueue(getFetchCallback());
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Call<Void> call = travelService.signUpForTravel(
+                                            user.getLogin(), travel.getId(),
+                                            startPlace.getAddress().getLocality() +
+                                                    startPlace.getAddress().getStreet(),
+                                            endPlace.getAddress().getLocality() +
+                                                    endPlace.getAddress().getStreet(),
+                                            "2018-10-16T13:56", user.getBearerToken());
+                                    call.enqueue(getFetchCallback());
 
-                        dialog.dismiss();
-                    }
-                });
+                                    dialog.dismiss();
+                                }
+                            });
 
-                AlertDialog alert = builder.create();
-                alert.show();
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                } else {
+                    new PopUpWindows().showAlertWindow(
+                            PassengerBrowseFoundTravels.this, null,
+                            getResources().getString(R.string.no_internet_connection));
+                }
             }
 
             @Override

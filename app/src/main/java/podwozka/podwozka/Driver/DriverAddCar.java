@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
 
+import podwozka.podwozka.Libs.AppStatus;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import podwozka.podwozka.entity.Car;
@@ -32,33 +33,32 @@ public class DriverAddCar extends AppCompatActivity {
         LinearLayout myLinearLayout = findViewById( R.id.carInfoLayout );
         int httpResponseCode;
         HttpCommands httpCommand = new HttpCommands();
-
-        ArrayList<EditText> EditTextList = new ScreenActivityLib().getAllEditTextInActivity(myLinearLayout);
-        Map<String, String> carFields = new ScreenActivityLib().EditTextValuesToMap(EditTextList, false);
-        // Check if any field was empty
-        if(carFields.get("EmptyFieldName") != null){
-            new PopUpWindows().showAlertWindow(DriverAddCar.this, null,
-                    getResources().getString(R.string.field_empty) + " " + carFields.get("EmptyFieldName"));
-        }
-        else if(validateProductionYear(carFields.get("productionYear")) == true &
-                validateOtherFields(carFields) == true){
-            Car carToSave = new Car(carFields);
-            String carInJson = carToSave.newCarToJSON(carToSave);
-            httpResponseCode = httpCommand.addNewCar(carInJson);
-            if (httpResponseCode == HttpURLConnection.HTTP_CREATED){
-                Intent nextScreen = new Intent(DriverAddCar.this, DriverMain.class);
-                nextScreen.putExtra("MESSAGE",  getResources().getString(R.string.car_added));
-                startActivity(nextScreen);
+        if (AppStatus.getInstance(this).isOnline()) {
+            ArrayList<EditText> EditTextList = new ScreenActivityLib().getAllEditTextInActivity(myLinearLayout);
+            Map<String, String> carFields = new ScreenActivityLib().EditTextValuesToMap(EditTextList, false);
+            // Check if any field was empty
+            if (carFields.get("EmptyFieldName") != null) {
+                new PopUpWindows().showAlertWindow(DriverAddCar.this, null,
+                        getResources().getString(R.string.field_empty) + " " + carFields.get("EmptyFieldName"));
+            } else if (validateProductionYear(carFields.get("productionYear")) == true &
+                    validateOtherFields(carFields) == true) {
+                Car carToSave = new Car(carFields);
+                String carInJson = carToSave.newCarToJSON(carToSave);
+                httpResponseCode = httpCommand.addNewCar(carInJson);
+                if (httpResponseCode == HttpURLConnection.HTTP_CREATED) {
+                    Intent nextScreen = new Intent(DriverAddCar.this, DriverMain.class);
+                    nextScreen.putExtra("MESSAGE", getResources().getString(R.string.car_added));
+                    startActivity(nextScreen);
+                } else if (httpResponseCode == HttpURLConnection.HTTP_FORBIDDEN | httpResponseCode == HttpURLConnection.HTTP_BAD_REQUEST) {
+                    new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.car_exists));
+                } else if (httpResponseCode == HttpURLConnection.HTTP_UNAVAILABLE) {
+                    new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.server_down));
+                } else {
+                    new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.unknown_error));
+                }
             }
-            else if (httpResponseCode == HttpURLConnection.HTTP_FORBIDDEN | httpResponseCode == HttpURLConnection.HTTP_BAD_REQUEST) {
-                new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.car_exists));
-            }
-            else if (httpResponseCode == HttpURLConnection.HTTP_UNAVAILABLE){
-                new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.server_down));
-            }
-            else {
-                new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.unknown_error));
-            }
+        } else {
+            new PopUpWindows().showAlertWindow(DriverAddCar.this, null, getResources().getString(R.string.no_internet_connection));
         }
     }
 

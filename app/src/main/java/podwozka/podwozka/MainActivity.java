@@ -1,10 +1,13 @@
 package podwozka.podwozka;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -88,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
         checkForMessages();
         checkLocationPermission();
+        checkInternetStatusPermission();
+        isNetworkAvailable();
     }
 
     @Override
@@ -130,6 +135,26 @@ public class MainActivity extends AppCompatActivity {
                     MY_PERMISSIONS_REQUEST_FINE_LOCATION);
 
         }
+    }
+
+    public void checkInternetStatusPermission(){
+        // Check if permission for location is already granted
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.ACCESS_NETWORK_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, ask for permission
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.ACCESS_NETWORK_STATE},
+                    MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+
+        }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     //For future use

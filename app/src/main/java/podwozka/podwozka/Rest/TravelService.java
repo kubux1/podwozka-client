@@ -58,6 +58,9 @@ public interface TravelService {
     @POST("api/travels/signUp")
     Call<Void> signUpForTravel(@Query("login") String login,
                                     @Query("travelId") Long travelId,
+                                    @Query("startPlace") String startPlace,
+                                    @Query("endPlace") String endPlace,
+                                    @Query("pickUpDatetime") String pickUpDatetime,
                                     @Header(HttpHeaders.AUTHORIZATION) String authHeader);
 
     @PUT("api/travels/signedUpPassenger")

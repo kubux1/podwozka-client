@@ -12,6 +12,7 @@ import android.widget.Button;
 import java.net.HttpURLConnection;
 
 import podwozka.podwozka.Constants;
+import podwozka.podwozka.Libs.AppStatus;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import podwozka.podwozka.Rest.APIClient;
@@ -106,10 +107,15 @@ public class DriverTravelEditor extends AppCompatActivity {
     private View.OnClickListener getWaitingPassengersListener() {
         return new View.OnClickListener() {
             public void onClick(View arg0) {
-                Intent nextScreen = new Intent(DriverTravelEditor.this,
-                        DriverBrowseWaitingPassengers.class);
-                nextScreen.putExtra(Constants.TRAVELDTO, travelDTO);
-                startActivity(nextScreen);
+                if(AppStatus.getInstance(DriverTravelEditor.this).isOnline()) {
+                    Intent nextScreen = new Intent(DriverTravelEditor.this,
+                            DriverBrowseWaitingPassengers.class);
+                    nextScreen.putExtra(Constants.TRAVELDTO, travelDTO);
+                    startActivity(nextScreen);
+                } else {
+                    new PopUpWindows().showAlertWindow(DriverTravelEditor.this,
+                            null, getResources().getString(R.string.no_internet_connection));
+                }
             }
         };
     }
@@ -117,38 +123,43 @@ public class DriverTravelEditor extends AppCompatActivity {
     private View.OnClickListener getCancelTravelListener() {
         return new View.OnClickListener() {
             public void onClick(View arg0) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(
-                        DriverTravelEditor.this);
+                if (AppStatus.getInstance(DriverTravelEditor.this).isOnline()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(
+                            DriverTravelEditor.this);
 
-                builder.setMessage(getResources().getString(R.string.cancel_trip_confirmation));
-                builder.setPositiveButton(getResources().getString(R.string.yes),
-                        new DialogInterface.OnClickListener() {
+                    builder.setMessage(getResources().getString(R.string.cancel_trip_confirmation));
+                    builder.setPositiveButton(getResources().getString(R.string.yes),
+                            new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int which) {
-                        Call<Void> call = travelService.deleteTravel(travelDTO.getId(),
-                                user.getBearerToken());
-                        call.enqueue(getFetchCallback());
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Call<Void> call = travelService.deleteTravel(travelDTO.getId(),
+                                            user.getBearerToken());
+                                    call.enqueue(getFetchCallback());
 
-                        Intent nextScreen = new Intent(DriverTravelEditor.this,
-                                DriverTravelsLog.class);
-                        nextScreen.putExtra(Constants.MESSAGE, message);
-                        startActivity(nextScreen);
-                        finish();
-                        dialog.dismiss();
-                    }
-                });
+                                    Intent nextScreen = new Intent(DriverTravelEditor.this,
+                                            DriverTravelsLog.class);
+                                    nextScreen.putExtra(Constants.MESSAGE, message);
+                                    startActivity(nextScreen);
+                                    finish();
+                                    dialog.dismiss();
+                                }
+                            });
 
-                builder.setNegativeButton(getResources().getString(R.string.no),
-                        new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(getResources().getString(R.string.no),
+                            new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
 
-                AlertDialog alert = builder.create();
-                alert.show();
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                } else {
+                    new PopUpWindows().showAlertWindow(DriverTravelEditor.this,
+                            null, getResources().getString(R.string.no_internet_connection));
+                }
             }
         };
     }

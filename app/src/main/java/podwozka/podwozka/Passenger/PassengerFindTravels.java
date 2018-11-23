@@ -16,6 +16,7 @@ import java.util.List;
 
 import podwozka.podwozka.Constants;
 import podwozka.podwozka.Driver.DriverAddTravel;
+import podwozka.podwozka.Libs.AppStatus;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import podwozka.podwozka.entity.PlaceDTO;
@@ -63,31 +64,34 @@ public class PassengerFindTravels extends DriverAddTravel {
         btnNextScreen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 PopUpWindows alertWindow = new PopUpWindows();
+                if (AppStatus.getInstance(PassengerFindTravels.this).isOnline()) {
+                    String mistake = findMistake();
+                    if (mistake == null) {
+                        TravelDTO travel = new TravelDTO();
+                        travel.setDriverLogin(user.getLogin());
+                        travel.setStartPlace(startPlace);
+                        travel.setEndPlace(endPlace);
+                        travel.setPassengersCount(Long.parseLong(maxPassengersCapacity));
+                        travel.setPickUpDatetime(date + "T" + pickedTime.getText().toString());
 
-                String mistake = findMistake();
-                if(mistake == null) {
-                    TravelDTO travel = new TravelDTO();
-                    travel.setDriverLogin(user.getLogin());
-                    travel.setStartPlace(startPlace);
-                    travel.setEndPlace(endPlace);
-                    travel.setPassengersCount(Long.parseLong(maxPassengersCapacity));
-                    travel.setPickUpDatetime(date+"T"+pickedTime.getText().toString());
+                        startPlaceSaved = startPlace;
+                        endPlaceSaved = endPlace;
+                        dateSaved = date;
+                        timeSaved = pickedTime.getText().toString();
 
-                    startPlaceSaved = startPlace;
-                    endPlaceSaved = endPlace;
-                    dateSaved = date;
-                    timeSaved = pickedTime.getText().toString();
+                        Call<List<TravelDTO>> call = travelService.finMatching(0,
+                                travel,
+                                user.getBearerToken());
+                        call.enqueue(getFetchCallback());
 
-                    Call<List<TravelDTO>> call = travelService.finMatching(0,
-                            travel,
-                            user.getBearerToken());
-                    call.enqueue(getFetchCallback());
-
+                    } else {
+                        alertWindow.showAlertWindow(PassengerFindTravels.this,
+                                null, mistake);
+                    }
                 } else {
                     alertWindow.showAlertWindow(PassengerFindTravels.this,
-                            null, mistake);
+                            null, getResources().getString(R.string.no_internet_connection));
                 }
-
             }
         });
 
@@ -100,7 +104,7 @@ public class PassengerFindTravels extends DriverAddTravel {
                 endPlaceView.setText(startText);
             }
         });
-        findAndsetSavedValues();
+        findAndSetSavedValues();
     }
 
     @Override
@@ -110,7 +114,7 @@ public class PassengerFindTravels extends DriverAddTravel {
         finish();
     }
 
-    public void findAndsetSavedValues(){
+    public void findAndSetSavedValues(){
         Intent i = getIntent();
 
         startPlaceSaved = i.getParcelableExtra(Constants.START_PLACE_SAVED);

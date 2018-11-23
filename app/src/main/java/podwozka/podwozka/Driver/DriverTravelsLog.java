@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import podwozka.podwozka.Constants;
+import podwozka.podwozka.Libs.AppStatus;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import podwozka.podwozka.Rest.APIClient;
@@ -74,7 +75,8 @@ public class DriverTravelsLog extends AppCompatActivity {
         Intent i = getIntent();
         String message = i.getStringExtra(Constants.MESSAGE);
         if(message !=  null){
-            new PopUpWindows().showAlertWindow(DriverTravelsLog.this, null, message);
+            new PopUpWindows().showAlertWindow(DriverTravelsLog.this, null,
+                    getResources().getString(R.string.no_internet_connection));
         }
     }
 
@@ -98,11 +100,15 @@ public class DriverTravelsLog extends AppCompatActivity {
     }
 
     protected void getComingTravels() {
-        Call<List<TravelDTO>> call = travelService.getAllUserComingTravels(
-                user.getLogin(), 0, user.getBearerToken());
-        call.enqueue(getFetchCallback());
-        comingTravels.setBackgroundColor(Color.GRAY);
-        pastTravels.setBackgroundColor(0);
+        if (AppStatus.getInstance(this).isOnline()) {
+            Call<List<TravelDTO>> call = travelService.getAllUserComingTravels(
+                    user.getLogin(), 0, user.getBearerToken());
+            call.enqueue(getFetchCallback());
+            comingTravels.setBackgroundColor(Color.GRAY);
+            pastTravels.setBackgroundColor(0);
+        } else {
+
+        }
     }
 
     protected View.OnClickListener getComingTravelsListener() {
@@ -114,11 +120,16 @@ public class DriverTravelsLog extends AppCompatActivity {
     }
 
     protected void getPastTravels() {
-        Call<List<TravelDTO>> call = travelService.getAllUserPastTravels(
-                user.getLogin(), 0, user.getBearerToken());
-        call.enqueue(getFetchCallback());
-        pastTravels.setBackgroundColor(Color.GRAY);
-        comingTravels.setBackgroundColor(0);
+        if (AppStatus.getInstance(this).isOnline()) {
+            Call<List<TravelDTO>> call = travelService.getAllUserPastTravels(
+                    user.getLogin(), 0, user.getBearerToken());
+            call.enqueue(getFetchCallback());
+            pastTravels.setBackgroundColor(Color.GRAY);
+            comingTravels.setBackgroundColor(0);
+        } else {
+            new PopUpWindows().showAlertWindow(DriverTravelsLog.this, null,
+                    getResources().getString(R.string.no_internet_connection));
+        }
     }
 
     protected View.OnClickListener getPastTravelsListener() {

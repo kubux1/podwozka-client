@@ -108,4 +108,6 @@
     <string name="max_passengers_only_numbers">Proszę podać tylko cyfry w polu Maksymalna ilość pasażerów</string>
     <string name="server_down">Bardzo nam przykro, nasz serwer padł :(</string>
     <string name="accepted">Akceptacja:</string>
+    <string name="no_internet_connection">Brak połączenia z internetem</string>
+    <string name="non_valid_time">Wybrany czas już minął</string>
 </resources>

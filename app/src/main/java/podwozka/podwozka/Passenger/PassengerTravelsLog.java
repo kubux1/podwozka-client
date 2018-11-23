@@ -16,6 +16,7 @@ import podwozka.podwozka.Constants;
 import podwozka.podwozka.Driver.DriverBrowseTravelsAdapter;
 import podwozka.podwozka.Driver.DriverRecyclerItemClickListener;
 import podwozka.podwozka.Driver.DriverTravelsLog;
+import podwozka.podwozka.Libs.AppStatus;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import podwozka.podwozka.entity.TravelDTO;
@@ -77,20 +78,32 @@ public class PassengerTravelsLog extends DriverTravelsLog {
 
     @Override
     protected void getComingTravels() {
-        Call<List<TravelDTO>> call = travelService.getAllUserComingTravelsForPassenger(
-                user.getLogin(), 0, user.getBearerToken());
-        call.enqueue(getFetchCallback());
-        comingTravels.setBackgroundColor(Color.GRAY);
-        pastTravels.setBackgroundColor(0);
+        if (AppStatus.getInstance(PassengerTravelsLog.this).isOnline()) {
+            Call<List<TravelDTO>> call = travelService.getAllUserComingTravelsForPassenger(
+                    user.getLogin(), 0, user.getBearerToken());
+            call.enqueue(getFetchCallback());
+            comingTravels.setBackgroundColor(Color.GRAY);
+            pastTravels.setBackgroundColor(0);
+        } else {
+            new PopUpWindows().showAlertWindow(
+                    PassengerTravelsLog.this, null,
+                    getResources().getString(R.string.no_internet_connection));
+        }
     }
 
     @Override
     protected void getPastTravels() {
-        Call<List<TravelDTO>> call = travelService.getAllUserPastTravelsForPassenger(
-                user.getLogin(), 0, user.getBearerToken());
-        call.enqueue(getFetchCallback());
-        pastTravels.setBackgroundColor(Color.GRAY);
-        comingTravels.setBackgroundColor(0);
+        if (AppStatus.getInstance(PassengerTravelsLog.this).isOnline()) {
+            Call<List<TravelDTO>> call = travelService.getAllUserPastTravelsForPassenger(
+                    user.getLogin(), 0, user.getBearerToken());
+            call.enqueue(getFetchCallback());
+            pastTravels.setBackgroundColor(Color.GRAY);
+            comingTravels.setBackgroundColor(0);
+        } else {
+            new PopUpWindows().showAlertWindow(
+                    PassengerTravelsLog.this, null,
+                    getResources().getString(R.string.no_internet_connection));
+        }
     }
 
     @Override
@@ -119,13 +132,19 @@ public class PassengerTravelsLog extends DriverTravelsLog {
                 recyclerView, new DriverRecyclerItemClickListener.OnItemClickListener() {
 
             @Override public void onItemClick(View view, int position) {
-                Intent nextScreen = new Intent(PassengerTravelsLog.this,
-                        PassengerTravelDriverAndCar.class);
-                String driverLogin = passengerBrowseTravelsAdapter.returnTravel(position).
-                        getDriverLogin();
-                nextScreen.putExtra(Constants.DRIVER_LOGIN, driverLogin);
-                startActivity(nextScreen);
-                finish();
+                if (AppStatus.getInstance(PassengerTravelsLog.this).isOnline()) {
+                    Intent nextScreen = new Intent(PassengerTravelsLog.this,
+                            PassengerTravelDriverAndCar.class);
+                    String driverLogin = passengerBrowseTravelsAdapter.returnTravel(position).
+                            getDriverLogin();
+                    nextScreen.putExtra(Constants.DRIVER_LOGIN, driverLogin);
+                    startActivity(nextScreen);
+                    finish();
+                } else {
+                    new PopUpWindows().showAlertWindow(
+                            PassengerTravelsLog.this, null,
+                            getResources().getString(R.string.no_internet_connection));
+                }
             }
 
             @Override public void onLongItemClick(View view, int position) {

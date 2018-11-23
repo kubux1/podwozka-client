@@ -22,12 +22,14 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.net.HttpURLConnection;
-import java.time.LocalDateTime;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Date;
 import java.util.Locale;
 
 import podwozka.podwozka.Constants;
+import podwozka.podwozka.Libs.AppStatus;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import podwozka.podwozka.Rest.APIClient;
@@ -82,7 +84,10 @@ public class DriverAddTravel extends AppCompatActivity {
             int day = c.get(Calendar.DAY_OF_MONTH);
 
             // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
+            DatePickerDialog datePicker = new DatePickerDialog(getActivity(), this,
+                    year, month, day);
+            datePicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1);
+            return datePicker;
         }
 
 
@@ -122,8 +127,9 @@ public class DriverAddTravel extends AppCompatActivity {
             int minute = c.get(Calendar.MINUTE);
 
             // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
+            TimePickerDialog timePicker =  new TimePickerDialog(getActivity(), this, hour, minute,
                     DateFormat.is24HourFormat(getActivity()));
+            return timePicker;
         }
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -173,22 +179,26 @@ public class DriverAddTravel extends AppCompatActivity {
         btnNextScreen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 PopUpWindows alertWindow = new PopUpWindows();
+                if (AppStatus.getInstance(DriverAddTravel.this).isOnline()) {
+                    String mistake = findMistake();
+                    if (mistake == null) {
+                        TravelDTO travel = new TravelDTO();
+                        travel.setDriverLogin(user.getLogin());
+                        travel.setStartPlace(startPlace);
+                        travel.setEndPlace(endPlace);
+                        travel.setPassengersCount(Long.parseLong(maxPassengersCapacity));
+                        travel.setPickUpDatetime(date + "T" + pickedTime.getText().toString());
 
-                String mistake = findMistake();
-                if(mistake == null) {
-                    TravelDTO travel = new TravelDTO();
-                    travel.setDriverLogin(user.getLogin());
-                    travel.setStartPlace(startPlace);
-                    travel.setEndPlace(endPlace);
-                    travel.setPassengersCount(Long.parseLong(maxPassengersCapacity));
-                    travel.setPickUpDatetime(date+"T"+pickedTime.getText().toString());
-
-                    Call<TravelDTO> call = travelService.createTravel(travel,
-                            user.getBearerToken());
-                    call.enqueue(getFetchCallback());
+                        Call<TravelDTO> call = travelService.createTravel(travel,
+                                user.getBearerToken());
+                        call.enqueue(getFetchCallback());
+                    } else {
+                        alertWindow.showAlertWindow(DriverAddTravel.this,
+                                null, mistake);
+                    }
                 } else {
                     alertWindow.showAlertWindow(DriverAddTravel.this,
-                            null, mistake);
+                            null, getResources().getString(R.string.no_internet_connection));
                 }
 
             }
@@ -243,8 +253,7 @@ public class DriverAddTravel extends AppCompatActivity {
     }
 
     protected String findMistake() {
-        if (startPlace == null)
-        {
+        if (startPlace == null) {
             return getResources().getString(R.string.start_place_empty);
         } else if (endPlace == null) {
             return getResources().getString(R.string.end_place_empty);
@@ -252,6 +261,30 @@ public class DriverAddTravel extends AppCompatActivity {
             return getResources().getString(R.string.end_place_empty);
         } else if (pickedTime == null) {
             return getResources().getString(R.string.end_place_empty);
+        }
+        // Checking if choosed time is not before current time, it is checked only if current day
+        // was choosed
+        else if(pickedTime != null) {
+            Date currDate = null;
+            Date choosedDate = null;
+            Date currTime = null;
+            Date choosedTime = null;
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String currentDate = sdf.format(Calendar.getInstance().getTime());
+                currDate = sdf.parse(currentDate);
+                choosedDate = sdf.parse(date);
+
+                sdf = new SimpleDateFormat("HH:mm");
+                String currentTime = sdf.format(Calendar.getInstance().getTime());
+                currTime = sdf.parse(currentTime);
+                choosedTime = sdf.parse(pickedTime.getText().toString());
+            } catch (ParseException exception) {
+                exception.printStackTrace();
+            }
+            if((currDate.compareTo(choosedDate) == 0) & (currTime.compareTo(choosedTime) >= 0)) {
+                return getResources().getString(R.string.non_valid_time);
+            }
         }
 
         return null;

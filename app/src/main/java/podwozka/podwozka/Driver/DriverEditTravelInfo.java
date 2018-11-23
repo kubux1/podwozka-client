@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import podwozka.podwozka.Driver.entity.DriverTravel;
+import podwozka.podwozka.Libs.AppStatus;
 import podwozka.podwozka.PopUpWindows;
 import podwozka.podwozka.R;
 import java.net.HttpURLConnection;
@@ -41,35 +42,40 @@ public class DriverEditTravelInfo extends AppCompatActivity {
         Button saveChanges = findViewById(R.id.saveChanges);
         // TODO: Change startDateTime to values from fields
         saveChanges.setOnClickListener(new View.OnClickListener() {
+                public void onClick (View arg0) {
+                    if (AppStatus.getInstance(DriverEditTravelInfo.this).isOnline()) {
+                        editedTravel = new DriverTravel(
+                                editedTravel.getTravelId(),
+                                editedTravel.getDriverLogin(),
+                                startPlace.getText().toString(),
+                                endPlace.getText().toString(),
+                                "2018-10-28T17:24",
+                                editedTravel.getPassengersCount());
 
-            public void onClick(View arg0) {
-                editedTravel = new DriverTravel(
-                        editedTravel.getTravelId(),
-                        editedTravel.getDriverLogin(),
-                        startPlace.getText().toString(),
-                        endPlace.getText().toString(),
-                        "2018-10-28T17:24",
-                        editedTravel.getPassengersCount());
-
-                int httpResponseCode = editedTravel.editTravelInfo(editedTravel);
-                Intent nextScreen = new Intent(DriverEditTravelInfo.this, DriverTravelsLog.class);
-                String message = null;
-                if(httpResponseCode == HttpURLConnection.HTTP_OK){
-                    nextScreen.putExtra("TRAVEL", editedTravel);
-                    message = getResources().getString(R.string.travel_edit_success);
-                } else if(httpResponseCode == HttpURLConnection.HTTP_NOT_FOUND){
-                    message = getResources().getString(R.string.travel_not_found);
-                } else if (httpResponseCode == HttpURLConnection.HTTP_UNAVAILABLE){
-                    new PopUpWindows().showAlertWindow(DriverEditTravelInfo.this, null, getResources().getString(R.string.server_down));
+                        int httpResponseCode = editedTravel.editTravelInfo(editedTravel);
+                        Intent nextScreen = new Intent(DriverEditTravelInfo.this, DriverTravelsLog.class);
+                        String message = null;
+                        if (httpResponseCode == HttpURLConnection.HTTP_OK) {
+                            nextScreen.putExtra("TRAVEL", editedTravel);
+                            message = getResources().getString(R.string.travel_edit_success);
+                        } else if (httpResponseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+                            message = getResources().getString(R.string.travel_not_found);
+                        } else if (httpResponseCode == HttpURLConnection.HTTP_UNAVAILABLE) {
+                            new PopUpWindows().showAlertWindow(DriverEditTravelInfo.this,
+                                    null, getResources().getString(R.string.server_down));
+                        } else {
+                            message = getResources().getString(R.string.unknown_error);
+                        }
+                        nextScreen.putExtra("MESSAGE", message);
+                        startActivity(nextScreen);
+                    } else {
+                        new PopUpWindows().showAlertWindow(DriverEditTravelInfo.this,
+                                null, getResources().getString(R.string.no_internet_connection));
+                    }
                 }
-                else {
-                    message = getResources().getString(R.string.unknown_error);
-                }
-                nextScreen.putExtra("MESSAGE", message);
-                startActivity(nextScreen);
-            }
         });
     }
+
 
     @Override
     public void onBackPressed() {

@@ -23,7 +23,7 @@ public class ScreenActivityLib {
     public Map<String, String> EditTextValuesToMap(ArrayList<EditText> EditTextList, boolean insertEmptyFields) {
         Map<String, String> car = new HashMap<>();
         for(int i=0;i < EditTextList.size();i++){
-           String text = EditTextList.get(i).getText().toString();
+           String text = EditTextList.get(i).getText().toString().trim();
            if(insertEmptyFields == false & text.equals("")){
                car.put("EmptyFieldName", EditTextList.get(i).getHint().toString());
                break;
